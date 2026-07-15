@@ -7,32 +7,60 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Fraunces:opsz,wght@9..144,400;9..144,500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
     <header class="header">
-      <div class="brand">UnFeed</div>
+      <div class="brand-row">
+        <div class="brand">UnFeed</div>
+        <div class="plan" id="plan"></div>
+      </div>
       <p class="tagline">Remove the feed. Keep the app.</p>
-      <div class="plan" id="plan"></div>
     </header>
 
-    <main class="main" id="site-list">
-      <!-- rows injected by popup.js -->
-    </main>
+    <section class="signal-block" aria-labelledby="signal-title">
+      <h2 class="section-title" id="signal-title">
+        <svg class="section-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            fill="currentColor"
+            d="M2 20h2v-2H2v2zm0-4h2v-2H2v2zm0-4h2V8H2v4zm0-6h2V4H2v2zm4 14h2V10H6v10zm4 0h2V4h-2v16zm4 0h2v-6h-2v6zm4 0h2V8h-2v12z"
+          />
+          <path
+            fill="currentColor"
+            d="M3.5 3.5 20.5 20.5"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+          />
+        </svg>
+        Signal Cut
+      </h2>
+      <main class="main" id="site-list">
+        <!-- rows injected by popup.js -->
+      </main>
+    </section>
 
     <section class="upgrade" id="upgrade" hidden>
-      <p class="upgrade-title">Unlock all sites</p>
+      <p class="upgrade-title">
+        <svg class="section-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            fill="currentColor"
+            d="M17 8h-1V6a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4V6zm7 14H7V10h10v10z"
+          />
+        </svg>
+        Unlock all sites
+      </p>
       <p class="upgrade-copy">
-        Free includes any 3. Pro unlocks every network — one-time purchase.
+        Enter your license key to enable Signal Cut on every site.
       </p>
       <div class="license-row">
         <input
           id="license-input"
           type="text"
-          placeholder="License key"
+          placeholder="Enter license key"
           autocomplete="off"
           spellcheck="false"
         />
@@ -45,7 +73,6 @@
 
     <footer class="popup-links">
       <a href="#" id="privacy-link">Privacy</a>
-      <a href="mailto:support@unfeed.dev">Contact</a>
     </footer>
 
     <script src="../shared/config.js"></script>

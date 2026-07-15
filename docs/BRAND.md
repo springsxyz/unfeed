@@ -1,29 +1,28 @@
-# UnFeed brand — Off-Hours Soft
+# UnFeed brand — Signal Cut
 
-Locked from design mockups (Jul 2026).
+Locked from design mockups (Jul 2026). User-selected direction.
 
 ## Type
-- **Display / brand:** Fraunces (optical size), weight 400–500
-- **UI / body:** DM Sans, weight 400–600
-- Fallbacks: Georgia / system-ui
+- **UI / brand:** Space Grotesk, weights 400–700
+- Fallbacks: Helvetica Neue, sans-serif
 
 ## Color
 | Token | Hex | Use |
 |-------|-----|-----|
-| `--bg` / mist | `#d4dde6` → `#c8d4e0` | Atmosphere field |
-| `--bg-deep` | `#9aafc0` | Gradient depth |
-| `--text` | `#1c2a36` | Deep slate |
-| `--muted` | `#5c6d7c` | Secondary copy |
-| `--accent` | `#3f7d7a` | CTA, toggles, links |
-| `--accent-soft` | `#5a9a96` | Hover |
+| `--bg` | `#f4f2ec` | Paper field |
+| `--bg-deep` | `#e8e4dc` | Gradient depth |
+| `--text` | `#0a0a0a` | Ink |
+| `--muted` | `#6b6b6b` | Secondary copy |
+| `--accent` | `#c8e046` | Lime — toggles, Free badge, CTA |
+| `--off` | `#d0d0d0` | Toggle off |
 
 ## Motion
-1. Mist drift (slow ambient scale/translate on `.atmosphere`)
-2. Hero rise-in (brand → headline → lede → CTA, staggered)
-3. CTA / toggle soft hover (translate or color)
+1. Cut-shift on `.atmosphere` (slow horizontal drift of feed→silence plane)
+2. Hero rise-in (brand → headline → lede → CTA)
+3. Toggle / CTA hover
 
 Respect `prefers-reduced-motion`.
 
 ## Surfaces
-- Landing: full-bleed atmosphere; brand is hero wordmark; no cards in first viewport
-- Popup: soft mist panel, no list card chrome, large teal toggles, pill Free/Pro badge
+- Landing: paper grain + abstract feed-blur cut into silence; brand wordmark hero; lime CTA
+- Popup: paper, bold UnFeed + lime Free badge, **Signal Cut** site list with icons, black Unlock button, centered Privacy

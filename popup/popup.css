@@ -1,17 +1,13 @@
-/* UnFeed popup — Off-Hours Soft (matches unfeed.dev) */
+/* UnFeed popup — Signal Cut */
 
 :root {
-  --bg: #d4dde6;
-  --bg-mist: #c8d4e0;
-  --text: #1c2a36;
-  --muted: #5c6d7c;
-  --accent: #3f7d7a;
-  --accent-soft: #5a9a96;
-  --surface: rgba(255, 255, 255, 0.5);
-  --border: rgba(28, 42, 54, 0.12);
-  --on: #3f7d7a;
-  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
-  --font-body: "DM Sans", system-ui, sans-serif;
+  --bg: #f4f2ec;
+  --text: #0a0a0a;
+  --muted: #6b6b6b;
+  --accent: #c8e046;
+  --line: rgba(10, 10, 10, 0.1);
+  --off: #d0d0d0;
+  --font: "Space Grotesk", "Helvetica Neue", sans-serif;
 }
 
 * {
@@ -22,36 +18,37 @@
 
 body {
   width: 300px;
-  max-height: 520px;
+  max-height: 560px;
   overflow-y: auto;
-  font-family: var(--font-body);
+  font-family: var(--font);
   color: var(--text);
   padding: 18px 18px 0;
   background:
-    radial-gradient(ellipse 120% 80% at 80% -10%, rgba(255, 255, 255, 0.65), transparent 55%),
-    radial-gradient(ellipse 90% 70% at 0% 100%, rgba(90, 154, 150, 0.18), transparent 50%),
-    linear-gradient(165deg, #e4ebf2, var(--bg-mist));
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, #f7f5f0, var(--bg));
+  background-blend-mode: soft-light, normal;
 }
 
 .end-space {
-  display: block;
-  height: 14px;
-  min-height: 14px;
-  width: 100%;
-  flex-shrink: 0;
-  pointer-events: none;
+  height: 12px;
+  min-height: 12px;
 }
 
 .header {
-  margin-bottom: 18px;
+  margin-bottom: 16px;
+}
+
+.brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .brand {
-  font-family: var(--font-display);
-  font-size: 26px;
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  color: var(--text);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
   line-height: 1;
 }
 
@@ -59,44 +56,62 @@ body {
   margin-top: 6px;
   font-size: 12px;
   color: var(--muted);
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
 .plan {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 12px;
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.plan strong {
-  color: var(--text);
-  font-weight: 600;
+  flex-shrink: 0;
 }
 
 .plan-badge {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: rgba(63, 125, 122, 0.12);
-  color: var(--accent);
-  font-size: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--text);
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  letter-spacing: 0.01em;
 }
 
 .plan-badge.plan-pro {
-  background: rgba(63, 125, 122, 0.22);
-  color: #2f615e;
+  background: var(--text);
+  color: var(--accent);
+}
+
+.plan-badge svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+.signal-block {
+  margin-bottom: 4px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.section-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 
 .main {
   background: transparent;
   border: none;
-  border-radius: 0;
   padding: 0;
 }
 
@@ -104,63 +119,60 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 11px 0;
+  gap: 10px;
+  padding: 9px 0;
   cursor: pointer;
-  border-bottom: 1px solid var(--border);
-}
-
-.row:last-child {
   border-bottom: none;
 }
 
-.row-label {
+.row-left {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.site-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  flex-shrink: 0;
+  object-fit: contain;
 }
 
 .platform {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.hint {
-  font-size: 11px;
-  color: var(--muted);
-}
-
-.hint.is-off {
-  color: #9a6b3c;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 .toggle {
   appearance: none;
-  width: 44px;
-  height: 26px;
+  width: 42px;
+  height: 24px;
   border-radius: 999px;
-  background: rgba(28, 42, 54, 0.18);
+  background: var(--off);
   position: relative;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.15s ease;
   flex-shrink: 0;
 }
 
 .toggle::after {
   content: "";
   position: absolute;
-  top: 3px;
-  left: 3px;
+  top: 2px;
+  left: 2px;
   width: 20px;
   height: 20px;
   border-radius: 50%;
   background: #fff;
-  box-shadow: 0 1px 3px rgba(28, 42, 54, 0.18);
-  transition: transform 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  transition: transform 0.15s ease;
 }
 
 .toggle:checked {
-  background: var(--on);
+  background: var(--accent);
 }
 
 .toggle:checked::after {
@@ -168,45 +180,46 @@ body {
 }
 
 .toggle:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--text);
   outline-offset: 2px;
 }
 
 .upgrade {
-  margin-top: 16px;
-  margin-bottom: 0;
-  padding: 14px;
+  margin-top: 14px;
+  padding: 0;
   border: none;
-  border-radius: 16px;
-  background: var(--surface);
-  backdrop-filter: blur(8px);
+  background: transparent;
 }
 
 .upgrade-title {
-  font-family: var(--font-display);
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   margin-bottom: 4px;
 }
 
 .upgrade-copy {
   font-size: 11px;
   color: var(--muted);
-  line-height: 1.45;
+  line-height: 1.4;
   margin-bottom: 10px;
+  padding-left: 24px;
 }
 
 .license-row {
   display: flex;
-  gap: 6px;
+  gap: 8px;
 }
 
 .license-row input {
   flex: 1;
   min-width: 0;
   padding: 9px 11px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
+  border-radius: 8px;
+  border: 1.5px solid var(--line);
   background: rgba(255, 255, 255, 0.55);
   color: var(--text);
   font-size: 12px;
@@ -215,25 +228,24 @@ body {
 
 .license-row input:focus {
   outline: none;
-  border-color: var(--accent-soft);
+  border-color: var(--text);
 }
 
 .license-row button {
   padding: 9px 14px;
   border: none;
-  border-radius: 12px;
-  background: var(--accent);
-  color: #f4f8f8;
+  border-radius: 8px;
+  background: var(--text);
+  color: #fff;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   font-family: inherit;
   white-space: nowrap;
-  transition: background 0.15s ease;
 }
 
 .license-row button:hover {
-  background: var(--accent-soft);
+  filter: brightness(1.15);
 }
 
 .license-msg {
@@ -241,32 +253,34 @@ body {
   font-size: 11px;
   line-height: 1.4;
   color: var(--muted);
-  min-height: 0;
 }
 
 .license-msg.warn {
-  color: #9a6b3c;
+  color: #9a5b20;
 }
 
 .license-msg.ok {
-  color: var(--accent);
+  color: #4a7a20;
 }
 
 .popup-links {
-  margin-top: 6px;
-  padding-top: 2px;
-  display: flex;
-  gap: 14px;
+  margin-top: 8px;
+  padding: 4px 0 14px;
+  text-align: center;
 }
 
 .popup-links a {
-  font-size: 11px;
-  color: var(--muted);
-  text-decoration: none;
+  font-size: 12px;
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .popup-links a:hover {
-  color: var(--accent);
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  color: var(--muted);
+}
+
+/* hide leftover hint text — mock uses icon+name only */
+.hint {
+  display: none;
 }
