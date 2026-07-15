@@ -3,10 +3,10 @@
 Use this copy when you create the item. Replace placeholders after Pages is live.
 
 **Privacy policy URL (after GitHub Pages):**  
-`https://springsxyz.github.io/unfeed/privacy.html`
+`https://unfeed.dev/privacy.html`
 
 **Support / homepage URL:**  
-`https://springsxyz.github.io/unfeed/`
+`https://unfeed.dev/`
 
 ---
 

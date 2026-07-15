@@ -5,13 +5,13 @@
 1. Create a [Chrome Web Store developer account](https://chrome.google.com/webstore/devconsole) ($5 USD once)
 2. Create a GitHub repo (suggested name: `unfeed`) and push this project
 3. **GitHub Pages:** Settings → Pages → Source: Deploy from branch → Branch `main` → Folder `/docs`
-4. Confirm these URLs load (after Pages is enabled):
-   - `https://springsxyz.github.io/unfeed/`
-   - `https://springsxyz.github.io/unfeed/privacy.html`
+4. Confirm these URLs load (custom domain `unfeed.dev` + Pages `/docs`):
+   - `https://unfeed.dev/`
+   - `https://unfeed.dev/privacy.html`
 5. In the Chrome Web Store form, set:
-   - **Homepage:** `https://springsxyz.github.io/unfeed/`  
-   - **Privacy policy:** `https://springsxyz.github.io/unfeed/privacy.html`  
-   - **Support email:** an email you actually check (e.g. springsxyz.com@gmail.com)
+   - **Homepage:** `https://unfeed.dev/`  
+   - **Privacy policy:** `https://unfeed.dev/privacy.html`  
+   - **Support email:** an email you actually check (e.g. `support@unfeed.dev` via Namecheap/Cloudflare forward, or springsxyz.com@gmail.com)
 6. Optionally paste the live store URL into `docs/index.html` (`#cws-link`) after approval
 
 > Note: the in-extension **Privacy** link opens bundled `privacy.html`. The store still needs the **public** Pages URL.
