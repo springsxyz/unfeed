@@ -1,12 +1,17 @@
+/* UnFeed popup — Off-Hours Soft (matches unfeed.dev) */
+
 :root {
-  --bg: #0f1114;
-  --surface: #181b20;
-  --text: #f2f4f7;
-  --muted: #8b939e;
-  --accent: #e8e4dc;
-  --on: #3d9a6a;
-  --border: #2a2f38;
-  --font: "Segoe UI", "Helvetica Neue", sans-serif;
+  --bg: #d4dde6;
+  --bg-mist: #c8d4e0;
+  --text: #1c2a36;
+  --muted: #5c6d7c;
+  --accent: #3f7d7a;
+  --accent-soft: #5a9a96;
+  --surface: rgba(255, 255, 255, 0.5);
+  --border: rgba(28, 42, 54, 0.12);
+  --on: #3f7d7a;
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
 }
 
 * {
@@ -16,39 +21,42 @@
 }
 
 body {
-  width: 280px;
+  width: 300px;
   max-height: 520px;
   overflow-y: auto;
-  font-family: var(--font);
-  background: var(--bg);
+  font-family: var(--font-body);
   color: var(--text);
-  padding: 16px 16px 0;
+  padding: 18px 18px 0;
+  background:
+    radial-gradient(ellipse 120% 80% at 80% -10%, rgba(255, 255, 255, 0.65), transparent 55%),
+    radial-gradient(ellipse 90% 70% at 0% 100%, rgba(90, 154, 150, 0.18), transparent 50%),
+    linear-gradient(165deg, #e4ebf2, var(--bg-mist));
 }
 
 .end-space {
   display: block;
-  height: 16px;
-  min-height: 16px;
+  height: 14px;
+  min-height: 14px;
   width: 100%;
   flex-shrink: 0;
   pointer-events: none;
 }
 
 .header {
-  margin-bottom: 16px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--border);
+  margin-bottom: 18px;
 }
 
 .brand {
-  font-size: 20px;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 500;
   letter-spacing: -0.03em;
-  color: var(--accent);
+  color: var(--text);
+  line-height: 1;
 }
 
 .tagline {
-  margin-top: 4px;
+  margin-top: 6px;
   font-size: 12px;
   color: var(--muted);
   line-height: 1.4;
@@ -70,9 +78,9 @@ body {
 
 .plan-badge {
   display: inline-block;
-  padding: 2px 7px;
-  border-radius: 4px;
-  background: #2a2f38;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(63, 125, 122, 0.12);
   color: var(--accent);
   font-size: 10px;
   font-weight: 700;
@@ -81,15 +89,15 @@ body {
 }
 
 .plan-badge.plan-pro {
-  background: rgba(61, 154, 106, 0.2);
-  color: #6fcf97;
+  background: rgba(63, 125, 122, 0.22);
+  color: #2f615e;
 }
 
 .main {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 4px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
 }
 
 .row {
@@ -97,7 +105,7 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 10px 0;
+  padding: 11px 0;
   cursor: pointer;
   border-bottom: 1px solid var(--border);
 }
@@ -123,31 +131,32 @@ body {
 }
 
 .hint.is-off {
-  color: #b07a3a;
+  color: #9a6b3c;
 }
 
 .toggle {
   appearance: none;
-  width: 40px;
-  height: 22px;
+  width: 44px;
+  height: 26px;
   border-radius: 999px;
-  background: #3a414c;
+  background: rgba(28, 42, 54, 0.18);
   position: relative;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: background 0.2s ease;
   flex-shrink: 0;
 }
 
 .toggle::after {
   content: "";
   position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 18px;
-  height: 18px;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: #fff;
-  transition: transform 0.15s ease;
+  box-shadow: 0 1px 3px rgba(28, 42, 54, 0.18);
+  transition: transform 0.2s ease;
 }
 
 .toggle:checked {
@@ -164,17 +173,19 @@ body {
 }
 
 .upgrade {
-  margin-top: 12px;
+  margin-top: 16px;
   margin-bottom: 0;
-  padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
+  padding: 14px;
+  border: none;
+  border-radius: 16px;
   background: var(--surface);
+  backdrop-filter: blur(8px);
 }
 
 .upgrade-title {
-  font-size: 13px;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 500;
   margin-bottom: 4px;
 }
 
@@ -193,10 +204,10 @@ body {
 .license-row input {
   flex: 1;
   min-width: 0;
-  padding: 8px 10px;
-  border-radius: 8px;
+  padding: 9px 11px;
+  border-radius: 12px;
   border: 1px solid var(--border);
-  background: var(--bg);
+  background: rgba(255, 255, 255, 0.55);
   color: var(--text);
   font-size: 12px;
   font-family: inherit;
@@ -204,24 +215,25 @@ body {
 
 .license-row input:focus {
   outline: none;
-  border-color: #555;
+  border-color: var(--accent-soft);
 }
 
 .license-row button {
-  padding: 8px 12px;
+  padding: 9px 14px;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   background: var(--accent);
-  color: #0f1114;
+  color: #f4f8f8;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   font-family: inherit;
   white-space: nowrap;
+  transition: background 0.15s ease;
 }
 
 .license-row button:hover {
-  filter: brightness(0.95);
+  background: var(--accent-soft);
 }
 
 .license-msg {
@@ -233,16 +245,18 @@ body {
 }
 
 .license-msg.warn {
-  color: #d4a15c;
+  color: #9a6b3c;
 }
 
 .license-msg.ok {
-  color: #6fcf97;
+  color: var(--accent);
 }
 
 .popup-links {
-  margin-top: 4px;
+  margin-top: 6px;
   padding-top: 2px;
+  display: flex;
+  gap: 14px;
 }
 
 .popup-links a {
@@ -255,14 +269,4 @@ body {
   color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 2px;
-}
-
-.footer {
-  margin-top: 14px;
-}
-
-.footer p {
-  font-size: 11px;
-  color: var(--muted);
-  line-height: 1.45;
 }
