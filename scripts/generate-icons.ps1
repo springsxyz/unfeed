@@ -1,4 +1,4 @@
-# Generate UnFeed Signal Cut toolbar/store icons
+# Generate UnFeed toolbar/store icons — crossed feed (card stack + slash)
 Add-Type -AssemblyName System.Drawing
 
 $base = Join-Path (Split-Path $PSScriptRoot -Parent) "icons"
@@ -26,33 +26,41 @@ function New-Icon([int]$size, [string]$path) {
   $pathRounded.CloseFigure()
   $g.FillPath($bg, $pathRounded)
 
-  # Four signal bars (ascending), then a slash cut
+  # Stacked feed cards: avatar circle + text lines per row
   $inkBrush = New-Object System.Drawing.SolidBrush $ink
-  $padX = $size * 0.22
-  $padBottom = $size * 0.22
-  $barGap = $size * 0.06
-  $barW = ($size - 2 * $padX - 3 * $barGap) / 4
-  $maxH = $size * 0.52
-  $heights = @(0.35, 0.55, 0.75, 1.0)
+  $pad = $size * 0.2
+  $rowH = ($size - 2 * $pad) / 3.15
+  $gap = $rowH * 0.18
 
-  for ($i = 0; $i -lt 4; $i++) {
-    $h = $maxH * $heights[$i]
-    $x = $padX + $i * ($barW + $barGap)
-    $y = $size - $padBottom - $h
-    $g.FillRectangle($inkBrush, [float]$x, [float]$y, [float]$barW, [float]$h)
+  for ($i = 0; $i -lt 3; $i++) {
+    $y = $pad + $i * ($rowH + $gap)
+    $avatar = [Math]::Max(2, $rowH * 0.55)
+    $cx = $pad + $avatar * 0.5
+    $cy = $y + $rowH * 0.45
+    $g.FillEllipse($inkBrush, [float]($cx - $avatar / 2), [float]($cy - $avatar / 2), [float]$avatar, [float]$avatar)
+
+    $lineH = [Math]::Max(1.5, $size * 0.055)
+    $lineX = $pad + $avatar + $size * 0.06
+    $lineW = $size - $lineX - $pad
+    $g.FillRectangle($inkBrush, [float]$lineX, [float]($y + $rowH * 0.18), [float]$lineW, [float]$lineH)
+    $g.FillRectangle($inkBrush, [float]$lineX, [float]($y + $rowH * 0.52), [float]($lineW * 0.62), [float]$lineH)
   }
 
-  $penW = [Math]::Max(1.5, $size * 0.1)
+  # Diagonal slash through the feed
+  $penW = [Math]::Max(1.8, $size * 0.11)
   $pen = New-Object System.Drawing.Pen $ink, ([float]$penW)
   $pen.StartCap = [System.Drawing.Drawing2D.LineCap]::Round
   $pen.EndCap = [System.Drawing.Drawing2D.LineCap]::Round
-  $g.DrawLine(
-    $pen,
-    [float]($size * 0.18),
-    [float]($size * 0.78),
-    [float]($size * 0.82),
-    [float]($size * 0.22)
-  )
+  # White understroke so slash reads on top of dark bars
+  $under = New-Object System.Drawing.Pen $lime, ([float]($penW * 1.55))
+  $under.StartCap = [System.Drawing.Drawing2D.LineCap]::Round
+  $under.EndCap = [System.Drawing.Drawing2D.LineCap]::Round
+  $x1 = [float]($size * 0.16)
+  $y1 = [float]($size * 0.82)
+  $x2 = [float]($size * 0.84)
+  $y2 = [float]($size * 0.18)
+  $g.DrawLine($under, $x1, $y1, $x2, $y2)
+  $g.DrawLine($pen, $x1, $y1, $x2, $y2)
 
   $bmp.Save($path, [System.Drawing.Imaging.ImageFormat]::Png)
   $g.Dispose()
@@ -60,11 +68,12 @@ function New-Icon([int]$size, [string]$path) {
   $bg.Dispose()
   $inkBrush.Dispose()
   $pen.Dispose()
+  $under.Dispose()
   $pathRounded.Dispose()
 }
 
 New-Icon 16 (Join-Path $base "icon16.png")
 New-Icon 48 (Join-Path $base "icon48.png")
 New-Icon 128 (Join-Path $base "icon128.png")
-Write-Output "Created Signal Cut icons in $base"
+Write-Output "Created crossed-feed icons in $base"
 Get-ChildItem $base | ForEach-Object { "$($_.Name) $($_.Length)" }

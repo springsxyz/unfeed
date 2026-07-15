@@ -22,7 +22,7 @@ const SITES = UNFEED_SITES.map((id) => ({
 const FREE_LIMIT = UNFEED_FREE_LIMIT;
 const DEV_PRO_CODE = "UNFEED-PRO";
 
-/** Compact brand marks (inline SVG) for Signal Cut list */
+/** Compact brand marks (inline SVG) for site list */
 const SITE_ICONS = {
   blueskyEnabled:
     '<svg class="site-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#1185fe" d="M12 11.5c-1.7-3.2-6.3-9.1-8.4-8.4C1.4 3.7 2 9.5 5.1 14c1.7 2.5 3.6 3.4 4.5 3.2.4-.1.8-.4 1.1-.8.3.4.7.7 1.1.8.9.2 2.8-.7 4.5-3.2 3.1-4.5 3.7-10.3 1.5-11-2.1-.7-6.7 5.2-8.4 8.5z"/></svg>',
@@ -47,9 +47,6 @@ const SITE_ICONS = {
   youtubeEnabled:
     '<svg class="site-icon" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="6" fill="#FF0000"/><path fill="#fff" d="M10 8.5v7l6-3.5-6-3.5z"/></svg>',
 };
-
-const BELL_OFF_ICON =
-  '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 22a2.2 2.2 0 0 0 2.2-2.2h-4.4A2.2 2.2 0 0 0 12 22zm7.2-5.5-1.5-1.5V10a5.7 5.7 0 0 0-4.4-5.5V3.8a1.3 1.3 0 1 0-2.6 0v.7c-.3.1-.6.2-.9.3L19.2 16.5zM4.3 3.7 2.9 5.1l3.4 3.4c-.2.5-.3 1-.3 1.5v5l-1.5 1.5v1.1h12.6l2.1 2.1 1.4-1.4L4.3 3.7z"/></svg>';
 
 const defaults = unfeedDefaultState();
 
@@ -129,11 +126,11 @@ function rowHtml(site, enabled) {
 
 function renderPlan(state) {
   if (state.proUnlocked) {
-    planEl.innerHTML = `<span class="plan-badge plan-pro">${BELL_OFF_ICON}Pro</span>`;
+    planEl.innerHTML = `<span class="plan-badge plan-pro">Pro</span>`;
     upgradeEl.hidden = true;
     return;
   }
-  planEl.innerHTML = `<span class="plan-badge">${BELL_OFF_ICON}Free</span>`;
+  planEl.innerHTML = `<span class="plan-badge">Free</span>`;
   upgradeEl.hidden = false;
 }
 
