@@ -1,0 +1,31 @@
+/* Pinterest — hide feed visually; keep masonry mounted so disable needs no reload */
+
+html.unfeed-pin-on[data-unfeed-surface="home"],
+html.unfeed-pin-on[data-unfeed-surface="home"] body {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  height: 100% !important;
+}
+
+html.unfeed-pin-on[data-unfeed-surface="home"] [data-test-id="homefeed-feed"],
+html.unfeed-pin-on[data-unfeed-surface="home"] [data-test-id="boardless-homefeed"],
+html.unfeed-pin-on[data-unfeed-surface="home"] [data-test-id="virtuoso-item-list"],
+html.unfeed-pin-on[data-unfeed-surface="home"] [data-test-id="today-tab-art-desktop"],
+html.unfeed-pin-on[data-unfeed-surface="home"] [data-test-id="ideasHubFeed"],
+html.unfeed-pin-on[data-unfeed-surface="home"] [data-test-id="discovery-page"],
+html.unfeed-pin-on[data-unfeed-surface="home"] div[data-test-id="pinWrapper"] {
+  position: fixed !important;
+  inset: 80px 0 0 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
+  max-height: 100vh !important;
+  z-index: 0 !important;
+}
+
+/* Stop empty doomscroll while blocked */
+html.unfeed-pin-on[data-unfeed-surface="home"] [role="main"],
+html.unfeed-pin-on[data-unfeed-surface="home"] main {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}

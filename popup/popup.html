@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UnFeed</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="brand">UnFeed</div>
+      <p class="tagline">Remove the feed. Keep the app.</p>
+      <div class="plan" id="plan"></div>
+    </header>
+
+    <main class="main" id="site-list">
+      <!-- rows injected by popup.js -->
+    </main>
+
+    <section class="upgrade" id="upgrade" hidden>
+      <p class="upgrade-title">Unlock all sites</p>
+      <p class="upgrade-copy">
+        Free includes any 3. Pro unlocks every network — one-time purchase.
+      </p>
+      <div class="license-row">
+        <input
+          id="license-input"
+          type="text"
+          placeholder="License key"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button type="button" id="license-btn">Unlock</button>
+      </div>
+      <p class="license-msg" id="license-msg"></p>
+    </section>
+
+    <div class="end-space" aria-hidden="true"></div>
+
+    <footer class="popup-links">
+      <a href="#" id="privacy-link">Privacy</a>
+    </footer>
+
+    <script src="../shared/config.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

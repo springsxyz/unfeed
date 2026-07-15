@@ -1,0 +1,29 @@
+/* TikTok — backup rules; primary hide is JS-injected (see content/tiktok.js) */
+
+html.unfeed-tt-on[data-unfeed-surface="feed"] #main-content-homepage,
+html.unfeed-tt-on[data-unfeed-surface="feed"] #main-content-foryou,
+html.unfeed-tt-on[data-unfeed-surface="feed"] #main-content-following,
+html.unfeed-tt-on[data-unfeed-surface="feed"] #main-content-explore,
+html.unfeed-tt-on[data-unfeed-surface="feed"] #column-list-container,
+html.unfeed-tt-on[data-unfeed-surface="feed"] [data-e2e="recommend-list-item-container"],
+html.unfeed-tt-on[data-unfeed-surface="feed"] article[data-e2e="recommend-list-item-container"],
+html.unfeed-tt-on[data-unfeed-surface="feed"] [data-e2e="recommend-list-item"],
+html.unfeed-tt-on[data-unfeed-surface="feed"] [data-e2e="explore-item"] {
+  display: none !important;
+}
+
+html.unfeed-tt-on[data-unfeed-surface="feed"] video {
+  display: none !important;
+}
+
+html.unfeed-tt-on[data-unfeed-surface="feed"] button[data-e2e="arrow-left"],
+html.unfeed-tt-on[data-unfeed-surface="feed"] button[data-e2e="arrow-right"],
+html.unfeed-tt-on[data-unfeed-surface="feed"] button[aria-label="Go to previous video"],
+html.unfeed-tt-on[data-unfeed-surface="feed"] button[aria-label="Go to next video"],
+html.unfeed-tt-on[data-unfeed-surface="feed"] [class*="StyledVideoSwitch"],
+html.unfeed-tt-on[data-unfeed-surface="feed"] [class*="DivVideoSwitch"],
+html.unfeed-tt-on[data-unfeed-surface="feed"] [class*="VideoSwitch"],
+html.unfeed-tt-on[data-unfeed-surface="feed"] [class*="DivBrowse"],
+html.unfeed-tt-on[data-unfeed-surface="feed"] [class*="DivArrow"] {
+  display: none !important;
+}

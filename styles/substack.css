@@ -1,0 +1,49 @@
+/* Substack — remove Notes / home discovery feed; keep Inbox, posts, publish */
+
+html.unfeed-ss-on[data-unfeed-surface="feed"],
+html.unfeed-ss-on[data-unfeed-surface="feed"] body {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  height: 100% !important;
+}
+
+/* Notes feed (stable aria labels used by Substack + uBlock recipes) */
+html.unfeed-ss-on[data-unfeed-surface="feed"] [aria-label="Notes feed"],
+html.unfeed-ss-on[data-unfeed-surface="feed"] [aria-label="Home feed"],
+html.unfeed-ss-on[data-unfeed-surface="feed"] [aria-label="Feed"],
+html.unfeed-ss-on[data-unfeed-surface="feed"] [aria-label="Activity"] {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  max-height: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Notes composer on the feed (“What’s on your mind?”) — part of the hook surface */
+html.unfeed-ss-on[data-unfeed-surface="feed"] [class*="inlineComposer"],
+html.unfeed-ss-on[data-unfeed-surface="feed"] [class*="InlineComposer"],
+html.unfeed-ss-on[data-unfeed-surface="feed"] form[class*="composer"] {
+  display: none !important;
+}
+
+/* Common feed column wrappers on substack.com home / notes */
+html.unfeed-ss-on[data-unfeed-surface="feed"] main [class*="feed"],
+html.unfeed-ss-on[data-unfeed-surface="feed"] main [class*="Feed"],
+html.unfeed-ss-on[data-unfeed-surface="feed"] [data-testid="notes-feed"],
+html.unfeed-ss-on[data-unfeed-surface="feed"] [data-testid="home-feed"] {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Don’t blank the whole main if it also holds chrome — prefer feed nodes above.
+   Fallback: collapse scrollable feed regions inside the center column. */
+html.unfeed-ss-on[data-unfeed-surface="feed"] [role="feed"] {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+}

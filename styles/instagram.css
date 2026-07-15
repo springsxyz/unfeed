@@ -1,0 +1,53 @@
+/* Instagram — blank discovery surfaces and stop infinite-scroll fetching */
+
+html.unfeed-ig-on[data-unfeed-surface="home"],
+html.unfeed-ig-on[data-unfeed-surface="home"] body,
+html.unfeed-ig-on[data-unfeed-surface="explore"],
+html.unfeed-ig-on[data-unfeed-surface="explore"] body,
+html.unfeed-ig-on[data-unfeed-surface="reels"],
+html.unfeed-ig-on[data-unfeed-surface="reels"] body {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  height: 100% !important;
+}
+
+/* Collapse the main column so there’s nothing to scroll / lazy-load */
+html.unfeed-ig-on[data-unfeed-surface="home"] main[role="main"],
+html.unfeed-ig-on[data-unfeed-surface="explore"] main[role="main"],
+html.unfeed-ig-on[data-unfeed-surface="reels"] main[role="main"] {
+  overflow: hidden !important;
+  max-height: 0 !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html.unfeed-ig-on[data-unfeed-surface="home"] aside {
+  display: none !important;
+}
+
+/* Common IG scroll parents under the app shell */
+html.unfeed-ig-on[data-unfeed-surface="home"] #scrollview,
+html.unfeed-ig-on[data-unfeed-surface="explore"] #scrollview,
+html.unfeed-ig-on[data-unfeed-surface="reels"] #scrollview,
+html.unfeed-ig-on[data-unfeed-surface="home"] [style*="overflow: auto"],
+html.unfeed-ig-on[data-unfeed-surface="home"] [style*="overflow:auto"],
+html.unfeed-ig-on[data-unfeed-surface="home"] [style*="overflow-y: auto"],
+html.unfeed-ig-on[data-unfeed-surface="home"] [style*="overflow-y:auto"],
+html.unfeed-scroll-lock,
+html.unfeed-scroll-lock body {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}
+
+/* Spinners / “loading” while feed is blocked */
+html.unfeed-ig-on[data-unfeed-surface="home"] [role="progressbar"],
+html.unfeed-ig-on[data-unfeed-surface="home"] svg[aria-label="Loading..."],
+html.unfeed-ig-on[data-unfeed-surface="home"] [aria-label="Loading..."],
+html.unfeed-ig-on[data-unfeed-surface="explore"] [role="progressbar"],
+html.unfeed-ig-on[data-unfeed-surface="reels"] [role="progressbar"] {
+  display: none !important;
+}

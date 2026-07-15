@@ -1,0 +1,11 @@
+/* Threads — backup; primary hide is JS-injected */
+
+html.unfeed-th-on[data-unfeed-surface="feed"] [role="main"],
+html.unfeed-th-on[data-unfeed-surface="feed"] main,
+html.unfeed-th-on[data-unfeed-surface="explore"] [role="main"],
+html.unfeed-th-on[data-unfeed-surface="explore"] main,
+html.unfeed-th-on[data-unfeed-surface="feed"] [role="feed"],
+html.unfeed-th-on[data-unfeed-surface="feed"] [role="article"],
+html.unfeed-th-on[data-unfeed-surface="feed"] [role="region"] {
+  display: none !important;
+}

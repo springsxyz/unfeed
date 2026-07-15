@@ -1,0 +1,85 @@
+/* YouTube — hide visually, keep grids mounted so toggle-off needs no reload */
+
+/*
+  Home / trending: opacity + fixed inset keeps the browse column in the
+  viewport for IntersectionObserver, without letting users scroll an
+  invisible feed. Do NOT use display:none on these trees.
+*/
+html.unfeed-yt-on[data-unfeed-surface="home"] ytd-browse[page-subtype="home"] #primary,
+html.unfeed-yt-on[data-unfeed-surface="trending"] ytd-browse #primary {
+  position: fixed !important;
+  inset: 56px 0 0 var(--ytd-margin-sidebar, 0) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
+  z-index: 0 !important;
+  max-height: 100vh !important;
+}
+
+html.unfeed-yt-on[data-unfeed-surface="home"] ytd-browse[page-subtype="home"],
+html.unfeed-yt-on[data-unfeed-surface="trending"] ytd-browse {
+  overflow: hidden !important;
+}
+
+html.unfeed-yt-on[data-unfeed-surface="home"] ytd-browse[page-subtype="home"] ytd-feed-filter-chip-bar-renderer,
+html.unfeed-yt-on[data-unfeed-surface="trending"] ytd-browse ytd-feed-filter-chip-bar-renderer {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Shorts shelves — fine to fully remove from layout */
+html.unfeed-yt-on ytd-rich-shelf-renderer[is-shorts],
+html.unfeed-yt-on ytd-reel-shelf-renderer,
+html.unfeed-yt-on ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts]),
+html.unfeed-yt-on ytm-shorts-lockup-view-model,
+html.unfeed-yt-on ytd-rich-item-renderer:has(a[href^="/shorts/"]) {
+  display: none !important;
+}
+
+html.unfeed-yt-on ytd-guide-entry-renderer:has(a[title="Shorts"]),
+html.unfeed-yt-on ytd-mini-guide-entry-renderer:has(a[title="Shorts"]),
+html.unfeed-yt-on ytd-guide-entry-renderer a[href="/shorts"],
+html.unfeed-yt-on ytd-mini-guide-entry-renderer a[href="/shorts"],
+html.unfeed-yt-on a#endpoint[title="Shorts"],
+html.unfeed-yt-on ytd-guide-entry-renderer:has(a[title="Trending"]),
+html.unfeed-yt-on ytd-guide-entry-renderer:has(a[href="/feed/trending"]),
+html.unfeed-yt-on ytd-mini-guide-entry-renderer:has(a[title="Trending"]) {
+  display: none !important;
+}
+
+html.unfeed-yt-on[data-unfeed-surface="shorts-feed"] ytd-shorts,
+html.unfeed-yt-on[data-unfeed-surface="shorts-feed"] #page-manager {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  max-height: 100vh !important;
+  overflow: hidden !important;
+}
+
+/* Watch: keep related mounted */
+html.unfeed-yt-on[data-unfeed-surface="watch"] #related,
+html.unfeed-yt-on[data-unfeed-surface="watch"] ytd-watch-next-secondary-results-renderer {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+html.unfeed-yt-on[data-unfeed-surface="watch"] #secondary-inner ytd-compact-video-renderer,
+html.unfeed-yt-on[data-unfeed-surface="watch"] #secondary-inner ytd-compact-playlist-renderer,
+html.unfeed-yt-on[data-unfeed-surface="watch"] #secondary-inner ytd-compact-radio-renderer,
+html.unfeed-yt-on[data-unfeed-surface="watch"] #secondary-inner ytd-compact-movie-renderer,
+html.unfeed-yt-on[data-unfeed-surface="watch"] #secondary-inner ytm-shorts-lockup-view-model-v2 {
+  display: none !important;
+}
+
+html.unfeed-yt-on .ytp-ce-element,
+html.unfeed-yt-on .ytp-endscreen-content,
+html.unfeed-yt-on .ytp-pause-overlay,
+html.unfeed-yt-on .ytp-suggestion-set {
+  display: none !important;
+}

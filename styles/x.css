@@ -1,0 +1,22 @@
+/* X / Twitter */
+
+html.unfeed-x-on[data-unfeed-surface="home"] [data-testid="primaryColumn"] [aria-label="Home timeline"],
+html.unfeed-x-on[data-unfeed-surface="home"] [data-testid="primaryColumn"] [aria-label="Timeline: Your Home Timeline"],
+html.unfeed-x-on[data-unfeed-surface="home"] [data-testid="primaryColumn"] [aria-label="Timeline de inicio"],
+html.unfeed-x-on[data-unfeed-surface="home"] [data-testid="primaryColumn"] [aria-label="Cronología de inicio"],
+html.unfeed-x-on[data-unfeed-surface="home"] [data-testid="primaryColumn"] [data-testid="cellInnerDiv"] {
+  display: none !important;
+}
+
+html.unfeed-x-on[data-unfeed-surface="explore"] [data-testid="primaryColumn"] section,
+html.unfeed-x-on[data-unfeed-surface="explore"] [data-testid="cellInnerDiv"] {
+  display: none !important;
+}
+
+/* Trends / who to follow while UnFeed is on */
+html.unfeed-x-on [data-testid="sidebarColumn"] section,
+html.unfeed-x-on [data-testid="trend"],
+html.unfeed-x-on aside[aria-label="Trending"],
+html.unfeed-x-on aside[aria-label="Tendencias"] {
+  display: none !important;
+}

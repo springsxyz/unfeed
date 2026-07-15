@@ -1,0 +1,15 @@
+/* Reddit — only blank home/popular/all, never community or post pages */
+
+html.unfeed-rd-on[data-unfeed-surface="home"] shreddit-feed,
+html.unfeed-rd-on[data-unfeed-surface="home"] faceplate-tracker[noun="post"],
+html.unfeed-rd-on[data-unfeed-surface="home"] article[data-testid="post-container"],
+html.unfeed-rd-on[data-unfeed-surface="home"] [data-testid="post-container"],
+html.unfeed-rd-on[data-unfeed-surface="home"] .Post,
+html.unfeed-rd-on[data-unfeed-surface="home"] .promotedlink {
+  display: none !important;
+}
+
+/* old.reddit.com home */
+html.unfeed-rd-on[data-unfeed-surface="home"] #siteTable {
+  display: none !important;
+}

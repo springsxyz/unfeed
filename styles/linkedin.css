@@ -1,0 +1,62 @@
+/* LinkedIn — hide feed + freeze infinite scroll / loaders */
+
+html.unfeed-li-on[data-unfeed-surface="feed"],
+html.unfeed-li-on[data-unfeed-surface="feed"] body,
+html.unfeed-li-on[data-unfeed-surface="network"],
+html.unfeed-li-on[data-unfeed-surface="network"] body,
+html.unfeed-scroll-lock,
+html.unfeed-scroll-lock body {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  height: 100% !important;
+}
+
+/* Kill the whole finite-scroll region so IntersectionObserver can’t fire */
+html.unfeed-li-on[data-unfeed-surface="feed"] main[aria-label="Main Feed"] .scaffold-finite-scroll,
+html.unfeed-li-on[data-unfeed-surface="feed"] main.scaffold-layout__main .scaffold-finite-scroll,
+html.unfeed-li-on[data-unfeed-surface="feed"] .scaffold-finite-scroll,
+html.unfeed-li-on[data-unfeed-surface="feed"] .scaffold-finite-scroll__content,
+html.unfeed-li-on[data-unfeed-surface="feed"] [data-testid="mainFeed"] {
+  display: none !important;
+}
+
+/* Individual posts (new LI markup) */
+html.unfeed-li-on[data-unfeed-surface="feed"] [data-view-name="feed-full-update"],
+html.unfeed-li-on[data-unfeed-surface="feed"] [data-view-name="feed-mini-update"],
+html.unfeed-li-on[data-unfeed-surface="feed"] [data-view-name="feed-detail-update"],
+html.unfeed-li-on[data-unfeed-surface="feed"] div[componentkey*="FeedType_MAIN_FEED"],
+html.unfeed-li-on[data-unfeed-surface="feed"] div[componentkey*="FeedType_FOLLOWING"],
+html.unfeed-li-on[data-unfeed-surface="feed"] [data-chameleon-result-urn*="update"],
+html.unfeed-li-on[data-unfeed-surface="feed"] div[data-id*="urn:li:activity"],
+html.unfeed-li-on[data-unfeed-surface="feed"] div[data-urn*="urn:li:activity"],
+html.unfeed-li-on[data-unfeed-surface="feed"] .feed-shared-update-v2,
+html.unfeed-li-on[data-unfeed-surface="feed"] .occludable-update {
+  display: none !important;
+}
+
+/* Loading spinners / “loading more” under the feed */
+html.unfeed-li-on[data-unfeed-surface="feed"] .artdeco-loader,
+html.unfeed-li-on[data-unfeed-surface="feed"] .artdeco-spinner,
+html.unfeed-li-on[data-unfeed-surface="feed"] [class*="loader"],
+html.unfeed-li-on[data-unfeed-surface="feed"] [class*="Loader"],
+html.unfeed-li-on[data-unfeed-surface="feed"] [class*="lazy-load"],
+html.unfeed-li-on[data-unfeed-surface="feed"] .scaffold-finite-scroll__loader,
+html.unfeed-li-on[data-unfeed-surface="feed"] progressive-loader {
+  display: none !important;
+}
+
+/* Discovery side panels */
+html.unfeed-li-on[data-unfeed-surface="feed"] aside.scaffold-layout__aside,
+html.unfeed-li-on[data-unfeed-surface="feed"] .feed-follows-module,
+html.unfeed-li-on[data-unfeed-surface="feed"] .discovery-rail,
+html.unfeed-li-on[data-unfeed-surface="feed"] .news-module {
+  display: none !important;
+}
+
+/* My Network suggestion feeds */
+html.unfeed-li-on[data-unfeed-surface="network"] main .scaffold-finite-scroll,
+html.unfeed-li-on[data-unfeed-surface="network"] [data-view-name="coyote-discover-hub"],
+html.unfeed-li-on[data-unfeed-surface="network"] .mn-community-summary,
+html.unfeed-li-on[data-unfeed-surface="network"] .discover-entity-type-card {
+  display: none !important;
+}

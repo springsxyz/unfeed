@@ -1,0 +1,9 @@
+/* Bluesky — backup; primary hide is JS-injected */
+
+html.unfeed-bsky-on[data-unfeed-surface="feed"] [data-testid="postsFeed-flatlist"],
+html.unfeed-bsky-on[data-unfeed-surface="feed"] [data-testid="followingFeed-flatlist"],
+html.unfeed-bsky-on[data-unfeed-surface="feed"] [data-testid^="feedItem-"],
+html.unfeed-bsky-on[data-unfeed-surface="feed"] [role="feed"],
+html.unfeed-bsky-on[data-unfeed-surface="discover"] [data-testid^="feedItem-"] {
+  display: none !important;
+}

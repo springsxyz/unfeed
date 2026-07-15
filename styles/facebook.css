@@ -1,0 +1,13 @@
+/* Facebook — backup rules; primary hide is JS-injected (see content/facebook.js) */
+
+html.unfeed-fb-on div[role="feed"] {
+  display: none !important;
+}
+
+html.unfeed-fb-on[data-unfeed-surface="home"] [role="navigation"] ~ [role="main"] {
+  display: none !important;
+}
+
+html.unfeed-fb-on[data-unfeed-surface="home"] [role="main"] [role="article"] {
+  display: none !important;
+}
