@@ -93,6 +93,10 @@ section code {
   color: var(--text);
 }
 
+section a {
+  color: var(--accent);
+}
+
 .cta-row {
   display: flex;
   flex-wrap: wrap;
