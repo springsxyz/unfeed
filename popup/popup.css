@@ -98,36 +98,45 @@ body {
 }
 
 .bulk {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 10px 0 4px;
+  margin: 12px 0 8px;
 }
 
 .bulk[hidden] {
   display: none !important;
 }
 
+.bulk-seg {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--text);
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.45);
+}
+
 .bulk-btn {
   border: none;
-  background: none;
-  padding: 0;
+  background: transparent;
+  padding: 8px 10px;
   font: inherit;
   font-size: 11px;
   font-weight: 600;
-  color: var(--muted);
+  color: var(--text);
   cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  line-height: 1.2;
+}
+
+.bulk-btn + .bulk-btn {
+  border-left: 1px solid var(--text);
 }
 
 .bulk-btn:hover {
-  color: var(--text);
+  background: var(--accent);
 }
 
-.bulk .dot {
-  color: var(--muted);
-  font-size: 11px;
+.bulk-btn:active {
+  background: var(--text);
+  color: var(--accent);
 }
 
 .main {

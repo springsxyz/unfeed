@@ -23,9 +23,10 @@
 
     <section class="signal-block" aria-label="Sites">
       <div class="bulk" id="bulk" hidden>
-        <button type="button" id="enable-all" class="bulk-btn">Enable all</button>
-        <span class="dot" aria-hidden="true">·</span>
-        <button type="button" id="disable-all" class="bulk-btn">Disable all</button>
+        <div class="bulk-seg" role="group" aria-label="Bulk site actions">
+          <button type="button" id="enable-all" class="bulk-btn">Enable all</button>
+          <button type="button" id="disable-all" class="bulk-btn">Disable all</button>
+        </div>
       </div>
       <main class="main" id="site-list">
         <!-- rows injected by popup.js -->
