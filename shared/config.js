@@ -21,11 +21,12 @@ const UNFEED_DEFAULT_ENABLED = [
   "xEnabled",
 ];
 
-/** Polar Pro — fill after creating the product (see docs/POLAR.md) */
+/** Polar Pro — see docs/POLAR.md */
 const UNFEED_PRO_PRICE_LABEL = "$9";
-const UNFEED_CHECKOUT_URL = ""; // e.g. https://buy.polar.sh/...
-const UNFEED_POLAR_ORG_ID = ""; // Organization UUID from Polar settings
-const UNFEED_POLAR_BENEFIT_ID = ""; // Optional license benefit UUID
+const UNFEED_CHECKOUT_URL =
+  "https://buy.polar.sh/polar_cl_wgxb6PrGXuI6mnXik4eZ4BauDYB5GNe5DuXgI398KiB";
+const UNFEED_POLAR_ORG_ID = "fa6be024-1152-4b4a-b9b0-8cb95252b415";
+const UNFEED_POLAR_BENEFIT_ID = "4fa79cee-44c2-4dce-a24f-4cb31216700a";
 const UNFEED_POLAR_VALIDATE_URL =
   "https://api.polar.sh/v1/customer-portal/license-keys/validate";
 
