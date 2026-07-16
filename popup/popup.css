@@ -35,7 +35,9 @@ body {
 }
 
 .header {
-  margin-bottom: 16px;
+  margin-bottom: 0;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
 }
 
 .brand-row {
@@ -91,6 +93,7 @@ body {
 }
 
 .signal-block {
+  margin-top: 4px;
   margin-bottom: 4px;
 }
 

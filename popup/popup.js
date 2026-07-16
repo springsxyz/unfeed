@@ -59,6 +59,8 @@ const licenseMsg = document.getElementById("license-msg");
 const buyBtn = document.getElementById("buy-btn");
 const proPriceEl = document.getElementById("pro-price");
 
+let rowLimitTimer = null;
+
 if (proPriceEl && typeof UNFEED_PRO_PRICE_LABEL === "string") {
   proPriceEl.textContent = UNFEED_PRO_PRICE_LABEL;
 }
@@ -168,6 +170,10 @@ async function broadcastMany(state) {
 
 function clearRowLimits() {
   list.querySelectorAll(".row-limit").forEach((el) => el.remove());
+  if (rowLimitTimer) {
+    clearTimeout(rowLimitTimer);
+    rowLimitTimer = null;
+  }
 }
 
 function showRowLimit(toggle) {
@@ -178,6 +184,10 @@ function showRowLimit(toggle) {
   msg.className = "row-limit";
   msg.textContent = `Free includes ${FREE_LIMIT} sites. Turn one off, or unlock Pro.`;
   row.insertAdjacentElement("afterend", msg);
+  rowLimitTimer = setTimeout(() => {
+    msg.remove();
+    rowLimitTimer = null;
+  }, 4000);
 }
 
 function wireToggles() {
