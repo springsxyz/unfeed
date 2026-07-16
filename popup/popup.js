@@ -166,6 +166,20 @@ async function broadcastMany(state) {
   }
 }
 
+function clearRowLimits() {
+  list.querySelectorAll(".row-limit").forEach((el) => el.remove());
+}
+
+function showRowLimit(toggle) {
+  clearRowLimits();
+  const row = toggle.closest(".row");
+  if (!row) return;
+  const msg = document.createElement("p");
+  msg.className = "row-limit";
+  msg.textContent = `Free includes ${FREE_LIMIT} sites. Turn one off, or unlock Pro.`;
+  row.insertAdjacentElement("afterend", msg);
+}
+
 function wireToggles() {
   list.querySelectorAll(".toggle").forEach((toggle) => {
     toggle.addEventListener("change", async () => {
@@ -177,13 +191,13 @@ function wireToggles() {
         const othersOn = countEnabled({ ...current, [key]: false });
         if (othersOn >= FREE_LIMIT) {
           toggle.checked = false;
-          licenseMsg.textContent = `Free includes ${FREE_LIMIT} sites. Turn one off, or unlock Pro.`;
-          licenseMsg.className = "license-msg warn";
+          showRowLimit(toggle);
           upgradeEl.hidden = false;
           return;
         }
       }
 
+      clearRowLimits();
       await chrome.storage.sync.set({ [key]: wantOn });
       const hint = list.querySelector(`[data-hint-for="${key}"]`);
       if (hint) {
