@@ -324,3 +324,8 @@ document.getElementById("privacy-link")?.addEventListener("click", (e) => {
   const url = chrome.runtime.getURL("privacy.html");
   chrome.tabs.create({ url });
 });
+
+document.getElementById("site-link")?.addEventListener("click", (e) => {
+  e.preventDefault();
+  chrome.tabs.create({ url: "https://unfeed.dev/" });
+});

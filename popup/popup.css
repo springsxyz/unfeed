@@ -290,9 +290,18 @@ body {
 }
 
 .popup-links {
-  margin-top: 10px;
+  margin-top: 12px;
   padding: 0 0 14px;
-  text-align: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.popup-links .dot {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1;
 }
 
 .popup-links a {
