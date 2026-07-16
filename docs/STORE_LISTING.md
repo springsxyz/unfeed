@@ -42,7 +42,7 @@ YouTube, Instagram, Facebook, X, Reddit, LinkedIn, TikTok, Pinterest, Substack, 
 
 FREE VS PRO
 • Free: enable any 3 sites
-• Pro: unlock all sites with a one-time purchase (coming soon / via license key)
+• Pro: unlock all sites with a one-time $9 purchase (Polar license key)
 
 PERMISSIONS
 UnFeed only asks for storage (to save your toggles) and access to the listed social sites so it can hide feeds there. Everything runs locally in your browser.

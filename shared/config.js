@@ -21,8 +21,16 @@ const UNFEED_DEFAULT_ENABLED = [
   "xEnabled",
 ];
 
+/** Polar Pro — fill after creating the product (see docs/POLAR.md) */
+const UNFEED_PRO_PRICE_LABEL = "$9";
+const UNFEED_CHECKOUT_URL = ""; // e.g. https://buy.polar.sh/...
+const UNFEED_POLAR_ORG_ID = ""; // Organization UUID from Polar settings
+const UNFEED_POLAR_BENEFIT_ID = ""; // Optional license benefit UUID
+const UNFEED_POLAR_VALIDATE_URL =
+  "https://api.polar.sh/v1/customer-portal/license-keys/validate";
+
 function unfeedDefaultState() {
-  const state = { proUnlocked: false };
+  const state = { proUnlocked: false, licenseKey: "" };
   for (const key of UNFEED_SITES) {
     state[key] = UNFEED_DEFAULT_ENABLED.includes(key);
   }
@@ -55,11 +63,21 @@ function unfeedClampFreeTier(state) {
   return { state: next, changed };
 }
 
+function unfeedCheckoutConfigured() {
+  return Boolean(UNFEED_CHECKOUT_URL && UNFEED_POLAR_ORG_ID);
+}
+
 // Export for service worker + popup (importScripts / window).
 if (typeof globalThis !== "undefined") {
   globalThis.UNFEED_SITES = UNFEED_SITES;
   globalThis.UNFEED_FREE_LIMIT = UNFEED_FREE_LIMIT;
   globalThis.UNFEED_DEFAULT_ENABLED = UNFEED_DEFAULT_ENABLED;
+  globalThis.UNFEED_PRO_PRICE_LABEL = UNFEED_PRO_PRICE_LABEL;
+  globalThis.UNFEED_CHECKOUT_URL = UNFEED_CHECKOUT_URL;
+  globalThis.UNFEED_POLAR_ORG_ID = UNFEED_POLAR_ORG_ID;
+  globalThis.UNFEED_POLAR_BENEFIT_ID = UNFEED_POLAR_BENEFIT_ID;
+  globalThis.UNFEED_POLAR_VALIDATE_URL = UNFEED_POLAR_VALIDATE_URL;
   globalThis.unfeedDefaultState = unfeedDefaultState;
   globalThis.unfeedClampFreeTier = unfeedClampFreeTier;
+  globalThis.unfeedCheckoutConfigured = unfeedCheckoutConfigured;
 }

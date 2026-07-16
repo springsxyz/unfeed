@@ -1,6 +1,6 @@
 # UnFeed — pre-publish QA
 
-Last updated: 2026-07-15 · Extension version target: **1.0.0**
+Last updated: 2026-07-15 · Extension version target: **1.0.1**
 
 ## How to smoke-test
 
@@ -30,16 +30,18 @@ Last updated: 2026-07-15 · Extension version target: **1.0.0**
 
 - [ ] Default: Instagram, YouTube, X ON  
 - [ ] Enabling a 4th site blocked until one is turned off  
-- [ ] Pro key unlocks all (dev: `UNFEED-PRO`)
+- [ ] Pro key unlocks all (dev: `UNFEED-PRO`; Polar key after checkout)
+- [ ] Buy Pro opens Polar checkout when configured
 
 ## Known limitations (OK for v1)
 
 - Social DOMs change often — expect occasional selector breakage  
 - TikTok/Threads “working” = empty main column, not a custom UI  
 - No Firefox/Safari yet  
-- Pro checkout not wired (license stub only)
+- Pro checkout via Polar (configure `shared/config.js` — see docs/POLAR.md)
+- Dev stub `UNFEED-PRO` remains for local QA
 
 ## Do not advertise until verified
 
-- Bluesky (confirm Once after reload of 1.0.0)  
+- Bluesky (confirm once after reload)  
 - Any site you personally don’t use logged-in

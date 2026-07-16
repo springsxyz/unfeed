@@ -1,13 +1,14 @@
 {
   "manifest_version": 3,
   "name": "UnFeed",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Remove the feed. Keep the app. Hide social feeds; keep search, messages, profiles, and links.",
   "permissions": ["storage"],
   "background": {
     "service_worker": "background.js"
   },
   "host_permissions": [
+    "https://api.polar.sh/*",
     "*://www.youtube.com/*",
     "*://youtube.com/*",
     "*://m.youtube.com/*",

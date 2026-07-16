@@ -13,6 +13,7 @@
    - **Privacy policy:** `https://unfeed.dev/privacy.html`  
    - **Support email:** an email you actually check (e.g. `support@unfeed.dev` via Namecheap/Cloudflare forward, or springsxyz.com@gmail.com)
 6. Optionally paste the live store URL into `docs/index.html` (`#cws-link`) after approval
+7. **Polar Pro:** follow [docs/POLAR.md](POLAR.md) — create $9 product + license keys, paste checkout URL + org ID into `shared/config.js`
 
 > Note: the in-extension **Privacy** link opens bundled `privacy.html`. The store still needs the **public** Pages URL.
 
@@ -20,7 +21,9 @@
 
 - [ ] Run through `docs/QA.md` on the sites you advertise  
 - [ ] Confirm Bluesky or remove it from the store description if untested  
-- [ ] `manifest.json` version is `1.0.0` (or higher)  
+- [ ] `manifest.json` version is `1.0.1` (or higher)  
+- [ ] Polar checkout + org ID filled in `shared/config.js` (or ship free-only)  
+- [ ] Popup Buy Pro + license unlock smoke-tested  
 - [ ] Popup + privacy link look good  
 
 ## 2. Build the store zip
@@ -31,7 +34,7 @@ From the `unfeed` folder, run:
 powershell -ExecutionPolicy Bypass -File .\scripts\pack-extension.ps1
 ```
 
-This creates `dist/unfeed-1.0.0.zip` with only extension files (no `docs/`, no `.git`).
+This creates `dist/unfeed-1.0.1.zip` with only extension files (no `docs/`, no `.git`, no `api/`).
 
 ## 3. Submit
 
@@ -46,8 +49,8 @@ This creates `dist/unfeed-1.0.0.zip` with only extension files (no `docs/`, no `
 ## 4. After approval
 
 - [ ] Paste the store URL into `docs/index.html` (`#cws-link`)
-- [ ] Share with a few friends; fix breakages fast (version `1.0.1`, etc.)
-- [ ] Wire real Pro checkout later (Lemon Squeezy / Polar)
+- [ ] Share with a few friends; fix breakages fast (version bumps as needed)
+- [ ] Confirm Polar Pro checkout + license unlock in production
 
 ## Updates later
 

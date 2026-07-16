@@ -1,4 +1,4 @@
-/* global UNFEED_SITES, UNFEED_FREE_LIMIT, UNFEED_DEFAULT_ENABLED, unfeedDefaultState, unfeedClampFreeTier */
+/* global UNFEED_SITES, UNFEED_FREE_LIMIT, UNFEED_DEFAULT_ENABLED, unfeedDefaultState, unfeedClampFreeTier, UNFEED_CHECKOUT_URL, UNFEED_POLAR_ORG_ID, UNFEED_POLAR_BENEFIT_ID, UNFEED_POLAR_VALIDATE_URL, UNFEED_PRO_PRICE_LABEL, unfeedCheckoutConfigured */
 
 const SITE_LABELS = {
   blueskyEnabled: "Bluesky",
@@ -56,6 +56,12 @@ const upgradeEl = document.getElementById("upgrade");
 const licenseInput = document.getElementById("license-input");
 const licenseBtn = document.getElementById("license-btn");
 const licenseMsg = document.getElementById("license-msg");
+const buyBtn = document.getElementById("buy-btn");
+const proPriceEl = document.getElementById("pro-price");
+
+if (proPriceEl && typeof UNFEED_PRO_PRICE_LABEL === "string") {
+  proPriceEl.textContent = UNFEED_PRO_PRICE_LABEL;
+}
 
 const URL_PATTERNS = {
   youtubeEnabled: ["*://www.youtube.com/*", "*://youtube.com/*", "*://m.youtube.com/*"],
@@ -191,8 +197,11 @@ function wireToggles() {
   });
 }
 
-async function unlockPro() {
-  await chrome.storage.sync.set({ proUnlocked: true });
+async function unlockPro(licenseKey) {
+  await chrome.storage.sync.set({
+    proUnlocked: true,
+    licenseKey: licenseKey || "",
+  });
   const state = await chrome.storage.sync.get(defaults);
   renderPlan({ ...state, proUnlocked: true });
   licenseMsg.textContent = "Pro unlocked. Enable every site you want.";
@@ -200,18 +209,87 @@ async function unlockPro() {
   licenseInput.value = "";
 }
 
+async function validatePolarLicense(key) {
+  if (!UNFEED_POLAR_ORG_ID) {
+    return { ok: false, reason: "not_configured" };
+  }
+
+  const body = {
+    key,
+    organization_id: UNFEED_POLAR_ORG_ID,
+  };
+  if (UNFEED_POLAR_BENEFIT_ID) {
+    body.benefit_id = UNFEED_POLAR_BENEFIT_ID;
+  }
+
+  try {
+    const res = await fetch(UNFEED_POLAR_VALIDATE_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    if (res.status === 404) {
+      return { ok: false, reason: "invalid" };
+    }
+    if (!res.ok) {
+      return { ok: false, reason: "network" };
+    }
+
+    const data = await res.json();
+    if (data?.status === "granted") {
+      return { ok: true };
+    }
+    return { ok: false, reason: "invalid" };
+  } catch {
+    return { ok: false, reason: "network" };
+  }
+}
+
+buyBtn?.addEventListener("click", () => {
+  if (!UNFEED_CHECKOUT_URL) {
+    licenseMsg.textContent =
+      "Checkout isn’t configured yet. See docs/POLAR.md.";
+    licenseMsg.className = "license-msg warn";
+    return;
+  }
+  chrome.tabs.create({ url: UNFEED_CHECKOUT_URL });
+});
+
 licenseBtn.addEventListener("click", async () => {
-  const code = licenseInput.value.trim().toUpperCase();
+  const code = licenseInput.value.trim();
   if (!code) {
     licenseMsg.textContent = "Enter a license key.";
     licenseMsg.className = "license-msg warn";
     return;
   }
-  if (code === DEV_PRO_CODE) {
-    await unlockPro();
+
+  if (code.toUpperCase() === DEV_PRO_CODE) {
+    await unlockPro(code);
     return;
   }
-  licenseMsg.textContent = "That key isn’t valid yet. Checkout coming later.";
+
+  licenseBtn.disabled = true;
+  licenseMsg.textContent = "Checking license…";
+  licenseMsg.className = "license-msg";
+
+  const result = await validatePolarLicense(code);
+  licenseBtn.disabled = false;
+
+  if (result.ok) {
+    await unlockPro(code);
+    return;
+  }
+
+  if (result.reason === "not_configured") {
+    licenseMsg.textContent =
+      "Polar isn’t configured yet. Set checkout + org ID (docs/POLAR.md), or use UNFEED-PRO for local QA.";
+  } else if (result.reason === "network") {
+    licenseMsg.textContent =
+      "Couldn’t reach Polar. Check your connection and try again.";
+  } else {
+    licenseMsg.textContent = "That license key isn’t valid.";
+  }
   licenseMsg.className = "license-msg warn";
 });
 
@@ -233,6 +311,10 @@ async function load() {
   list.innerHTML = SITES.map((site) => rowHtml(site, !!stored[site.id])).join("");
   renderPlan(stored);
   wireToggles();
+
+  if (buyBtn && !unfeedCheckoutConfigured()) {
+    buyBtn.title = "Add Polar checkout URL in shared/config.js";
+  }
 }
 
 load();
