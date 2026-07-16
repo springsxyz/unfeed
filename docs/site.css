@@ -40,41 +40,24 @@ body.home {
   overflow: hidden;
 }
 
-/* Softened paper grain + feed→silence cut */
+/* Soft paper field — uniform (no left cut / feed blur) */
 .atmosphere {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   background:
-    linear-gradient(
-      105deg,
-      rgba(10, 10, 10, 0.045) 0%,
-      rgba(10, 10, 10, 0.045) 34%,
-      transparent 34.2%,
-      transparent 100%
-    ),
-    radial-gradient(ellipse 80% 50% at 18% 42%, rgba(200, 224, 70, 0.14), transparent 55%),
-    linear-gradient(160deg, #f7f5f0 0%, var(--bg) 55%, var(--bg-deep) 100%);
-  animation: cut-shift 22s ease-in-out infinite alternate;
+    radial-gradient(ellipse 90% 60% at 50% 0%, rgba(200, 224, 70, 0.12), transparent 55%),
+    linear-gradient(180deg, #f7f5f0 0%, var(--bg) 45%, var(--bg-deep) 100%);
 }
 
 .atmosphere::after {
   content: "";
   position: absolute;
   inset: 0;
-  opacity: 0.28;
+  opacity: 0.22;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E");
   mix-blend-mode: multiply;
-}
-
-@keyframes cut-shift {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-1%);
-  }
 }
 
 @keyframes rise-in {
@@ -381,7 +364,6 @@ section a {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .atmosphere,
   .brand-stack,
   .headline,
   .lede,
