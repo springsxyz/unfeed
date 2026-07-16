@@ -1,0 +1,20 @@
+{
+  "name": "unfeed",
+  "version": "1.0.1",
+  "private": true,
+  "description": "Remove the feed. Keep the app.",
+  "scripts": {
+    "sync:icons": "node scripts/sync-site-icons.mjs",
+    "pack": "powershell -ExecutionPolicy Bypass -File scripts/pack-extension.ps1",
+    "postinstall": "npm run sync:icons"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/springsxyz/unfeed.git"
+  },
+  "license": "ISC",
+  "homepage": "https://unfeed.dev/",
+  "dependencies": {
+    "simple-icons": "16.26.0"
+  }
+}
