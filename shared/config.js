@@ -68,6 +68,12 @@ function unfeedCheckoutConfigured() {
   return Boolean(UNFEED_CHECKOUT_URL && UNFEED_POLAR_ORG_ID);
 }
 
+function unfeedIsDevUnlockCode(code) {
+  if (!code || typeof UNFEED_DEV_UNLOCK_CODES === "undefined") return false;
+  const normalized = String(code).trim().toUpperCase();
+  return UNFEED_DEV_UNLOCK_CODES.some((c) => String(c).trim().toUpperCase() === normalized);
+}
+
 // Export for service worker + popup (importScripts / window).
 if (typeof globalThis !== "undefined") {
   globalThis.UNFEED_SITES = UNFEED_SITES;
@@ -81,4 +87,5 @@ if (typeof globalThis !== "undefined") {
   globalThis.unfeedDefaultState = unfeedDefaultState;
   globalThis.unfeedClampFreeTier = unfeedClampFreeTier;
   globalThis.unfeedCheckoutConfigured = unfeedCheckoutConfigured;
+  globalThis.unfeedIsDevUnlockCode = unfeedIsDevUnlockCode;
 }

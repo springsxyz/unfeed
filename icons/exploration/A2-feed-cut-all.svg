@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <rect width="1024" height="1024" fill="#f4f2ec"/>
+  
+  <defs>
+    <mask id="cut">
+      <rect width="1024" height="1024" fill="white"/>
+      <polygon points="390,280 430,280 650,744 610,744" fill="black"/>
+    </mask>
+  </defs>
+  <g fill="#0a0a0a" mask="url(#cut)">
+    <rect x="240" y="320" width="544" height="56" rx="6"/>
+    <rect x="240" y="420" width="544" height="56" rx="6"/>
+    <rect x="240" y="520" width="544" height="56" rx="6"/>
+    <rect x="240" y="620" width="544" height="56" rx="6"/>
+  </g>
+</svg>

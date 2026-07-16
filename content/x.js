@@ -1,6 +1,7 @@
 (() => {
   function getSurface(pathname) {
     if (pathname === "/home" || pathname === "/") return "home";
+    if (pathname === "/following" || pathname.startsWith("/following")) return "home";
     if (pathname === "/explore" || pathname.startsWith("/explore")) return "explore";
     if (pathname.startsWith("/messages") || pathname === "/i/chat") return "messages";
     if (pathname.startsWith("/search")) return "search";

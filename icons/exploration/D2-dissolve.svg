@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <rect width="1024" height="1024" fill="#f4f2ec"/>
+  
+  <g fill="#0a0a0a">
+    <g opacity="1" fill="#0a0a0a">
+    <rect x="200" y="190" width="84" height="84" rx="15.12"/>
+    <rect x="316" y="200.08" width="520" height="26.88" rx="8"/>
+    <rect x="316" y="237.04000000000002" width="340" height="26.88" rx="8"/>
+  </g>
+    <!-- dashed row -->
+    <rect x="200" y="370" width="84" height="84" rx="14"/>
+    <rect x="316" y="384" width="88" height="26" rx="8"/>
+    <rect x="420" y="384" width="88" height="26" rx="8"/>
+    <rect x="524" y="384" width="88" height="26" rx="8"/>
+    <rect x="628" y="384" width="72" height="26" rx="8"/>
+    <rect x="316" y="426" width="72" height="26" rx="8"/>
+    <rect x="404" y="426" width="72" height="26" rx="8"/>
+    <rect x="492" y="426" width="56" height="26" rx="8"/>
+    <!-- dots -->
+    <rect x="200" y="540" width="84" height="84" rx="14" opacity="0.5"/>
+    <circle cx="360" cy="582" r="15"/>
+    <circle cx="420" cy="582" r="15"/>
+    <circle cx="480" cy="582" r="13"/>
+    <circle cx="532" cy="582" r="10"/>
+    <circle cx="574" cy="582" r="7"/>
+    <!-- almost gone -->
+    <circle cx="242" cy="730" r="16" opacity="0.22"/>
+    <circle cx="360" cy="730" r="9" opacity="0.16"/>
+    <circle cx="400" cy="730" r="6" opacity="0.1"/>
+  </g>
+</svg>

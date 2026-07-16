@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  
+  
+  <defs>
+    <clipPath id="card">
+      <rect x="74" y="74" width="876" height="876" rx="126"/>
+    </clipPath>
+    <mask id="keep">
+      <rect width="1024" height="1024" fill="black"/>
+      <polygon points="74,74 950,74 74,950" fill="white"/>
+    </mask>
+  </defs>
+
+  <rect x="56" y="56" width="912" height="912" rx="144"
+        fill="#f4f2ec" stroke="#0a0a0a" stroke-width="36"/>
+
+  <g clip-path="url(#card)" mask="url(#keep)">
+    <g opacity="1" fill="#0a0a0a">
+    <rect x="126" y="132" width="76" height="76" rx="13.68"/>
+    <rect x="234" y="140.68" width="500" height="24.32" rx="8"/>
+    <rect x="234" y="175" width="330" height="24.32" rx="8"/>
+  </g>
+    <g opacity="1" fill="#0a0a0a">
+    <rect x="126" y="292" width="76" height="76" rx="13.68"/>
+    <rect x="234" y="300.68" width="460" height="24.32" rx="8"/>
+    <rect x="234" y="335" width="290" height="24.32" rx="8"/>
+  </g>
+    <g opacity="1" fill="#0a0a0a">
+    <rect x="126" y="452" width="76" height="76" rx="13.68"/>
+    <rect x="234" y="460.68" width="420" height="24.32" rx="8"/>
+    <rect x="234" y="495" width="250" height="24.32" rx="8"/>
+  </g>
+    <g opacity="1" fill="#0a0a0a">
+    <rect x="126" y="612" width="76" height="76" rx="13.68"/>
+    <rect x="234" y="620.68" width="380" height="24.32" rx="8"/>
+    <rect x="234" y="655" width="210" height="24.32" rx="8"/>
+  </g>
+  </g>
+
+  <g clip-path="url(#card)">
+    <line x1="950" y1="74" x2="74" y2="950"
+          stroke="#c8e046" stroke-width="68" stroke-linecap="butt"/>
+  </g>
+
+</svg>

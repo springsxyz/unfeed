@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <rect width="1024" height="1024" fill="#f4f2ec"/>
+  
+  <g fill="#0a0a0a">
+    <!-- track -->
+    <rect x="454" y="220" width="116" height="520" rx="58"/>
+    <!-- inner well (paper) -->
+    <rect x="478" y="244" width="68" height="472" rx="34" fill="#f4f2ec"/>
+    <!-- thumb -->
+    <rect x="486" y="268" width="52" height="140" rx="26"/>
+    <!-- hard stop bar -->
+    <rect x="360" y="780" width="304" height="56" rx="12"/>
+  </g>
+</svg>

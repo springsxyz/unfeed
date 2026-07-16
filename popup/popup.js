@@ -1,4 +1,4 @@
-/* global UNFEED_SITES, UNFEED_FREE_LIMIT, UNFEED_DEFAULT_ENABLED, unfeedDefaultState, unfeedClampFreeTier, UNFEED_CHECKOUT_URL, UNFEED_POLAR_ORG_ID, UNFEED_POLAR_BENEFIT_ID, UNFEED_POLAR_VALIDATE_URL, UNFEED_PRO_PRICE_LABEL, unfeedCheckoutConfigured, SITE_ICONS */
+/* global UNFEED_SITES, UNFEED_FREE_LIMIT, UNFEED_DEFAULT_ENABLED, unfeedDefaultState, unfeedClampFreeTier, UNFEED_CHECKOUT_URL, UNFEED_POLAR_ORG_ID, UNFEED_POLAR_BENEFIT_ID, UNFEED_POLAR_VALIDATE_URL, UNFEED_PRO_PRICE_LABEL, unfeedCheckoutConfigured, unfeedIsDevUnlockCode, SITE_ICONS */
 
 const SITE_LABELS = {
   blueskyEnabled: "Bluesky",
@@ -20,7 +20,6 @@ const SITES = UNFEED_SITES.map((id) => ({
 }));
 
 const FREE_LIMIT = UNFEED_FREE_LIMIT;
-const DEV_PRO_CODE = "UNFEED-PRO";
 
 /* SITE_ICONS from popup/site-icons.js (generated via npm run sync:icons) */
 
@@ -286,7 +285,7 @@ licenseBtn.addEventListener("click", async () => {
     return;
   }
 
-  if (code.toUpperCase() === DEV_PRO_CODE) {
+  if (unfeedIsDevUnlockCode(code)) {
     await unlockPro(code);
     return;
   }
@@ -305,7 +304,7 @@ licenseBtn.addEventListener("click", async () => {
 
   if (result.reason === "not_configured") {
     licenseMsg.textContent =
-      "Polar isn’t configured yet. Set checkout + org ID (docs/POLAR.md), or use UNFEED-PRO for local QA.";
+      "Polar isn’t configured yet. Set checkout + org ID (docs/POLAR.md).";
   } else if (result.reason === "network") {
     licenseMsg.textContent =
       "Couldn’t reach Polar. Check your connection and try again.";

@@ -77,15 +77,20 @@ html.unfeed-bsky-on[data-unfeed-surface="discover"] body {
   function hideNodes() {
     if (!document.documentElement.classList.contains("unfeed-bsky-on")) return;
     const surface = document.documentElement.dataset.unfeedSurface;
-    if (surface !== "feed" && surface !== "discover") return;
+    if (surface !== "feed" && surface !== "discover" && surface !== "search") return;
 
-    const sels = [
-      '[data-testid="postsFeed-flatlist"]',
-      '[data-testid="followingFeed-flatlist"]',
-      '[data-testid="customFeed-flatlist"]',
-      '[data-testid^="feedItem-"]',
-      '[role="feed"]',
-    ];
+    const sels =
+      surface === "search"
+        ? ['[data-testid="exploreScreenContent"] [data-testid^="feedItem-"]']
+        : [
+            '[data-testid="postsFeed-flatlist"]',
+            '[data-testid="followingFeed-flatlist"]',
+            '[data-testid="customFeed-flatlist"]',
+            '[data-testid^="feedItem-"]',
+            'div[data-testid*="Feed"]',
+            '[role="feed"]',
+          ];
+
     for (const sel of sels) {
       document.querySelectorAll(sel).forEach((node) => {
         if (node.closest("nav") || node.closest('[role="navigation"]')) return;

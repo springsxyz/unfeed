@@ -10,7 +10,7 @@ Chrome extension **v1.0.1** (Manifest V3).
 2. Pin UnFeed and toggle sites in the popup  
 
 Free: any **3** sites. Pro: **$9** one-time via Polar (see [docs/POLAR.md](docs/POLAR.md)).  
-Dev unlock key: `UNFEED-PRO`.
+Local QA Pro: add your key to `shared/dev-unlock.personal.stub.js` (not shipped in store zip).
 
 ## Publish
 

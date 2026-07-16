@@ -2,12 +2,12 @@
   const STYLE_ID = "unfeed-th-injected";
   const HIDDEN = "data-unfeed-th-hidden";
 
-  // Threads is IG/Meta-style — obscure layout; nuke main column on feed routes
+  // Hide feed posts in the main column — keep composer / chrome
   const ACTIVE_CSS = `
-html.unfeed-th-on[data-unfeed-surface="feed"] [role="main"],
-html.unfeed-th-on[data-unfeed-surface="feed"] main,
-html.unfeed-th-on[data-unfeed-surface="explore"] [role="main"],
-html.unfeed-th-on[data-unfeed-surface="explore"] main {
+html.unfeed-th-on[data-unfeed-surface="feed"] [role="feed"],
+html.unfeed-th-on[data-unfeed-surface="feed"] [role="article"],
+html.unfeed-th-on[data-unfeed-surface="explore"] [role="feed"],
+html.unfeed-th-on[data-unfeed-surface="explore"] [role="article"] {
   display: none !important;
   visibility: hidden !important;
   height: 0 !important;
@@ -16,14 +16,6 @@ html.unfeed-th-on[data-unfeed-surface="explore"] main {
   pointer-events: none !important;
   margin: 0 !important;
   padding: 0 !important;
-}
-
-html.unfeed-th-on[data-unfeed-surface="feed"] [role="feed"],
-html.unfeed-th-on[data-unfeed-surface="feed"] [role="article"],
-html.unfeed-th-on[data-unfeed-surface="feed"] [role="region"],
-html.unfeed-th-on[data-unfeed-surface="explore"] [role="feed"],
-html.unfeed-th-on[data-unfeed-surface="explore"] [role="article"] {
-  display: none !important;
 }
 
 html.unfeed-th-on[data-unfeed-surface="feed"],
@@ -104,19 +96,14 @@ html.unfeed-th-on[data-unfeed-surface="explore"] body {
     const surface = document.documentElement.dataset.unfeedSurface;
     if (surface !== "feed" && surface !== "explore") return;
 
-    document.querySelectorAll('[role="main"], main').forEach(markHidden);
-
     document
-      .querySelectorAll(
-        '[role="feed"], [role="article"], [role="region"], a[href*="/post/"]'
-      )
+      .querySelectorAll('[role="feed"], [role="article"], a[href*="/post/"]')
       .forEach((node) => {
-        // Hide the post card, not just the link — climb a few levels
         if (node.tagName === "A" && node.getAttribute("href")?.includes("/post/")) {
           let el = node;
           for (let i = 0; i < 6 && el.parentElement; i++) {
             el = el.parentElement;
-            if (el.getAttribute("role") === "article" || el.getAttribute("role") === "region") {
+            if (el.getAttribute("role") === "article") {
               markHidden(el);
               return;
             }

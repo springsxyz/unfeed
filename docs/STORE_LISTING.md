@@ -38,7 +38,7 @@ You can still:
 • Post and engage on pages you intentionally opened
 
 SUPPORTED SITES
-YouTube, Instagram, Facebook, X, Reddit, LinkedIn, TikTok, Pinterest, Substack, Threads, Bluesky
+YouTube, Instagram, Facebook, X, Reddit, LinkedIn, TikTok, Pinterest, Substack (substack.com), Threads, Bluesky
 
 FREE VS PRO
 • Free: enable any 3 sites

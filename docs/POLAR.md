@@ -33,7 +33,7 @@ The popup calls Polar’s **public** Customer Portal API (no secret in the exten
 Body: `{ key, organization_id, benefit_id? }`  
 Success when `status === "granted"`.
 
-Dev stub key `UNFEED-PRO` still unlocks locally for QA.
+Local QA: add unlock codes in `shared/dev-unlock.personal.stub.js` (store packs reset that file).
 
 ## Sandbox
 

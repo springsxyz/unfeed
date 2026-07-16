@@ -7,3 +7,7 @@ html.unfeed-bsky-on[data-unfeed-surface="feed"] [role="feed"],
 html.unfeed-bsky-on[data-unfeed-surface="discover"] [data-testid^="feedItem-"] {
   display: none !important;
 }
+
+html.unfeed-bsky-on[data-unfeed-surface="search"] [data-testid="exploreScreenContent"] [data-testid^="feedItem-"] {
+  display: none !important;
+}

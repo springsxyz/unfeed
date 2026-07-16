@@ -1,123 +1,209 @@
-# UnFeed icon — polished gradient squircle + face (Awesome Screenshot–style clarity)
+# UnFeed extension icon � paper field + lime stacked wordmark
+# Regenerate: powershell -ExecutionPolicy Bypass -File scripts/generate-icons.ps1
 Add-Type -AssemblyName System.Drawing
 
-$base = Join-Path (Split-Path $PSScriptRoot -Parent) "icons"
-New-Item -ItemType Directory -Force -Path $base | Out-Null
+$ErrorActionPreference = "Stop"
 
-function New-RoundedRectPath([System.Drawing.RectangleF]$r, [float]$radius) {
-  $gp = New-Object System.Drawing.Drawing2D.GraphicsPath
-  $d = $radius * 2
-  $gp.AddArc($r.X, $r.Y, $d, $d, 180, 90)
-  $gp.AddArc($r.Right - $d, $r.Y, $d, $d, 270, 90)
-  $gp.AddArc($r.Right - $d, $r.Bottom - $d, $d, $d, 0, 90)
-  $gp.AddArc($r.X, $r.Bottom - $d, $d, $d, 90, 90)
-  $gp.CloseFigure()
-  return $gp
+function Test-FamilyStyle([string]$familyName, [System.Drawing.FontStyle]$style) {
+  try {
+    $ff = New-Object System.Drawing.FontFamily $familyName
+    if ($ff.IsStyleAvailable($style)) { return $true }
+  } catch {}
+  return $false
 }
 
-function New-Icon([int]$size, [string]$path) {
-  $bmp = New-Object System.Drawing.Bitmap $size, $size
+function Resolve-WordmarkFont {
+  $candidates = @(
+    @{ Family = "Space Grotesk"; Style = [System.Drawing.FontStyle]::Bold; Label = "Space Grotesk Bold" },
+    @{ Family = "Space Grotesk"; Style = [System.Drawing.FontStyle]::Regular; Label = "Space Grotesk Regular" },
+    @{ Family = "Segoe UI Black"; Style = [System.Drawing.FontStyle]::Regular; Label = "Segoe UI Black" },
+    @{ Family = "Arial Black"; Style = [System.Drawing.FontStyle]::Regular; Label = "Arial Black" },
+    @{ Family = "Arial"; Style = [System.Drawing.FontStyle]::Bold; Label = "Arial Bold" }
+  )
+  foreach ($c in $candidates) {
+    if (Test-FamilyStyle $c.Family $c.Style) {
+      return [PSCustomObject]@{ Used = $c.Label; Family = $c.Family; Style = $c.Style }
+    }
+  }
+  return [PSCustomObject]@{ Used = "Arial Bold"; Family = "Arial"; Style = [System.Drawing.FontStyle]::Bold }
+}
+
+function Get-TypoFormat {
+  $sf = [System.Drawing.StringFormat]::GenericTypographic.Clone()
+  $sf.FormatFlags = $sf.FormatFlags -bor [System.Drawing.StringFormatFlags]::MeasureTrailingSpaces
+  $sf.Alignment = [System.Drawing.StringAlignment]::Near
+  $sf.LineAlignment = [System.Drawing.StringAlignment]::Near
+  return $sf
+}
+
+function Measure-Text(
+  [System.Drawing.Graphics]$g,
+  [string]$text,
+  [System.Drawing.Font]$font,
+  [System.Drawing.StringFormat]$sf
+) {
+  return $g.MeasureString($text, $font, [System.Drawing.PointF]::Empty, $sf)
+}
+
+function Draw-TightString(
+  [System.Drawing.Graphics]$g,
+  [string]$text,
+  [System.Drawing.Font]$font,
+  [System.Drawing.Brush]$brush,
+  [float]$left,
+  [float]$top,
+  [float]$trackPx,
+  [System.Drawing.StringFormat]$sf
+) {
+  $x = $left
+  foreach ($ch in $text.ToCharArray()) {
+    $s = [string]$ch
+    $g.DrawString($s, $font, $brush, $x, $top, $sf)
+    $w = (Measure-Text $g $s $font $sf).Width
+    $x += $w + $trackPx
+  }
+}
+
+function Get-FontLineHeight([System.Drawing.Font]$font) {
+  $ff = $font.FontFamily
+  $style = $font.Style
+  $em = $ff.GetEmHeight($style)
+  $ascent = $ff.GetCellAscent($style)
+  return [float]($font.Size * ($ascent / $em))
+}
+
+function Get-TrackedSize(
+  [System.Drawing.Graphics]$g,
+  [string]$text,
+  [System.Drawing.Font]$font,
+  [float]$trackPx,
+  [System.Drawing.StringFormat]$sf
+) {
+  $chars = $text.ToCharArray()
+  $w = 0.0
+  $h = 0.0
+  for ($i = 0; $i -lt $chars.Length; $i++) {
+    $sz = Measure-Text $g ([string]$chars[$i]) $font $sf
+    $w += $sz.Width
+    if ($sz.Height -gt $h) { $h = $sz.Height }
+    if ($i -lt $chars.Length - 1) { $w += $trackPx }
+  }
+  return [PSCustomObject]@{ Width = $w; Height = $h }
+}
+
+function New-UnFeedIcon {
+  param(
+    [int]$Size,
+    [string]$OutPath,
+    [System.Drawing.Color]$Paper,
+    [System.Drawing.Color]$Lime,
+    [string]$Family,
+    [System.Drawing.FontStyle]$Style
+  )
+
+  $bmp = New-Object System.Drawing.Bitmap $Size, $Size
   $g = [System.Drawing.Graphics]::FromImage($bmp)
-  $g.SmoothingMode = "AntiAlias"
-  $g.PixelOffsetMode = "HighQuality"
-  $g.CompositingQuality = "HighQuality"
-  $g.Clear([System.Drawing.Color]::Transparent)
+  $g.SmoothingMode = [System.Drawing.Drawing2D.SmoothingMode]::AntiAlias
+  $g.PixelOffsetMode = [System.Drawing.Drawing2D.PixelOffsetMode]::HighQuality
+  $g.CompositingQuality = [System.Drawing.Drawing2D.CompositingQuality]::HighQuality
+  $g.InterpolationMode = [System.Drawing.Drawing2D.InterpolationMode]::HighQualityBicubic
+  $g.TextRenderingHint = [System.Drawing.Text.TextRenderingHint]::AntiAliasGridFit
+  $g.Clear($Paper)
 
-  $radius = [Math]::Max(2.0, $size * 0.22)
-  $bounds = New-Object System.Drawing.RectangleF 0, 0, $size, $size
-  $tile = New-RoundedRectPath $bounds $radius
+  $sf = Get-TypoFormat
+  $line1 = "UN"
+  $line2 = "FEED"
+  # Same optical size � FEED is not a caption under UN
+  $feedRatio = 1.0
+  $marginPct = 0.14
+  $content = [double]($Size * (1.0 - 2.0 * $marginPct))
+  # Tight tracking + tight stack
+  $trackFactor = -0.10
+  $lineGapFactor = 0.02
 
-  # Diagonal brand gradient: deep slate → mist → lime (not rainbow clone)
-  $c1 = [System.Drawing.Color]::FromArgb(255, 28, 42, 54)
-  $c2 = [System.Drawing.Color]::FromArgb(255, 90, 140, 130)
-  $c3 = [System.Drawing.Color]::FromArgb(255, 200, 224, 70)
-  $blend = New-Object System.Drawing.Drawing2D.ColorBlend
-  $blend.Colors = [System.Drawing.Color[]]@($c1, $c2, $c3)
-  $blend.Positions = [float[]]@(0.0, 0.45, 1.0)
-  $grad = New-Object System.Drawing.Drawing2D.LinearGradientBrush(
-    (New-Object System.Drawing.Point 0, $size),
-    (New-Object System.Drawing.Point $size, 0),
-    $c1,
-    $c3
-  )
-  $grad.InterpolationColors = $blend
-  $g.FillPath($grad, $tile)
+  $bestUn = 10.0
+  $low = 8.0
+  $high = [double]($Size * 0.48)
 
-  # Soft highlight at top-left (lens polish)
-  $hi = New-Object System.Drawing.Drawing2D.GraphicsPath
-  $hi.AddEllipse(-$size * 0.15, -$size * 0.2, $size * 0.85, $size * 0.7)
-  $hiBrush = New-Object System.Drawing.Drawing2D.PathGradientBrush $hi
-  $hiBrush.CenterColor = [System.Drawing.Color]::FromArgb(70, 255, 255, 255)
-  $hiBrush.SurroundColors = [System.Drawing.Color[]]@([System.Drawing.Color]::FromArgb(0, 255, 255, 255))
-  $g.SetClip($tile)
-  $g.FillPath($hiBrush, $hi)
-  $g.ResetClip()
+  while (($high - $low) -gt 0.2) {
+    $mid = ($low + $high) / 2.0
+    $fontUn = New-Object System.Drawing.Font $Family, $mid, $Style, ([System.Drawing.GraphicsUnit]::Pixel)
+    $fontFeed = New-Object System.Drawing.Font $Family, ($mid * $feedRatio), $Style, ([System.Drawing.GraphicsUnit]::Pixel)
+    $trackUn = [float]($mid * $trackFactor)
+    $trackFeed = [float](($mid * $feedRatio) * $trackFactor)
 
-  # White ring (like camera bezel) + dark lens
-  $cx = $size * 0.5
-  $cy = $size * 0.5
-  $outerR = $size * 0.34
-  $ringW = [Math]::Max(1.8, $size * 0.055)
-  $innerR = $outerR - $ringW
+    $s1 = Get-TrackedSize $g $line1 $fontUn $trackUn $sf
+    $s2 = Get-TrackedSize $g $line2 $fontFeed $trackFeed $sf
+    $gap = [Math]::Max(1.0, $mid * $lineGapFactor)
+    $blockW = [Math]::Max($s1.Width, $s2.Width)
+        $lineHUn = Get-FontLineHeight $fontUn
+    $lineHFeed = Get-FontLineHeight $fontFeed
+    $blockH = $lineHUn + $gap + $lineHFeed
 
-  $white = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(255, 255, 255, 255))
-  $lens = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(255, 18, 22, 28))
-  $g.FillEllipse($white, [float]($cx - $outerR), [float]($cy - $outerR), [float](2 * $outerR), [float](2 * $outerR))
-  $g.FillEllipse($lens, [float]($cx - $innerR), [float]($cy - $innerR), [float](2 * $innerR), [float](2 * $innerR))
+    $fontUn.Dispose()
+    $fontFeed.Dispose()
 
-  # Tiny blue glint (Awesome Screenshot–style) — upper-left of lens, not a nose
-  $glintR = [Math]::Max(1.0, $size * 0.04)
-  $glint = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(200, 160, 200, 230))
-  $g.FillEllipse(
-    $glint,
-    [float]($cx - $innerR * 0.45 - $glintR),
-    [float]($cy - $innerR * 0.4 - $glintR),
-    [float](2 * $glintR),
-    [float](2 * $glintR)
-  )
+    if ($blockW -le $content -and $blockH -le $content) {
+      $bestUn = $mid
+      $low = $mid
+    } else {
+      $high = $mid
+    }
+  }
 
-  # Face on the lens — lime for brand, not white camera
-  $face = [System.Drawing.Color]::FromArgb(255, 200, 224, 70)
-  $faceBrush = New-Object System.Drawing.SolidBrush $face
-  $facePen = New-Object System.Drawing.Pen $face, ([float]([Math]::Max(1.4, $size * 0.045)))
-  $facePen.StartCap = [System.Drawing.Drawing2D.LineCap]::Round
-  $facePen.EndCap = [System.Drawing.Drawing2D.LineCap]::Round
+  $fontUnFinal = New-Object System.Drawing.Font $Family, $bestUn, $Style, ([System.Drawing.GraphicsUnit]::Pixel)
+  $fontFeedFinal = New-Object System.Drawing.Font $Family, ($bestUn * $feedRatio), $Style, ([System.Drawing.GraphicsUnit]::Pixel)
+  $trackUnF = [float]($bestUn * $trackFactor)
+  $trackFeedF = [float](($bestUn * $feedRatio) * $trackFactor)
 
-  $eyeR = [Math]::Max(1.1, $innerR * 0.11)
-  $eyeY = $cy - $innerR * 0.18
-  $eyeSpread = $innerR * 0.32
-  $g.FillEllipse($faceBrush, [float]($cx - $eyeSpread - $eyeR), [float]($eyeY - $eyeR), [float](2 * $eyeR), [float](2 * $eyeR))
-  $g.FillEllipse($faceBrush, [float]($cx + $eyeSpread - $eyeR), [float]($eyeY - $eyeR), [float](2 * $eyeR), [float](2 * $eyeR))
+  $s1f = Get-TrackedSize $g $line1 $fontUnFinal $trackUnF $sf
+  $s2f = Get-TrackedSize $g $line2 $fontFeedFinal $trackFeedF $sf
+  $gapF = [Math]::Max(1.0, $bestUn * $lineGapFactor)
+    $lineHUnF = Get-FontLineHeight $fontUnFinal
+  $lineHFeedF = Get-FontLineHeight $fontFeedFinal
+  $blockHf = $lineHUnF + $gapF + $lineHFeedF
 
-  $smilePad = $innerR * 0.42
-  $smileTop = $cy - $innerR * 0.05
-  $smileH = $innerR * 0.95
-  $g.DrawArc(
-    $facePen,
-    [float]($cx - $smilePad),
-    [float]$smileTop,
-    [float](2 * $smilePad),
-    [float]$smileH,
-    20,
-    140
-  )
+  $brush = New-Object System.Drawing.SolidBrush $Lime
+  $topY = [float](($Size - $blockHf) / 2.0)
+  $x1 = [float](($Size - $s1f.Width) / 2.0)
+  $x2 = [float](($Size - $s2f.Width) / 2.0)
+  $y2 = [float]($topY + $lineHUnF + $gapF)
 
-  $bmp.Save($path, [System.Drawing.Imaging.ImageFormat]::Png)
+  Draw-TightString $g $line1 $fontUnFinal $brush $x1 $topY $trackUnF $sf
+  Draw-TightString $g $line2 $fontFeedFinal $brush $x2 $y2 $trackFeedF $sf
+
+  $dir = Split-Path -Parent $OutPath
+  if ($dir -and -not (Test-Path $dir)) { New-Item -ItemType Directory -Force -Path $dir | Out-Null }
+  $bmp.Save($OutPath, [System.Drawing.Imaging.ImageFormat]::Png)
+
+  $sf.Dispose()
+  $brush.Dispose()
+  $fontUnFinal.Dispose()
+  $fontFeedFinal.Dispose()
   $g.Dispose()
   $bmp.Dispose()
-  $grad.Dispose()
-  $tile.Dispose()
-  $hi.Dispose()
-  $hiBrush.Dispose()
-  $white.Dispose()
-  $lens.Dispose()
-  $glint.Dispose()
-  $faceBrush.Dispose()
-  $facePen.Dispose()
 }
 
-New-Icon 16 (Join-Path $base "icon16.png")
-New-Icon 48 (Join-Path $base "icon48.png")
-New-Icon 128 (Join-Path $base "icon128.png")
-Write-Output "Created polished face icons in $base"
-Get-ChildItem $base | ForEach-Object { "$($_.Name) $($_.Length)" }
+$root = Split-Path $PSScriptRoot -Parent
+$iconsDir = Join-Path $root "icons"
+New-Item -ItemType Directory -Force -Path $iconsDir | Out-Null
+
+$paper = [System.Drawing.Color]::FromArgb(255, 0xF4, 0xF2, 0xEC)
+$lime = [System.Drawing.Color]::FromArgb(255, 0xC8, 0xE0, 0x46)
+$res = Resolve-WordmarkFont
+
+$outputs = @(
+  @{ Size = 1024; Name = "unfeed-icon-master.png" },
+  @{ Size = 16; Name = "icon16.png" },
+  @{ Size = 48; Name = "icon48.png" },
+  @{ Size = 128; Name = "icon128.png" }
+)
+
+foreach ($o in $outputs) {
+  New-UnFeedIcon -Size $o.Size -OutPath (Join-Path $iconsDir $o.Name) -Paper $paper -Lime $lime -Family $res.Family -Style $res.Style
+}
+
+Write-Output "FONT_USED: $($res.Used)"
+Write-Output "COLORS: paper #f4f2ec lime #c8e046"
+Write-Output "TYPE: UN=FEED size, tight track, tight stack"
+Get-ChildItem $iconsDir -Filter "*.png" | ForEach-Object { "$($_.Name) $($_.Length)" }

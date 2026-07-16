@@ -5,6 +5,12 @@
   "description": "Remove the feed. Keep the app.",
   "scripts": {
     "sync:icons": "node scripts/sync-site-icons.mjs",
+    "icons": "node scripts/generate-icons.mjs",
+    "icons:explore": "node scripts/explore-feed-disappear.mjs",
+    "icons:d1": "node scripts/set-icon.mjs d1",
+    "icons:d2": "node scripts/set-icon.mjs d2",
+    "icons:d3": "node scripts/set-icon.mjs d3",
+    "icons:d4": "node scripts/set-icon.mjs d4",
     "pack": "powershell -ExecutionPolicy Bypass -File scripts/pack-extension.ps1",
     "postinstall": "npm run sync:icons"
   },
@@ -16,5 +22,8 @@
   "homepage": "https://unfeed.dev/",
   "dependencies": {
     "simple-icons": "16.26.0"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.3"
   }
 }
