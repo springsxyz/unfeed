@@ -58,6 +58,9 @@ const licenseBtn = document.getElementById("license-btn");
 const licenseMsg = document.getElementById("license-msg");
 const buyBtn = document.getElementById("buy-btn");
 const proPriceEl = document.getElementById("pro-price");
+const bulkEl = document.getElementById("bulk");
+const enableAllBtn = document.getElementById("enable-all");
+const disableAllBtn = document.getElementById("disable-all");
 
 let rowLimitTimer = null;
 
@@ -136,11 +139,13 @@ function renderPlan(state) {
   if (state.proUnlocked) {
     planEl.innerHTML = `<span class="plan-badge plan-pro">Pro</span>`;
     upgradeEl.hidden = true;
+    if (bulkEl) bulkEl.hidden = false;
     return;
   }
   const n = countEnabled(state);
   planEl.innerHTML = `<span class="plan-badge">Free</span><span class="plan-count">${n} / ${FREE_LIMIT}</span>`;
   upgradeEl.hidden = false;
+  if (bulkEl) bulkEl.hidden = true;
 }
 
 async function broadcast(storageKey, enabled) {
@@ -270,6 +275,22 @@ async function validatePolarLicense(key) {
     return { ok: false, reason: "network" };
   }
 }
+
+async function setAllSites(enabled) {
+  const current = await chrome.storage.sync.get(defaults);
+  if (!current.proUnlocked) return;
+
+  const patch = Object.fromEntries(SITES.map((s) => [s.id, enabled]));
+  await chrome.storage.sync.set(patch);
+  clearRowLimits();
+  list.innerHTML = SITES.map((site) => rowHtml(site, enabled)).join("");
+  renderPlan({ ...current, ...patch });
+  wireToggles();
+  await broadcastMany({ ...current, ...patch });
+}
+
+enableAllBtn?.addEventListener("click", () => setAllSites(true));
+disableAllBtn?.addEventListener("click", () => setAllSites(false));
 
 buyBtn?.addEventListener("click", () => {
   if (!UNFEED_CHECKOUT_URL) {
