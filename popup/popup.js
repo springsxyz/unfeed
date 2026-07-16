@@ -136,7 +136,8 @@ function renderPlan(state) {
     upgradeEl.hidden = true;
     return;
   }
-  planEl.innerHTML = `<span class="plan-badge">Free</span>`;
+  const n = countEnabled(state);
+  planEl.innerHTML = `<span class="plan-badge">Free</span><span class="plan-count">${n} / ${FREE_LIMIT}</span>`;
   upgradeEl.hidden = false;
 }
 
