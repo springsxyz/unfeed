@@ -116,18 +116,21 @@ body.home {
 
 .brand-stack {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  gap: 0.28em;
   font-size: clamp(2.75rem, 9vw, 4.25rem);
   font-weight: 700;
   letter-spacing: -0.05em;
-  line-height: 0.88;
+  line-height: 1;
   color: var(--text);
   margin-bottom: 16px;
   animation: rise-in 0.7s ease-out both;
 }
 
 .brand-line {
-  display: block;
+  display: inline-block;
 }
 
 .headline {
