@@ -1,4 +1,4 @@
-# Generate UnFeed toolbar/store icons — crossed feed (card stack + slash)
+# Generate UnFeed icon — lime tile + refined black face
 Add-Type -AssemblyName System.Drawing
 
 $base = Join-Path (Split-Path $PSScriptRoot -Parent) "icons"
@@ -17,50 +17,53 @@ function New-Icon([int]$size, [string]$path) {
   $bg = New-Object System.Drawing.SolidBrush $lime
   $radius = [Math]::Max(2, [int]($size * 0.22))
   $rect = New-Object System.Drawing.Rectangle 0, 0, $size, $size
-  $pathRounded = New-Object System.Drawing.Drawing2D.GraphicsPath
+  $gp = New-Object System.Drawing.Drawing2D.GraphicsPath
   $d = $radius * 2
-  $pathRounded.AddArc($rect.X, $rect.Y, $d, $d, 180, 90)
-  $pathRounded.AddArc($rect.Right - $d, $rect.Y, $d, $d, 270, 90)
-  $pathRounded.AddArc($rect.Right - $d, $rect.Bottom - $d, $d, $d, 0, 90)
-  $pathRounded.AddArc($rect.X, $rect.Bottom - $d, $d, $d, 90, 90)
-  $pathRounded.CloseFigure()
-  $g.FillPath($bg, $pathRounded)
+  $gp.AddArc($rect.X, $rect.Y, $d, $d, 180, 90)
+  $gp.AddArc($rect.Right - $d, $rect.Y, $d, $d, 270, 90)
+  $gp.AddArc($rect.Right - $d, $rect.Bottom - $d, $d, $d, 0, 90)
+  $gp.AddArc($rect.X, $rect.Bottom - $d, $d, $d, 90, 90)
+  $gp.CloseFigure()
+  $g.FillPath($bg, $gp)
 
-  # Stacked feed cards: avatar circle + text lines per row
   $inkBrush = New-Object System.Drawing.SolidBrush $ink
-  $pad = $size * 0.2
-  $rowH = ($size - 2 * $pad) / 3.15
-  $gap = $rowH * 0.18
-
-  for ($i = 0; $i -lt 3; $i++) {
-    $y = $pad + $i * ($rowH + $gap)
-    $avatar = [Math]::Max(2, $rowH * 0.55)
-    $cx = $pad + $avatar * 0.5
-    $cy = $y + $rowH * 0.45
-    $g.FillEllipse($inkBrush, [float]($cx - $avatar / 2), [float]($cy - $avatar / 2), [float]$avatar, [float]$avatar)
-
-    $lineH = [Math]::Max(1.5, $size * 0.055)
-    $lineX = $pad + $avatar + $size * 0.06
-    $lineW = $size - $lineX - $pad
-    $g.FillRectangle($inkBrush, [float]$lineX, [float]($y + $rowH * 0.18), [float]$lineW, [float]$lineH)
-    $g.FillRectangle($inkBrush, [float]$lineX, [float]($y + $rowH * 0.52), [float]($lineW * 0.62), [float]$lineH)
-  }
-
-  # Diagonal slash through the feed
-  $penW = [Math]::Max(1.8, $size * 0.11)
+  $penW = [Math]::Max(1.6, $size * 0.1)
   $pen = New-Object System.Drawing.Pen $ink, ([float]$penW)
   $pen.StartCap = [System.Drawing.Drawing2D.LineCap]::Round
   $pen.EndCap = [System.Drawing.Drawing2D.LineCap]::Round
-  # White understroke so slash reads on top of dark bars
-  $under = New-Object System.Drawing.Pen $lime, ([float]($penW * 1.55))
-  $under.StartCap = [System.Drawing.Drawing2D.LineCap]::Round
-  $under.EndCap = [System.Drawing.Drawing2D.LineCap]::Round
-  $x1 = [float]($size * 0.16)
-  $y1 = [float]($size * 0.82)
-  $x2 = [float]($size * 0.84)
-  $y2 = [float]($size * 0.18)
-  $g.DrawLine($under, $x1, $y1, $x2, $y2)
-  $g.DrawLine($pen, $x1, $y1, $x2, $y2)
+
+  # Eyes
+  $eyeR = [Math]::Max(1.2, $size * 0.07)
+  $eyeY = $size * 0.38
+  $eyeSpread = $size * 0.16
+  $g.FillEllipse(
+    $inkBrush,
+    [float]($size * 0.5 - $eyeSpread - $eyeR),
+    [float]($eyeY - $eyeR),
+    [float](2 * $eyeR),
+    [float](2 * $eyeR)
+  )
+  $g.FillEllipse(
+    $inkBrush,
+    [float]($size * 0.5 + $eyeSpread - $eyeR),
+    [float]($eyeY - $eyeR),
+    [float](2 * $eyeR),
+    [float](2 * $eyeR)
+  )
+
+  # Smile arc
+  $smilePad = $size * 0.26
+  $smileTop = $size * 0.42
+  $smileH = $size * 0.38
+  $g.DrawArc(
+    $pen,
+    [float]$smilePad,
+    [float]$smileTop,
+    [float]($size - 2 * $smilePad),
+    [float]$smileH,
+    15,
+    150
+  )
 
   $bmp.Save($path, [System.Drawing.Imaging.ImageFormat]::Png)
   $g.Dispose()
@@ -68,12 +71,11 @@ function New-Icon([int]$size, [string]$path) {
   $bg.Dispose()
   $inkBrush.Dispose()
   $pen.Dispose()
-  $under.Dispose()
-  $pathRounded.Dispose()
+  $gp.Dispose()
 }
 
 New-Icon 16 (Join-Path $base "icon16.png")
 New-Icon 48 (Join-Path $base "icon48.png")
 New-Icon 128 (Join-Path $base "icon128.png")
-Write-Output "Created crossed-feed icons in $base"
+Write-Output "Created face icons in $base"
 Get-ChildItem $base | ForEach-Object { "$($_.Name) $($_.Length)" }
