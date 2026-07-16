@@ -27,5 +27,10 @@ Respect `prefers-reduced-motion`.
 - Landing: paper grain + abstract feed-blur cut into silence; brand wordmark hero; lime CTA
 - Popup: paper, bold UnFeed + lime Free badge (text only), site list with icons, black Unlock, centered Privacy
 
-## Extension icon
-Lime squircle + **blocked feed** mark (stacked rows + slash). No circle/lens. Master from AI gen → `icons/unfeed-icon-master.png`; export sizes with `scripts/export-icons-from-master.ps1`.
+## Extension icon (locked)
+Lime squircle `#c8e046` + ink `#0a0a0a` stacked wordmark:
+```
+UN
+FEED
+```
+Straight type (not curved). Master: `icons/unfeed-icon-master.png`. Export sizes: `scripts/export-icons-from-master.ps1`.
