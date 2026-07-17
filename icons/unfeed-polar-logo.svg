@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <clipPath id="circle">
+      <circle cx="512" cy="512" r="472"/>
+    </clipPath>
+    <mask id="keep">
+      <rect width="1024" height="1024" fill="black"/>
+      <polygon points="40,40 984,40 40,984" fill="white"/>
+    </mask>
+  </defs>
+
+  <circle cx="512" cy="512" r="472"
+          fill="#f4f2ec" stroke="#0a0a0a" stroke-width="32"/>
+
+  <g clip-path="url(#circle)" mask="url(#keep)" fill="#0a0a0a">
+    <g>
+      <rect x="166" y="198" width="92" height="92" rx="18"/>
+      <rect x="296" y="208" width="470" height="30" rx="10"/>
+      <rect x="296" y="250" width="300" height="30" rx="10"/>
+    </g>
+    <g>
+      <rect x="166" y="422" width="92" height="92" rx="18"/>
+      <rect x="296" y="432" width="400" height="30" rx="10"/>
+      <rect x="296" y="474" width="246" height="30" rx="10"/>
+    </g>
+    <g>
+      <rect x="166" y="646" width="92" height="92" rx="18"/>
+      <rect x="296" y="656" width="320" height="30" rx="10"/>
+      <rect x="296" y="698" width="184" height="30" rx="10"/>
+    </g>
+  </g>
+
+  <g clip-path="url(#circle)">
+    <line x1="984" y1="40" x2="40" y2="984"
+          stroke="#c8e046" stroke-width="76" stroke-linecap="butt"/>
+  </g>
+</svg>

@@ -1,4 +1,4 @@
-# UnFeed brand — Signal Cut
+﻿# UnFeed brand — Signal Cut
 
 Locked from design mockups (Jul 2026). User-selected direction.
 
@@ -28,9 +28,6 @@ Respect `prefers-reduced-motion`.
 - Popup: paper, bold UnFeed + lime Free badge (text only), site list with icons, black Unlock, centered Privacy
 
 ## Extension icon (locked)
-Lime squircle `#c8e046` + ink `#0a0a0a` stacked wordmark:
-```
-UN
-FEED
-```
-Straight type (not curved). Master: `icons/unfeed-icon-master.png`. Export sizes: `scripts/export-icons-from-master.ps1`.
+**D3 framed wipe** — transparent outer field, ink rounded frame, feed disappearing inside, lime cut border-to-border.
+Master: `icons/unfeed-icon-master.svg`. Regenerate: `npm run icons`. Variants: `npm run icons:d1`…`d4`.
+Brief: `docs/LOGO_BRIEF.md`. Exploration: `icons/exploration/`.
