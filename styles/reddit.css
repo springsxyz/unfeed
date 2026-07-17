@@ -9,6 +9,16 @@ html.unfeed-rd-on[data-unfeed-surface="home"] .promotedlink {
   display: none !important;
 }
 
+/* Sort (Best/Hot/…) + view layout leftovers above the empty feed */
+html.unfeed-rd-on[data-unfeed-surface="home"] shreddit-sort-dropdown,
+html.unfeed-rd-on[data-unfeed-surface="home"] shreddit-layout-events,
+html.unfeed-rd-on[data-unfeed-surface="home"] faceplate-dropdown-menu[name="sort"],
+html.unfeed-rd-on[data-unfeed-surface="home"] [slot="sort"],
+html.unfeed-rd-on[data-unfeed-surface="home"] main hr,
+html.unfeed-rd-on[data-unfeed-surface="home"] shreddit-feed > hr {
+  display: none !important;
+}
+
 /* old.reddit.com home */
 html.unfeed-rd-on[data-unfeed-surface="home"] #siteTable {
   display: none !important;

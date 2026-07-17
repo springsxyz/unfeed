@@ -7,11 +7,10 @@ html.unfeed-ss-on[data-unfeed-surface="feed"] body {
   height: 100% !important;
 }
 
-/* Notes feed (stable aria labels used by Substack + uBlock recipes) */
+/* Notes feed — do not match nav labels (e.g. Activity bell) */
 html.unfeed-ss-on[data-unfeed-surface="feed"] [aria-label="Notes feed"],
 html.unfeed-ss-on[data-unfeed-surface="feed"] [aria-label="Home feed"],
-html.unfeed-ss-on[data-unfeed-surface="feed"] [aria-label="Feed"],
-html.unfeed-ss-on[data-unfeed-surface="feed"] [aria-label="Activity"] {
+html.unfeed-ss-on[data-unfeed-surface="feed"] [aria-label="Feed"] {
   opacity: 0 !important;
   pointer-events: none !important;
   max-height: 0 !important;
@@ -46,4 +45,9 @@ html.unfeed-ss-on[data-unfeed-surface="feed"] [role="feed"] {
   pointer-events: none !important;
   max-height: 0 !important;
   overflow: hidden !important;
+}
+
+/* Feed sort control (JS also hides by label when classes are hashed) */
+html.unfeed-ss-on[data-unfeed-surface="feed"] [aria-label*="For you" i] {
+  display: none !important;
 }

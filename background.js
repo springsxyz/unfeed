@@ -1,6 +1,60 @@
-/* global importScripts, unfeedDefaultState, unfeedClampFreeTier, UNFEED_SITES */
+/* Background service worker — keep self-contained (no importScripts / module import). */
 
-importScripts("shared/config.js");
+const UNFEED_SITES = [
+  "blueskyEnabled",
+  "facebookEnabled",
+  "instagramEnabled",
+  "linkedinEnabled",
+  "pinterestEnabled",
+  "redditEnabled",
+  "substackEnabled",
+  "threadsEnabled",
+  "tiktokEnabled",
+  "xEnabled",
+  "youtubeEnabled",
+];
+
+const UNFEED_FREE_LIMIT = 3;
+
+const UNFEED_DEFAULT_ENABLED = [
+  "instagramEnabled",
+  "youtubeEnabled",
+  "xEnabled",
+];
+
+function unfeedDefaultState() {
+  const state = { proUnlocked: false, licenseKey: "" };
+  for (const key of UNFEED_SITES) {
+    state[key] = UNFEED_DEFAULT_ENABLED.includes(key);
+  }
+  return state;
+}
+
+function unfeedClampFreeTier(state) {
+  if (state.proUnlocked) return { state, changed: false };
+
+  let on = 0;
+  for (const key of UNFEED_SITES) if (state[key]) on += 1;
+  if (on <= UNFEED_FREE_LIMIT) return { state, changed: false };
+
+  const keep = new Set();
+  for (const key of UNFEED_DEFAULT_ENABLED) {
+    if (state[key] && keep.size < UNFEED_FREE_LIMIT) keep.add(key);
+  }
+  for (const key of UNFEED_SITES) {
+    if (state[key] && keep.size < UNFEED_FREE_LIMIT) keep.add(key);
+  }
+
+  let changed = false;
+  const next = { ...state };
+  for (const key of UNFEED_SITES) {
+    if (next[key] && !keep.has(key)) {
+      next[key] = false;
+      changed = true;
+    }
+  }
+  return { state: next, changed };
+}
 
 async function ensureDefaults() {
   const stored = await chrome.storage.sync.get(null);

@@ -12,11 +12,3 @@ html.unfeed-x-on[data-unfeed-surface="explore"] [data-testid="primaryColumn"] se
 html.unfeed-x-on[data-unfeed-surface="explore"] [data-testid="cellInnerDiv"] {
   display: none !important;
 }
-
-/* Trends / who to follow while UnFeed is on */
-html.unfeed-x-on [data-testid="sidebarColumn"] section,
-html.unfeed-x-on [data-testid="trend"],
-html.unfeed-x-on aside[aria-label="Trending"],
-html.unfeed-x-on aside[aria-label="Tendencias"] {
-  display: none !important;
-}

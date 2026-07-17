@@ -98,6 +98,22 @@ html.unfeed-bsky-on[data-unfeed-surface="discover"] body {
         node.setAttribute(HIDDEN, "1");
       });
     }
+
+    // Top-bar Feeds hashtag only — keep left-nav "Feeds"
+    if (surface === "feed" || surface === "discover") {
+      document
+        .querySelectorAll(
+          'a[href="/feeds"], a[href^="/feeds"], a[aria-label="Feeds"], a[aria-label*="Feeds" i], [data-testid="feedsTab"], [href="/feeds"]'
+        )
+        .forEach((node) => {
+          if (node.closest("nav") || node.closest('[role="navigation"]')) return;
+          // Sidebar rows include the "Feeds" label text; top bar is icon-only
+          const label = (node.textContent || "").replace(/\s+/g, " ").trim();
+          if (/feeds/i.test(label)) return;
+          node.style.setProperty("display", "none", "important");
+          node.setAttribute(HIDDEN, "1");
+        });
+    }
   }
 
   function restore() {

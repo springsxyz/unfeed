@@ -29,6 +29,13 @@ html.unfeed-ig-on[data-unfeed-surface="home"] aside {
   display: none !important;
 }
 
+/* Legal/footer chrome rises into the empty feed — hide it */
+html.unfeed-ig-on[data-unfeed-surface="home"] footer,
+html.unfeed-ig-on[data-unfeed-surface="explore"] footer,
+html.unfeed-ig-on[data-unfeed-surface="reels"] footer {
+  display: none !important;
+}
+
 /* Common IG scroll parents under the app shell */
 html.unfeed-ig-on[data-unfeed-surface="home"] #scrollview,
 html.unfeed-ig-on[data-unfeed-surface="explore"] #scrollview,
