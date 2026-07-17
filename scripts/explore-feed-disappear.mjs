@@ -112,7 +112,7 @@ function d3() {
   const innerR = r - stroke / 2;
 
   const row = (ry, w1, w2) =>
-    feedRow(ry, { w1, w2, fill: INK, ax: innerX + 52, avatar: 76 });
+    feedRow(ry, { w1, w2, fill: INK, ax: innerX + 92, avatar: 76 });
 
   return frame(
     `
@@ -130,10 +130,9 @@ function d3() {
         fill="${PAPER}" stroke="${INK}" stroke-width="${stroke}"/>
 
   <g clip-path="url(#card)" mask="url(#keep)">
-    ${row(innerY + 58, 500, 330)}
-    ${row(innerY + 218, 460, 290)}
-    ${row(innerY + 378, 420, 250)}
-    ${row(innerY + 538, 380, 210)}
+    ${row(innerY + 140, 480, 310)}
+    ${row(innerY + 340, 420, 250)}
+    ${row(innerY + 540, 350, 190)}
   </g>
 
   <g clip-path="url(#card)">

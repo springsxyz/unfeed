@@ -21,7 +21,7 @@
 
 - [ ] Run through `docs/QA.md` on the sites you advertise  
 - [ ] Confirm Bluesky or remove it from the store description if untested  
-- [ ] `manifest.json` version is `1.0.1` (or higher)  
+- [ ] `manifest.json` version is `1.0.2` (or higher)  
 - [ ] Polar checkout + org ID filled in `shared/config.js` (or ship free-only)  
 - [ ] Popup Buy Pro + license unlock smoke-tested  
 - [ ] Popup + privacy link look good  
@@ -34,7 +34,7 @@ From the `unfeed` folder, run:
 powershell -ExecutionPolicy Bypass -File .\scripts\pack-extension.ps1
 ```
 
-This creates `dist/unfeed-1.0.1.zip` with only extension files (no `docs/`, no `.git`, no `api/`).
+This creates `dist/unfeed-1.0.2.zip` with only extension files (no `docs/`, no `.git`, no `api/`).
 
 ## 3. Submit
 

@@ -17,24 +17,19 @@
 
   <g clip-path="url(#card)" mask="url(#keep)">
     <g opacity="1" fill="#0a0a0a">
-    <rect x="126" y="132" width="76" height="76" rx="13.68"/>
-    <rect x="234" y="140.68" width="500" height="24.32" rx="8"/>
-    <rect x="234" y="175" width="330" height="24.32" rx="8"/>
+    <rect x="166" y="214" width="76" height="76" rx="13.68"/>
+    <rect x="274" y="222.68" width="480" height="24.32" rx="8"/>
+    <rect x="274" y="257" width="310" height="24.32" rx="8"/>
   </g>
     <g opacity="1" fill="#0a0a0a">
-    <rect x="126" y="292" width="76" height="76" rx="13.68"/>
-    <rect x="234" y="300.68" width="460" height="24.32" rx="8"/>
-    <rect x="234" y="335" width="290" height="24.32" rx="8"/>
+    <rect x="166" y="414" width="76" height="76" rx="13.68"/>
+    <rect x="274" y="422.68" width="420" height="24.32" rx="8"/>
+    <rect x="274" y="457" width="250" height="24.32" rx="8"/>
   </g>
     <g opacity="1" fill="#0a0a0a">
-    <rect x="126" y="452" width="76" height="76" rx="13.68"/>
-    <rect x="234" y="460.68" width="420" height="24.32" rx="8"/>
-    <rect x="234" y="495" width="250" height="24.32" rx="8"/>
-  </g>
-    <g opacity="1" fill="#0a0a0a">
-    <rect x="126" y="612" width="76" height="76" rx="13.68"/>
-    <rect x="234" y="620.68" width="380" height="24.32" rx="8"/>
-    <rect x="234" y="655" width="210" height="24.32" rx="8"/>
+    <rect x="166" y="614" width="76" height="76" rx="13.68"/>
+    <rect x="274" y="622.68" width="350" height="24.32" rx="8"/>
+    <rect x="274" y="657" width="190" height="24.32" rx="8"/>
   </g>
   </g>
 
