@@ -21,8 +21,7 @@ $include = @(
   "privacy.html",
   "content",
   "styles",
-  "popup",
-  "shared"
+  "popup"
 )
 
 foreach ($item in $include) {
@@ -34,26 +33,18 @@ foreach ($item in $include) {
   Copy-Item -Path $src -Destination $dst -Recurse -Force
 }
 
+$stageShared = Join-Path $stage "shared"
+New-Item -ItemType Directory -Force -Path $stageShared | Out-Null
+foreach ($sharedFile in @("config.js", "site.js")) {
+  Copy-Item -LiteralPath (Join-Path $root "shared/$sharedFile") -Destination (Join-Path $stageShared $sharedFile) -Force
+}
+
 # Only ship icons referenced by the manifest. Design explorations and source
 # artwork make the store archive much larger and substantially slow packaging.
 $stageIcons = Join-Path $stage "icons"
 New-Item -ItemType Directory -Force -Path $stageIcons | Out-Null
 foreach ($icon in @("icon16.png", "icon48.png", "icon128.png")) {
   Copy-Item -LiteralPath (Join-Path $root "icons/$icon") -Destination (Join-Path $stageIcons $icon) -Force
-}
-
-# Store builds must not ship local dev unlock keys
-$stub = Join-Path $root "shared/dev-unlock.local.stub.js"
-$personalStub = Join-Path $root "shared/dev-unlock.personal.stub.js"
-$stagePersonal = Join-Path $stage "shared/dev-unlock.personal.stub.js"
-if (Test-Path $stub) {
-  Copy-Item -Path $stub -Destination (Join-Path $stage "shared/dev-unlock.local.js") -Force -ErrorAction SilentlyContinue
-}
-if (Test-Path $personalStub) {
-  Copy-Item -Path $personalStub -Destination $stagePersonal -Force
-  $personalText = Get-Content -Path $stagePersonal -Raw
-  $personalText = ($personalText -split "`n" | Where-Object { $_ -notmatch 'UNFEED_DEV_LOCAL_CODES\.push' }) -join "`n"
-  Set-Content -Path $stagePersonal -Value $personalText.TrimEnd() -NoNewline
 }
 
 Compress-Archive -Path (Join-Path $stage "*") -DestinationPath $zipPath -Force

@@ -40,9 +40,9 @@ You can still:
 SUPPORTED SITES
 YouTube, Instagram, Facebook, X, Reddit, LinkedIn, TikTok, Pinterest, Substack (substack.com), Threads, Bluesky
 
-FREE VS PRO
-• Free: enable any 3 sites
-• Pro: unlock all sites with a one-time $9 purchase (Polar license key)
+FREE
+• Every supported site is included
+• No account, payment, or license key required
 
 PERMISSIONS
 UnFeed only asks for storage (to save your toggles) and access to the listed social sites so it can hide feeds there. Everything runs locally in your browser.
@@ -62,7 +62,7 @@ English
 
 Capture while UnFeed is ON. Prefer **1280×800**.
 
-1. **Popup** — full site list + Free badge  
+1. **Popup** — full site list + Free badge and bulk controls
 2. **YouTube** — blank home, header/search visible  
 3. **Instagram or X** — blank home, chrome visible  
 4. **TikTok or Facebook** — blank feed, nav visible  

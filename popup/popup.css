@@ -80,18 +80,6 @@ body {
   letter-spacing: 0.01em;
 }
 
-.plan-badge.plan-pro {
-  background: var(--text);
-  color: var(--accent);
-}
-
-.plan-count {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
-}
-
 .signal-block {
   margin-top: 4px;
   margin-bottom: 4px;
@@ -99,10 +87,6 @@ body {
 
 .bulk {
   margin: 12px 0 8px;
-}
-
-.bulk[hidden] {
-  display: none !important;
 }
 
 .bulk-seg {
@@ -215,134 +199,6 @@ body {
   outline-offset: 2px;
 }
 
-.upgrade {
-  margin-top: 14px;
-  padding: 14px;
-  border: 1.5px solid var(--line);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.72);
-  box-shadow: 0 1px 0 rgba(10, 10, 10, 0.04);
-}
-
-.upgrade[hidden] {
-  display: none !important;
-}
-
-.upgrade-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin-bottom: 6px;
-}
-
-.section-icon {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-}
-
-.upgrade-copy {
-  font-size: 11px;
-  color: var(--muted);
-  line-height: 1.4;
-  margin-bottom: 12px;
-}
-
-.buy-btn {
-  display: block;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 10px 14px;
-  border: none;
-  border-radius: 8px;
-  background: var(--accent);
-  color: var(--text);
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: inherit;
-  text-align: center;
-}
-
-.buy-btn:hover {
-  filter: brightness(0.97);
-}
-
-.buy-btn:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-.or-line {
-  margin: 10px 0 8px;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--muted);
-  text-align: center;
-}
-
-.license-row {
-  display: flex;
-  gap: 8px;
-  width: 100%;
-}
-
-.license-row input {
-  flex: 1;
-  min-width: 0;
-  padding: 10px 11px;
-  border-radius: 8px;
-  border: 1.5px solid var(--line);
-  background: rgba(255, 255, 255, 0.55);
-  color: var(--text);
-  font-size: 12px;
-  font-family: inherit;
-}
-
-.license-row input:focus {
-  outline: none;
-  border-color: var(--text);
-}
-
-.license-row button {
-  padding: 10px 14px;
-  border: none;
-  border-radius: 8px;
-  background: var(--text);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: inherit;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.license-row button:hover {
-  filter: brightness(1.15);
-}
-
-.license-msg {
-  margin-top: 8px;
-  font-size: 11px;
-  line-height: 1.4;
-  color: var(--muted);
-  min-height: 0;
-}
-
-.license-msg.warn {
-  color: #9a5b20;
-}
-
-.license-msg.ok {
-  color: #4a7a20;
-}
-
 .popup-links {
   margin-top: 12px;
   padding: 0 0 14px;
@@ -367,17 +223,4 @@ body {
 
 .popup-links a:hover {
   color: var(--text);
-}
-
-/* hide leftover status hints — limit warnings use .row-limit */
-.hint {
-  display: none;
-}
-
-.row-limit {
-  margin: -2px 0 8px;
-  padding: 0 0 0 32px;
-  font-size: 11px;
-  line-height: 1.35;
-  color: #9a5b20;
 }

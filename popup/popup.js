@@ -1,4 +1,4 @@
-/* global UNFEED_SITES, UNFEED_FREE_LIMIT, UNFEED_DEFAULT_ENABLED, unfeedDefaultState, unfeedClampFreeTier, UNFEED_CHECKOUT_URL, UNFEED_POLAR_ORG_ID, UNFEED_POLAR_BENEFIT_ID, UNFEED_POLAR_VALIDATE_URL, UNFEED_LICENSE_REVALIDATE_MS, UNFEED_PRO_PRICE_LABEL, unfeedCheckoutConfigured, unfeedIsDevUnlockCode, SITE_ICONS */
+/* global UNFEED_SITES, unfeedDefaultState, SITE_ICONS */
 
 const SITE_LABELS = {
   blueskyEnabled: "Bluesky",
@@ -19,29 +19,10 @@ const SITES = UNFEED_SITES.map((id) => ({
   label: SITE_LABELS[id] || id,
 }));
 
-const FREE_LIMIT = UNFEED_FREE_LIMIT;
-
-/* SITE_ICONS from popup/site-icons.js (generated via npm run sync:icons) */
-
 const defaults = unfeedDefaultState();
-
 const list = document.getElementById("site-list");
-const planEl = document.getElementById("plan");
-const upgradeEl = document.getElementById("upgrade");
-const licenseInput = document.getElementById("license-input");
-const licenseBtn = document.getElementById("license-btn");
-const licenseMsg = document.getElementById("license-msg");
-const buyBtn = document.getElementById("buy-btn");
-const proPriceEl = document.getElementById("pro-price");
-const bulkEl = document.getElementById("bulk");
 const enableAllBtn = document.getElementById("enable-all");
 const disableAllBtn = document.getElementById("disable-all");
-
-let rowLimitTimer = null;
-
-if (proPriceEl && typeof UNFEED_PRO_PRICE_LABEL === "string") {
-  proPriceEl.textContent = UNFEED_PRO_PRICE_LABEL;
-}
 
 const URL_PATTERNS = {
   youtubeEnabled: ["*://www.youtube.com/*", "*://youtube.com/*", "*://m.youtube.com/*"],
@@ -81,14 +62,6 @@ const URL_PATTERNS = {
   blueskyEnabled: ["*://bsky.app/*", "*://www.bsky.app/*"],
 };
 
-function hintFor(enabled) {
-  return enabled ? "Feed removed" : "Feed visible";
-}
-
-function countEnabled(state) {
-  return SITES.reduce((n, s) => n + (state[s.id] ? 1 : 0), 0);
-}
-
 function rowHtml(site, enabled) {
   const icon = SITE_ICONS[site.id] || "";
   return `
@@ -96,13 +69,13 @@ function rowHtml(site, enabled) {
       <span class="row-left">
         ${icon}
         <span class="platform">${site.label}</span>
-        <span class="hint ${enabled ? "" : "is-off"}" data-hint-for="${site.id}">${hintFor(enabled)}</span>
       </span>
       <input
         type="checkbox"
         id="${site.id}"
         class="toggle"
         data-storage-key="${site.id}"
+        aria-label="Remove the ${site.label} feed"
         ${enabled ? "checked" : ""}
         role="switch"
       />
@@ -110,22 +83,10 @@ function rowHtml(site, enabled) {
   `;
 }
 
-function renderPlan(state) {
-  if (state.proUnlocked) {
-    planEl.innerHTML = `<span class="plan-badge plan-pro">Pro</span>`;
-    upgradeEl.hidden = true;
-    if (bulkEl) bulkEl.hidden = false;
-    return;
-  }
-  const n = countEnabled(state);
-  planEl.innerHTML = `<span class="plan-badge">Free</span><span class="plan-count">${n} / ${FREE_LIMIT}</span>`;
-  upgradeEl.hidden = false;
-  if (bulkEl) bulkEl.hidden = true;
-}
-
 async function broadcast(storageKey, enabled) {
   const urls = URL_PATTERNS[storageKey];
   if (!urls) return;
+
   const tabs = await chrome.tabs.query({ url: urls });
   for (const tab of tabs) {
     if (tab.id == null) continue;
@@ -137,256 +98,51 @@ async function broadcast(storageKey, enabled) {
         sites: { [storageKey]: enabled },
       });
     } catch {
-      // Content script not injected yet.
+      // Content script may not be injected yet.
     }
   }
 }
 
 async function broadcastMany(state) {
-  for (const site of SITES) {
-    await broadcast(site.id, !!state[site.id]);
-  }
-}
-
-function clearRowLimits() {
-  list.querySelectorAll(".row-limit").forEach((el) => el.remove());
-  if (rowLimitTimer) {
-    clearTimeout(rowLimitTimer);
-    rowLimitTimer = null;
-  }
-}
-
-function showRowLimit(toggle) {
-  clearRowLimits();
-  const row = toggle.closest(".row");
-  if (!row) return;
-  const msg = document.createElement("p");
-  msg.className = "row-limit";
-  msg.textContent = `Free includes ${FREE_LIMIT} sites. Turn one off, or unlock Pro.`;
-  row.insertAdjacentElement("afterend", msg);
-  rowLimitTimer = setTimeout(() => {
-    msg.remove();
-    rowLimitTimer = null;
-  }, 4000);
+  await Promise.all(SITES.map((site) => broadcast(site.id, !!state[site.id])));
 }
 
 function wireToggles() {
   list.querySelectorAll(".toggle").forEach((toggle) => {
     toggle.addEventListener("change", async () => {
       const key = toggle.dataset.storageKey;
-      const wantOn = toggle.checked;
-      const current = await chrome.storage.sync.get(defaults);
-
-      if (wantOn && !current.proUnlocked) {
-        const othersOn = countEnabled({ ...current, [key]: false });
-        if (othersOn >= FREE_LIMIT) {
-          toggle.checked = false;
-          showRowLimit(toggle);
-          upgradeEl.hidden = false;
-          return;
-        }
-      }
-
-      clearRowLimits();
-      await chrome.storage.sync.set({ [key]: wantOn });
-      const hint = list.querySelector(`[data-hint-for="${key}"]`);
-      if (hint) {
-        hint.textContent = hintFor(wantOn);
-        hint.classList.toggle("is-off", !wantOn);
-      }
-      renderPlan({ ...current, [key]: wantOn });
-      licenseMsg.textContent = "";
-      licenseMsg.className = "license-msg";
-      await broadcast(key, wantOn);
+      const enabled = toggle.checked;
+      await chrome.storage.sync.set({ [key]: enabled });
+      await broadcast(key, enabled);
     });
   });
-}
-
-async function unlockPro(licenseKey) {
-  await chrome.storage.sync.set({
-    proUnlocked: true,
-    licenseKey: licenseKey || "",
-    licenseValidatedAt: Date.now(),
-  });
-  const state = await chrome.storage.sync.get(defaults);
-  renderPlan({ ...state, proUnlocked: true });
-  licenseMsg.textContent = "Pro unlocked. Enable every site you want.";
-  licenseMsg.className = "license-msg ok";
-  licenseInput.value = "";
-}
-
-async function validatePolarLicense(key) {
-  if (!UNFEED_POLAR_ORG_ID) {
-    return { ok: false, reason: "not_configured" };
-  }
-
-  const body = {
-    key,
-    organization_id: UNFEED_POLAR_ORG_ID,
-  };
-  if (UNFEED_POLAR_BENEFIT_ID) {
-    body.benefit_id = UNFEED_POLAR_BENEFIT_ID;
-  }
-
-  try {
-    const res = await fetch(UNFEED_POLAR_VALIDATE_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-
-    if (res.status === 404) {
-      return { ok: false, reason: "invalid" };
-    }
-    if (!res.ok) {
-      return { ok: false, reason: "network" };
-    }
-
-    const data = await res.json();
-    if (data?.status === "granted") {
-      return { ok: true };
-    }
-    return { ok: false, reason: "invalid" };
-  } catch {
-    return { ok: false, reason: "network" };
-  }
-}
-
-async function refreshProEntitlement(state) {
-  if (!state.proUnlocked) return state;
-
-  const validatedAt = Number(state.licenseValidatedAt) || 0;
-  if (Date.now() - validatedAt < UNFEED_LICENSE_REVALIDATE_MS) return state;
-
-  // Preserve the local QA workflow; store builds strip personal unlock codes.
-  if (unfeedIsDevUnlockCode(state.licenseKey)) {
-    const refreshed = { ...state, licenseValidatedAt: Date.now() };
-    await chrome.storage.sync.set({ licenseValidatedAt: refreshed.licenseValidatedAt });
-    return refreshed;
-  }
-
-  const result = state.licenseKey
-    ? await validatePolarLicense(state.licenseKey)
-    : { ok: false, reason: "invalid" };
-
-  // An offline or temporary Polar failure should not lock out a paying user.
-  if (result.reason === "network") return state;
-  if (result.ok) {
-    const refreshed = { ...state, licenseValidatedAt: Date.now() };
-    await chrome.storage.sync.set({ licenseValidatedAt: refreshed.licenseValidatedAt });
-    return refreshed;
-  }
-
-  const locked = { ...state, proUnlocked: false, licenseKey: "", licenseValidatedAt: 0 };
-  const { state: clamped } = unfeedClampFreeTier(locked);
-  const patch = {
-    proUnlocked: false,
-    licenseKey: "",
-    licenseValidatedAt: 0,
-    ...Object.fromEntries(SITES.map((site) => [site.id, !!clamped[site.id]])),
-  };
-  await chrome.storage.sync.set(patch);
-  await broadcastMany(clamped);
-  return clamped;
 }
 
 async function setAllSites(enabled) {
-  const current = await chrome.storage.sync.get(defaults);
-  if (!current.proUnlocked) return;
-
-  const patch = Object.fromEntries(SITES.map((s) => [s.id, enabled]));
+  const patch = Object.fromEntries(SITES.map((site) => [site.id, enabled]));
   await chrome.storage.sync.set(patch);
-  clearRowLimits();
   list.innerHTML = SITES.map((site) => rowHtml(site, enabled)).join("");
-  renderPlan({ ...current, ...patch });
   wireToggles();
-  await broadcastMany({ ...current, ...patch });
+  await broadcastMany(patch);
 }
 
-enableAllBtn?.addEventListener("click", () => setAllSites(true));
-disableAllBtn?.addEventListener("click", () => setAllSites(false));
-
-buyBtn?.addEventListener("click", () => {
-  if (!UNFEED_CHECKOUT_URL) {
-    licenseMsg.textContent =
-      "Checkout isn’t configured yet. See docs/POLAR.md.";
-    licenseMsg.className = "license-msg warn";
-    return;
-  }
-  chrome.tabs.create({ url: UNFEED_CHECKOUT_URL });
-});
-
-licenseBtn.addEventListener("click", async () => {
-  const code = licenseInput.value.trim();
-  if (!code) {
-    licenseMsg.textContent = "Enter a license key.";
-    licenseMsg.className = "license-msg warn";
-    return;
-  }
-
-  if (unfeedIsDevUnlockCode(code)) {
-    await unlockPro(code);
-    return;
-  }
-
-  licenseBtn.disabled = true;
-  licenseMsg.textContent = "Checking license…";
-  licenseMsg.className = "license-msg";
-
-  const result = await validatePolarLicense(code);
-  licenseBtn.disabled = false;
-
-  if (result.ok) {
-    await unlockPro(code);
-    return;
-  }
-
-  if (result.reason === "not_configured") {
-    licenseMsg.textContent =
-      "Polar isn’t configured yet. Set checkout + org ID (docs/POLAR.md).";
-  } else if (result.reason === "network") {
-    licenseMsg.textContent =
-      "Couldn’t reach Polar. Check your connection and try again.";
-  } else {
-    licenseMsg.textContent = "That license key isn’t valid.";
-  }
-  licenseMsg.className = "license-msg warn";
-});
-
-licenseInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") licenseBtn.click();
-});
+enableAllBtn.addEventListener("click", () => setAllSites(true));
+disableAllBtn.addEventListener("click", () => setAllSites(false));
 
 async function load() {
-  let stored = await chrome.storage.sync.get(defaults);
-  stored = await refreshProEntitlement(stored);
-  const { state, changed } = unfeedClampFreeTier(stored);
-  stored = state;
-
-  if (changed) {
-    const patch = Object.fromEntries(SITES.map((s) => [s.id, !!stored[s.id]]));
-    await chrome.storage.sync.set(patch);
-    await broadcastMany(stored);
-  }
-
+  const stored = await chrome.storage.sync.get(defaults);
   list.innerHTML = SITES.map((site) => rowHtml(site, !!stored[site.id])).join("");
-  renderPlan(stored);
   wireToggles();
-
-  if (buyBtn && !unfeedCheckoutConfigured()) {
-    buyBtn.title = "Add Polar checkout URL in shared/config.js";
-  }
 }
 
 load();
 
-document.getElementById("privacy-link")?.addEventListener("click", (e) => {
-  e.preventDefault();
-  const url = chrome.runtime.getURL("privacy.html");
-  chrome.tabs.create({ url });
+document.getElementById("privacy-link")?.addEventListener("click", (event) => {
+  event.preventDefault();
+  chrome.tabs.create({ url: chrome.runtime.getURL("privacy.html") });
 });
 
-document.getElementById("site-link")?.addEventListener("click", (e) => {
-  e.preventDefault();
+document.getElementById("site-link")?.addEventListener("click", (event) => {
+  event.preventDefault();
   chrome.tabs.create({ url: "https://unfeed.dev/" });
 });

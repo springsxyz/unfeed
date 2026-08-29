@@ -25,7 +25,7 @@ Respect `prefers-reduced-motion`.
 
 ## Surfaces
 - Landing: paper grain + abstract feed-blur cut into silence; brand wordmark hero; lime CTA
-- Popup: paper, bold UnFeed + lime Free badge (text only), site list with icons, black Unlock, centered Privacy
+- Popup: paper, bold UnFeed + lime Free badge, all-site controls, centered Privacy
 
 ## Extension icon (locked)
 **D3 framed wipe** — transparent outer field, ink rounded frame, feed disappearing inside, lime cut border-to-border.

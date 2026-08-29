@@ -10,28 +10,26 @@ function loadConfig() {
   return context.globalThis;
 }
 
-test("default state enables exactly the three advertised free sites", () => {
+test("default state starts with Instagram, X, and YouTube enabled", () => {
   const config = loadConfig();
   const state = config.unfeedDefaultState();
   const enabled = config.UNFEED_SITES.filter((key) => state[key]);
   assert.deepEqual(Array.from(enabled), ["instagramEnabled", "xEnabled", "youtubeEnabled"]);
 });
 
-test("free tier clamp never leaves more than three sites enabled", () => {
+test("every supported site is available in the free state", () => {
   const config = loadConfig();
   const state = config.unfeedDefaultState();
-  for (const key of config.UNFEED_SITES) state[key] = true;
-  const result = config.unfeedClampFreeTier(state);
-  assert.equal(config.UNFEED_SITES.filter((key) => result.state[key]).length, 3);
-  assert.equal(result.changed, true);
+  assert.equal(config.UNFEED_SITES.length, 11);
+  for (const key of config.UNFEED_SITES) {
+    assert.equal(typeof state[key], "boolean");
+  }
 });
 
-test("Pro state is not clamped", () => {
+test("configuration contains no billing or license state", () => {
   const config = loadConfig();
   const state = config.unfeedDefaultState();
-  state.proUnlocked = true;
-  for (const key of config.UNFEED_SITES) state[key] = true;
-  const result = config.unfeedClampFreeTier(state);
-  assert.equal(config.UNFEED_SITES.filter((key) => result.state[key]).length, 11);
-  assert.equal(result.changed, false);
+  assert.equal("proUnlocked" in state, false);
+  assert.equal("licenseKey" in state, false);
+  assert.equal("unfeedClampFreeTier" in config, false);
 });

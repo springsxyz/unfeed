@@ -10,13 +10,13 @@
     <header class="header">
       <div class="brand-row">
         <div class="brand">UnFeed</div>
-        <div class="plan" id="plan"></div>
+        <div class="plan"><span class="plan-badge">Free</span></div>
       </div>
       <p class="tagline">Remove the feed. Keep the app.</p>
     </header>
 
     <section class="signal-block" aria-label="Sites">
-      <div class="bulk" id="bulk" hidden>
+      <div class="bulk" id="bulk">
         <div class="bulk-seg" role="group" aria-label="Bulk site actions">
           <button type="button" id="enable-all" class="bulk-btn">Enable all</button>
           <button type="button" id="disable-all" class="bulk-btn">Disable all</button>
@@ -27,35 +27,6 @@
       </main>
     </section>
 
-    <section class="upgrade" id="upgrade" hidden>
-      <p class="upgrade-title">
-        <svg class="section-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path
-            fill="currentColor"
-            d="M17 8h-1V6a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2h-4V6zm7 14H7V10h10v10z"
-          />
-        </svg>
-        Unlock all sites
-      </p>
-      <p class="upgrade-copy">
-        Free includes any 3 sites. Pro unlocks every network —
-        <span id="pro-price">$9</span> one-time unlock.
-      </p>
-      <button type="button" id="buy-btn" class="buy-btn">Buy Pro</button>
-      <p class="or-line" aria-hidden="true">or enter a key</p>
-      <div class="license-row">
-        <input
-          id="license-input"
-          type="text"
-          placeholder="License key"
-          autocomplete="off"
-          spellcheck="false"
-        />
-        <button type="button" id="license-btn">Unlock</button>
-      </div>
-      <p class="license-msg" id="license-msg"></p>
-    </section>
-
     <div class="end-space" aria-hidden="true"></div>
 
     <footer class="popup-links">
@@ -64,9 +35,6 @@
       <a href="#" id="privacy-link">Privacy</a>
     </footer>
 
-    <script src="../shared/dev-unlock.local.stub.js"></script>
-    <script src="../shared/dev-unlock.personal.stub.js"></script>
-    <script src="../shared/dev-unlock.js"></script>
     <script src="../shared/config.js"></script>
     <script src="site-icons.js"></script>
     <script src="popup.js"></script>

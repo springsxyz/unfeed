@@ -1,11 +1,11 @@
 # UnFeed — pre-publish QA
 
-Last updated: 2026-07-17 · Extension version target: **1.0.2**
+Last updated: 2026-08-29 · Extension version target: **1.1.0**
 
 ## How to smoke-test
 
 1. `chrome://extensions` → Reload UnFeed  
-2. For each site: enable in popup (respect free 3 / use a dev or Polar Pro key for full QA)  
+2. For each site: enable it in the popup
 3. Hard-refresh the site (Ctrl+Shift+R)  
 4. Check home feed is blank; search / profile / direct link still work  
 5. Toggle OFF → feed returns (no manual reload preferred)
@@ -26,20 +26,17 @@ Last updated: 2026-07-17 · Extension version target: **1.0.2**
 | Threads | OK | Feed posts hidden; composer/chrome kept |
 | Bluesky | OK | Feed removal verified on `bsky.app` |
 
-## Free tier
+## Free access
 
 - [ ] Default: Instagram, YouTube, X ON  
-- [ ] Enabling a 4th site blocked until one is turned off  
-- [ ] Pro key unlocks all (dev key in `shared/dev-unlock.personal.stub.js`; Polar key after checkout)
-- [ ] Buy Pro opens Polar checkout when configured
+- [ ] Any combination of all eleven supported sites can be enabled
+- [ ] Enable all and Disable all update open tabs immediately
 
 ## Known limitations (OK for v1)
 
 - Social DOMs change often — expect occasional selector breakage  
 - TikTok/Threads “working” = empty main column, not a custom UI  
 - No Firefox/Safari yet  
-- Pro checkout via Polar (configure `shared/config.js` — see docs/POLAR.md)
-- Dev unlock: add a code in `shared/dev-unlock.personal.stub.js` (stripped from store zip)
 
 ## Do not advertise until verified
 

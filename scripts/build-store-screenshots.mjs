@@ -97,48 +97,13 @@ async function fitPopup(sourcePath, width, height) {
 }
 
 async function buildControl() {
-  if (!args.free || !args.pro) {
-    throw new Error("Missing --free=path and/or --pro=path");
+  if (!args.popup) {
+    throw new Error("Missing --popup=path");
   }
 
   const panelW = 352;
   const panelH = 660;
-
-  let freeSource = path.resolve(args.free);
-  if (args["free-upgrade"]) {
-    const listH = 380;
-    const upgradeH = panelH - listH;
-    const cleanList = await cleanPopup(args.free);
-    const cleanUpgrade = await cleanPopup(args["free-upgrade"]);
-    const list = await sharp(cleanList)
-      .resize(panelW, listH, { fit: "cover", position: "top" })
-      .png()
-      .toBuffer();
-    const upgrade = await sharp(cleanUpgrade)
-      .resize(panelW, upgradeH, { fit: "cover", position: "top" })
-      .png()
-      .toBuffer();
-    freeSource = await sharp({
-      create: {
-        width: panelW,
-        height: panelH,
-        channels: 4,
-        background: { r: 255, g: 255, b: 255, alpha: 1 },
-      },
-    })
-      .composite([
-        { input: list, left: 0, top: 0 },
-        { input: upgrade, left: 0, top: listH },
-      ])
-      .png()
-      .toBuffer();
-  }
-
-  const freeFit =
-    typeof freeSource === "string"
-      ? await fitPopup(freeSource, panelW, panelH)
-      : await maskPanel(freeSource, panelW, panelH);
-  const proFit = await fitPopup(args.pro, panelW, panelH);
+  const popupFit = await fitPopup(args.popup, panelW, panelH);
 
   const frame = Buffer.from(`
     <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800">
@@ -150,14 +115,11 @@ async function buildControl() {
       <rect width="1280" height="800" fill="#f4f2ec"/>
       <text x="40" y="48" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#0a0a0a">UnFeed</text>
       <rect x="40" y="60" width="78" height="6" rx="3" fill="#c8e046"/>
-      <text x="640" y="48" text-anchor="middle" font-family="Arial, sans-serif" font-size="35" font-weight="700" letter-spacing="-1.1" fill="#0a0a0a">Free for 3 sites. Pro for every network.</text>
+      <text x="640" y="48" text-anchor="middle" font-family="Arial, sans-serif" font-size="35" font-weight="700" letter-spacing="-1.1" fill="#0a0a0a">Free for every supported site.</text>
       <text x="640" y="78" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#595959">Remove the feed. Keep the app.</text>
 
-      <text x="336" y="117" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0a0a0a">FREE</text>
-      <text x="944" y="117" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0a0a0a">PRO</text>
-
-      <rect x="160" y="128" width="352" height="660" rx="16" fill="#ffffff" stroke="#0a0a0a" stroke-width="2" filter="url(#shadow)"/>
-      <rect x="768" y="128" width="352" height="660" rx="16" fill="#ffffff" stroke="#0a0a0a" stroke-width="2" filter="url(#shadow)"/>
+      <text x="640" y="117" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0a0a0a">ALL SITES INCLUDED</text>
+      <rect x="464" y="128" width="352" height="660" rx="16" fill="#ffffff" stroke="#0a0a0a" stroke-width="2" filter="url(#shadow)"/>
     </svg>
   `);
 
@@ -171,8 +133,7 @@ async function buildControl() {
   })
     .composite([
       { input: frame, left: 0, top: 0 },
-      { input: freeFit, left: 160, top: 128 },
-      { input: proFit, left: 768, top: 128 },
+      { input: popupFit, left: 464, top: 128 },
       { input: icon, left: 1184, top: 20 },
     ])
     .png()
