@@ -1,25 +1,31 @@
 /**
- * UnFeed extension icon — locked D3 wipe on ink tile.
- * Full-bleed ink plate (Chrome masks to squircle) so it doesn’t float on white UI.
+ * Generate the active UnFeed extension icon sizes from the browser/feed-cut
+ * bitmap master.
+ *
  * Run: npm run icons
  */
-import { copyFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { buildAll, setActive } from "./explore-feed-disappear.mjs";
+import { copyFileSync, unlinkSync } from "node:fs";
+import sharp from "sharp";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const root = join(__dirname, "..");
+const scriptDir = dirname(fileURLToPath(import.meta.url));
+const root = join(scriptDir, "..");
+const iconsDir = join(root, "icons");
+const master = join(iconsDir, "unfeed-icon-master.png");
 
-await buildAll();
-await setActive("d3");
+for (const size of [16, 48, 128]) {
+  const output = join(iconsDir, `icon${size}.png`);
+  const temporary = `${output}.next`;
+  await sharp(master)
+    .resize(size, size, {
+      fit: "fill",
+      kernel: sharp.kernel.lanczos3,
+    })
+    .png({ compressionLevel: 9, palette: size <= 48 })
+    .toFile(temporary);
+  copyFileSync(temporary, output);
+  unlinkSync(temporary);
+}
 
-// Keep exploration labeled final
-const explore = join(root, "icons", "exploration");
-mkdirSync(explore, { recursive: true });
-copyFileSync(
-  join(root, "icons", "packs", "d3", "icon128.png"),
-  join(explore, "FINAL-d3-ink-tile-128.png")
-);
-
-console.log("Locked: D3 wipe on ink tile → icons/icon*.png");
+console.log("Generated browser/feed-cut icon → icons/icon16.png, icon48.png, icon128.png");

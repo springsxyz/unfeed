@@ -143,6 +143,15 @@ window.UnFeed.bindSite = function bindSite({
     if (STATE.enabled) onEnable?.(STATE);
   }
 
+  // Content scripts run in an isolated world, so patching history alone cannot
+  // reliably observe SPA navigation initiated by the page. Polling the URL is
+  // cheap and deterministic, without relying on a DOM mutation side effect.
+  const routeTimer = setInterval(() => {
+    const next = location.pathname + location.search;
+    if (next !== STATE.path) onRouteMaybeChanged();
+  }, 500);
+  window.addEventListener("pagehide", () => clearInterval(routeTimer), { once: true });
+
   chrome.storage.sync.get([storageKey], (data) => {
     setEnabled(data[storageKey] === true);
   });
@@ -185,9 +194,10 @@ window.UnFeed.bindSite = function bindSite({
     if (!STATE.enabled) return;
     clearTimeout(tick);
     tick = setTimeout(() => {
-      onRouteMaybeChanged();
-      onMutation?.(STATE);
-    }, 120);
+      const next = location.pathname + location.search;
+      if (next !== STATE.path) onRouteMaybeChanged();
+      else onMutation?.(STATE);
+    }, 200);
   });
 
   const startObserver = () => {

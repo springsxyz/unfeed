@@ -22,8 +22,7 @@ $include = @(
   "content",
   "styles",
   "popup",
-  "shared",
-  "icons"
+  "shared"
 )
 
 foreach ($item in $include) {
@@ -33,6 +32,14 @@ foreach ($item in $include) {
     throw "Missing required path: $item"
   }
   Copy-Item -Path $src -Destination $dst -Recurse -Force
+}
+
+# Only ship icons referenced by the manifest. Design explorations and source
+# artwork make the store archive much larger and substantially slow packaging.
+$stageIcons = Join-Path $stage "icons"
+New-Item -ItemType Directory -Force -Path $stageIcons | Out-Null
+foreach ($icon in @("icon16.png", "icon48.png", "icon128.png")) {
+  Copy-Item -LiteralPath (Join-Path $root "icons/$icon") -Destination (Join-Path $stageIcons $icon) -Force
 }
 
 # Store builds must not ship local dev unlock keys

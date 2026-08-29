@@ -24,7 +24,7 @@ Last updated: 2026-07-17 · Extension version target: **1.0.2**
 | Facebook | OK | Needs JS-injected CSS (fragile DOM) |
 | TikTok | OK | For You blank; search/profiles/links keep |
 | Threads | OK | Feed posts hidden; composer/chrome kept |
-| Bluesky | Untested / fragile | First pass; verify `bsky.app` before marketing it |
+| Bluesky | OK | Feed removal verified on `bsky.app` |
 
 ## Free tier
 
@@ -43,5 +43,4 @@ Last updated: 2026-07-17 · Extension version target: **1.0.2**
 
 ## Do not advertise until verified
 
-- Bluesky (confirm once after reload)  
 - Any site you personally don’t use logged-in

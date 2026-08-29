@@ -29,9 +29,10 @@ const UNFEED_POLAR_ORG_ID = "fa6be024-1152-4b4a-b9b0-8c4c8db5c079";
 const UNFEED_POLAR_BENEFIT_ID = "4fa79cee-44c2-4dce-a24f-4cb31216700a";
 const UNFEED_POLAR_VALIDATE_URL =
   "https://api.polar.sh/v1/customer-portal/license-keys/validate";
+const UNFEED_LICENSE_REVALIDATE_MS = 7 * 24 * 60 * 60 * 1000;
 
 function unfeedDefaultState() {
-  const state = { proUnlocked: false, licenseKey: "" };
+  const state = { proUnlocked: false, licenseKey: "", licenseValidatedAt: 0 };
   for (const key of UNFEED_SITES) {
     state[key] = UNFEED_DEFAULT_ENABLED.includes(key);
   }
@@ -84,6 +85,7 @@ if (typeof globalThis !== "undefined") {
   globalThis.UNFEED_POLAR_ORG_ID = UNFEED_POLAR_ORG_ID;
   globalThis.UNFEED_POLAR_BENEFIT_ID = UNFEED_POLAR_BENEFIT_ID;
   globalThis.UNFEED_POLAR_VALIDATE_URL = UNFEED_POLAR_VALIDATE_URL;
+  globalThis.UNFEED_LICENSE_REVALIDATE_MS = UNFEED_LICENSE_REVALIDATE_MS;
   globalThis.unfeedDefaultState = unfeedDefaultState;
   globalThis.unfeedClampFreeTier = unfeedClampFreeTier;
   globalThis.unfeedCheckoutConfigured = unfeedCheckoutConfigured;

@@ -2,18 +2,21 @@
   const STYLE_ID = "unfeed-fb-injected";
   const HIDDEN = "data-unfeed-fb-hidden";
 
-  // Survives FB wiping/rebuilding stylesheets better than extension CSS alone
+  // Survives FB wiping/rebuilding stylesheets better than extension CSS alone.
+  // Scope aggressively to home/watch/reels — profiles use role=feed too.
   const ACTIVE_CSS = `
-html.unfeed-fb-on div[role="feed"],
-html.unfeed-fb-on [aria-label*="News Feed" i],
-html.unfeed-fb-on [aria-label*="Newsfeed" i],
-html.unfeed-fb-on [aria-label*="feed de noticias" i],
-html.unfeed-fb-on [aria-label*="Feed de noticias" i],
-html.unfeed-fb-on [data-pagelet*="Feed" i],
-html.unfeed-fb-on [data-pagelet*="Stories" i],
+html.unfeed-fb-on[data-unfeed-surface="home"] div[role="feed"],
+html.unfeed-fb-on[data-unfeed-surface="home"] [aria-label*="News Feed" i],
+html.unfeed-fb-on[data-unfeed-surface="home"] [aria-label*="Newsfeed" i],
+html.unfeed-fb-on[data-unfeed-surface="home"] [aria-label*="feed de noticias" i],
+html.unfeed-fb-on[data-unfeed-surface="home"] [aria-label*="Feed de noticias" i],
+html.unfeed-fb-on[data-unfeed-surface="home"] [data-pagelet*="Feed" i],
+html.unfeed-fb-on[data-unfeed-surface="home"] [data-pagelet*="Stories" i],
 html.unfeed-fb-on[data-unfeed-surface="home"] [role="navigation"] ~ [role="main"],
 html.unfeed-fb-on[data-unfeed-surface="home"] [role="main"] [role="article"],
+html.unfeed-fb-on[data-unfeed-surface="watch"] div[role="feed"],
 html.unfeed-fb-on[data-unfeed-surface="watch"] [role="main"] [role="article"],
+html.unfeed-fb-on[data-unfeed-surface="reels"] div[role="feed"],
 html.unfeed-fb-on[data-unfeed-surface="reels"] [role="main"] [role="article"] {
   display: none !important;
   visibility: hidden !important;
@@ -36,8 +39,46 @@ html.unfeed-fb-on[data-unfeed-surface="reels"] body {
 }
 `;
 
+  const RESERVED = new Set([
+    "about",
+    "ads",
+    "bookmarks",
+    "friends",
+    "events",
+    "fundraisers",
+    "gaming",
+    "groups",
+    "help",
+    "home",
+    "jobs",
+    "latest",
+    "login",
+    "marketplace",
+    "me",
+    "memories",
+    "menu",
+    "messages",
+    "notifications",
+    "pages",
+    "photo",
+    "photos",
+    "policies",
+    "privacy",
+    "reel",
+    "reels",
+    "saved",
+    "search",
+    "settings",
+    "share",
+    "stories",
+    "story",
+    "video",
+    "videos",
+    "watch",
+  ]);
+
   function getSurface(pathname) {
-    const path = pathname || "/";
+    const path = (pathname || "/").replace(/\/+$/, "") || "/";
     const search = location.search || "";
 
     if (path.startsWith("/messages") || path.startsWith("/marketplace/item")) {
@@ -69,7 +110,11 @@ html.unfeed-fb-on[data-unfeed-surface="reels"] body {
     if (path.startsWith("/gaming") || path === "/games") return "gaming";
     if (path.startsWith("/groups/")) return "group";
     if (path.startsWith("/profile.php") || path.startsWith("/people/")) return "profile";
-    if (/^\/[A-Za-z0-9.]+$/.test(path)) return "profile";
+
+    // Vanity profile: /name or /name/about|/photos|...
+    const vanity = path.match(/^\/([A-Za-z0-9.]+)(?:\/(about|photos|videos|reels|friends|map|reviews|mentions|music|books|movies|tv|sports|likes|events|check-ins|did-you-know|community|followers|following)?)?$/i);
+    if (vanity && !RESERVED.has(vanity[1].toLowerCase())) return "profile";
+
     return "other";
   }
 
@@ -96,6 +141,9 @@ html.unfeed-fb-on[data-unfeed-surface="reels"] body {
     const hideMain =
       surface === "home" || surface === "watch" || surface === "reels";
 
+    // Profiles/posts/groups also use role=feed — never blank those.
+    if (!hideMain) return;
+
     const selectors = [
       'div[role="feed"]',
       '[data-pagelet*="Feed"]',
@@ -120,26 +168,24 @@ html.unfeed-fb-on[data-unfeed-surface="reels"] body {
       }
     }
 
-    if (hideMain) {
-      document.querySelectorAll('[role="main"]').forEach((main) => {
-        // Prefer hiding feed children over nuking composer if we can find a feed
-        const feed = main.querySelector('[role="feed"]');
-        if (feed) {
-          feed.style.setProperty("display", "none", "important");
-          feed.setAttribute(HIDDEN, "1");
-          main.querySelectorAll('[role="article"]').forEach((a) => {
-            a.style.setProperty("display", "none", "important");
-            a.setAttribute(HIDDEN, "1");
-          });
-          return;
-        }
-        // No role=feed — hide main column (NFE approach for new FB)
-        if (surface === "home") {
-          main.style.setProperty("display", "none", "important");
-          main.setAttribute(HIDDEN, "1");
-        }
-      });
-    }
+    document.querySelectorAll('[role="main"]').forEach((main) => {
+      // Prefer hiding feed children over nuking composer if we can find a feed
+      const feed = main.querySelector('[role="feed"]');
+      if (feed) {
+        feed.style.setProperty("display", "none", "important");
+        feed.setAttribute(HIDDEN, "1");
+        main.querySelectorAll('[role="article"]').forEach((a) => {
+          a.style.setProperty("display", "none", "important");
+          a.setAttribute(HIDDEN, "1");
+        });
+        return;
+      }
+      // No role=feed — hide main column (NFE approach for new FB)
+      if (surface === "home") {
+        main.style.setProperty("display", "none", "important");
+        main.setAttribute(HIDDEN, "1");
+      }
+    });
   }
 
   function restore() {
@@ -152,15 +198,23 @@ html.unfeed-fb-on[data-unfeed-surface="reels"] body {
 
   function apply(state) {
     ensureInjectedCss(state.enabled);
-    if (state.enabled) hideMatches();
-    else restore();
+    if (!state.enabled) {
+      restore();
+      return;
+    }
+    const surface = document.documentElement.dataset.unfeedSurface;
+    if (surface !== "home" && surface !== "watch" && surface !== "reels") {
+      restore();
+      return;
+    }
+    hideMatches();
   }
 
   UnFeed.bindSite({
     storageKey: "facebookEnabled",
     className: "unfeed-fb-on",
     getSurface,
-    scrollLockSurfaces: ["home", "watch", "reels", "gaming", "marketplace"],
+    scrollLockSurfaces: ["home", "watch", "reels"],
     onEnable: apply,
     onDisable: apply,
     onMutation: apply,

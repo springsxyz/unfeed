@@ -23,7 +23,7 @@ const UNFEED_DEFAULT_ENABLED = [
 ];
 
 function unfeedDefaultState() {
-  const state = { proUnlocked: false, licenseKey: "" };
+  const state = { proUnlocked: false, licenseKey: "", licenseValidatedAt: 0 };
   for (const key of UNFEED_SITES) {
     state[key] = UNFEED_DEFAULT_ENABLED.includes(key);
   }

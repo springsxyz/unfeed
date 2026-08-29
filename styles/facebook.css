@@ -1,6 +1,8 @@
 /* Facebook — backup rules; primary hide is JS-injected (see content/facebook.js) */
 
-html.unfeed-fb-on div[role="feed"] {
+html.unfeed-fb-on[data-unfeed-surface="home"] div[role="feed"],
+html.unfeed-fb-on[data-unfeed-surface="watch"] div[role="feed"],
+html.unfeed-fb-on[data-unfeed-surface="reels"] div[role="feed"] {
   display: none !important;
 }
 

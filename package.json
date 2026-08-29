@@ -12,6 +12,7 @@
     "icons:d3": "node scripts/set-icon.mjs d3",
     "icons:d4": "node scripts/set-icon.mjs d4",
     "pack": "powershell -ExecutionPolicy Bypass -File scripts/pack-extension.ps1",
+    "test": "node --test tests/*.test.js",
     "postinstall": "npm run sync:icons"
   },
   "repository": {

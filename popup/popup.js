@@ -1,4 +1,4 @@
-/* global UNFEED_SITES, UNFEED_FREE_LIMIT, UNFEED_DEFAULT_ENABLED, unfeedDefaultState, unfeedClampFreeTier, UNFEED_CHECKOUT_URL, UNFEED_POLAR_ORG_ID, UNFEED_POLAR_BENEFIT_ID, UNFEED_POLAR_VALIDATE_URL, UNFEED_PRO_PRICE_LABEL, unfeedCheckoutConfigured, unfeedIsDevUnlockCode, SITE_ICONS */
+/* global UNFEED_SITES, UNFEED_FREE_LIMIT, UNFEED_DEFAULT_ENABLED, unfeedDefaultState, unfeedClampFreeTier, UNFEED_CHECKOUT_URL, UNFEED_POLAR_ORG_ID, UNFEED_POLAR_BENEFIT_ID, UNFEED_POLAR_VALIDATE_URL, UNFEED_LICENSE_REVALIDATE_MS, UNFEED_PRO_PRICE_LABEL, unfeedCheckoutConfigured, unfeedIsDevUnlockCode, SITE_ICONS */
 
 const SITE_LABELS = {
   blueskyEnabled: "Bluesky",
@@ -206,6 +206,7 @@ async function unlockPro(licenseKey) {
   await chrome.storage.sync.set({
     proUnlocked: true,
     licenseKey: licenseKey || "",
+    licenseValidatedAt: Date.now(),
   });
   const state = await chrome.storage.sync.get(defaults);
   renderPlan({ ...state, proUnlocked: true });
@@ -249,6 +250,44 @@ async function validatePolarLicense(key) {
   } catch {
     return { ok: false, reason: "network" };
   }
+}
+
+async function refreshProEntitlement(state) {
+  if (!state.proUnlocked) return state;
+
+  const validatedAt = Number(state.licenseValidatedAt) || 0;
+  if (Date.now() - validatedAt < UNFEED_LICENSE_REVALIDATE_MS) return state;
+
+  // Preserve the local QA workflow; store builds strip personal unlock codes.
+  if (unfeedIsDevUnlockCode(state.licenseKey)) {
+    const refreshed = { ...state, licenseValidatedAt: Date.now() };
+    await chrome.storage.sync.set({ licenseValidatedAt: refreshed.licenseValidatedAt });
+    return refreshed;
+  }
+
+  const result = state.licenseKey
+    ? await validatePolarLicense(state.licenseKey)
+    : { ok: false, reason: "invalid" };
+
+  // An offline or temporary Polar failure should not lock out a paying user.
+  if (result.reason === "network") return state;
+  if (result.ok) {
+    const refreshed = { ...state, licenseValidatedAt: Date.now() };
+    await chrome.storage.sync.set({ licenseValidatedAt: refreshed.licenseValidatedAt });
+    return refreshed;
+  }
+
+  const locked = { ...state, proUnlocked: false, licenseKey: "", licenseValidatedAt: 0 };
+  const { state: clamped } = unfeedClampFreeTier(locked);
+  const patch = {
+    proUnlocked: false,
+    licenseKey: "",
+    licenseValidatedAt: 0,
+    ...Object.fromEntries(SITES.map((site) => [site.id, !!clamped[site.id]])),
+  };
+  await chrome.storage.sync.set(patch);
+  await broadcastMany(clamped);
+  return clamped;
 }
 
 async function setAllSites(enabled) {
@@ -320,6 +359,7 @@ licenseInput.addEventListener("keydown", (e) => {
 
 async function load() {
   let stored = await chrome.storage.sync.get(defaults);
+  stored = await refreshProEntitlement(stored);
   const { state, changed } = unfeedClampFreeTier(stored);
   stored = state;
 
