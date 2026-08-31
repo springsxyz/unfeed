@@ -20,11 +20,11 @@ test("content scripts run early and share the site bootstrap", () => {
   }
 });
 
-test("free extension has no payment or license host access", () => {
-  assert.equal(
-    manifest.host_permissions.some((permission) => permission.includes("polar.sh")),
-    false
-  );
+test("requests only storage, with no host_permissions", () => {
+  assert.deepEqual(manifest.permissions, ["storage"]);
+  // Declared content scripts inject off their own `matches`. host_permissions
+  // existed only to let the popup run chrome.tabs.query({url}), which is gone.
+  assert.equal("host_permissions" in manifest, false);
 });
 
 test("popup exposes bulk controls without a paywall", () => {

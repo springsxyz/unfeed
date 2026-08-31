@@ -92,7 +92,8 @@ html.unfeed-tt-on[data-unfeed-surface="feed"] [class*="DivArrow"] {
       return "feed";
     }
 
-    return "feed";
+    // Unknown routes (login, /about, /press) keep their scroll and layout.
+    return "other";
   }
 
   function inChrome(node) {

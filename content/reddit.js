@@ -71,14 +71,18 @@
 
     // "Best" / layout row leftover
     document.querySelectorAll("button, [role='button'], span").forEach((el) => {
+      // The label is a leaf; reading textContent on wrappers walks the subtree.
+      if (el.childElementCount > 0) return;
       if (inChrome(el)) return;
       const t = textOf(el);
       if (!/^(Best|Hot|New|Top|Rising|Controversial)$/i.test(t)) return;
+      // Fall back to the label itself — hiding an arbitrary parentElement can
+      // take out unrelated content when the text is a post flair, not a sort.
       markHidden(
         el.closest("shreddit-sort-dropdown") ||
           el.closest("faceplate-dropdown-menu") ||
           el.closest("[class*='sort']") ||
-          el.parentElement
+          el
       );
     });
   }

@@ -4,6 +4,9 @@
  */
 window.UnFeed = window.UnFeed || {};
 
+// JS-only flag read by the freeze handlers below. Each site's stylesheet already
+// sets overflow:hidden for its own lock surfaces, so nothing styles this class —
+// do not add CSS for it in one stylesheet and assume the others follow.
 const SCROLL_LOCK = "unfeed-scroll-lock";
 
 function installGlobalScrollFreeze() {
@@ -146,11 +149,29 @@ window.UnFeed.bindSite = function bindSite({
   // Content scripts run in an isolated world, so patching history alone cannot
   // reliably observe SPA navigation initiated by the page. Polling the URL is
   // cheap and deterministic, without relying on a DOM mutation side effect.
-  const routeTimer = setInterval(() => {
+  let routeTimer = null;
+  const pollRoute = () => {
     const next = location.pathname + location.search;
     if (next !== STATE.path) onRouteMaybeChanged();
-  }, 500);
-  window.addEventListener("pagehide", () => clearInterval(routeTimer), { once: true });
+  };
+  const startPolling = () => {
+    if (routeTimer === null) routeTimer = setInterval(pollRoute, 500);
+  };
+  const stopPolling = () => {
+    clearInterval(routeTimer);
+    routeTimer = null;
+  };
+
+  startPolling();
+
+  // A bfcache'd page fires pagehide but comes back alive on pageshow, so the
+  // timer has to be restartable — clearing it once would kill route tracking
+  // for the rest of the page's life after a single back-navigation.
+  window.addEventListener("pagehide", stopPolling);
+  window.addEventListener("pageshow", () => {
+    startPolling();
+    onRouteMaybeChanged();
+  });
 
   chrome.storage.sync.get([storageKey], (data) => {
     setEnabled(data[storageKey] === true);
@@ -159,18 +180,6 @@ window.UnFeed.bindSite = function bindSite({
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area !== "sync" || !changes[storageKey]) return;
     setEnabled(changes[storageKey].newValue === true);
-  });
-
-  chrome.runtime.onMessage.addListener((msg) => {
-    if (msg?.type !== "UNFEED_SETTINGS") return;
-    if (msg.storageKey && msg.storageKey !== storageKey) return;
-    if (typeof msg[storageKey] === "boolean") {
-      setEnabled(msg[storageKey]);
-      return;
-    }
-    if (msg.sites && typeof msg.sites[storageKey] === "boolean") {
-      setEnabled(msg.sites[storageKey]);
-    }
   });
 
   if (!window.UnFeed._historyPatched) {

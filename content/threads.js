@@ -75,7 +75,9 @@ html.unfeed-th-on[data-unfeed-surface="explore"] body {
     ) {
       return "feed";
     }
-    return "feed";
+    // Unknown routes (login, legal, anything Meta adds) must stay untouched —
+    // this site hides all of <main>, so failing open into "feed" blanks them.
+    return "other";
   }
 
   function ensureCss(on) {
@@ -120,35 +122,54 @@ html.unfeed-th-on[data-unfeed-surface="explore"] body {
   function hideMidFloatingChip() {
     // Only the orphan mid-screen compose chip.
     // Keep: left-rail New thread, bottom-right FAB.
-    document.querySelectorAll("div, a, button, [role='button']").forEach((el) => {
-      if (el.getAttribute(HIDDEN) === "1" || inLeftRail(el)) return;
+    //
+    // The chip is always an <svg> in a small square wrapper, so walk up from
+    // the icons. Scanning every div instead would force a layout per node.
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
 
-      let r;
-      try {
-        r = el.getBoundingClientRect();
-      } catch {
+    document.querySelectorAll("svg").forEach((svg) => {
+      let el = svg.parentElement;
+
+      for (let i = 0; i < 4 && el; i++, el = el.parentElement) {
+        const isChip =
+          el.tagName === "DIV" ||
+          el.tagName === "A" ||
+          el.tagName === "BUTTON" ||
+          el.getAttribute("role") === "button";
+        if (!isChip) continue;
+        if (el.getAttribute(HIDDEN) === "1" || inLeftRail(el)) return;
+
+        let r;
+        try {
+          r = el.getBoundingClientRect();
+        } catch {
+          return;
+        }
+
+        // Compact square chip only
+        if (r.width < 24 || r.height < 24 || r.width > 56 || r.height > 56) continue;
+        if (Math.abs(r.width - r.height) > 12) continue;
+
+        // Right half, vertically centered — not the bottom FAB
+        if (r.left < vw * 0.45) continue;
+        if (r.bottom > vh - 100) continue;
+        if (r.top < 80) continue;
+        const midY = r.top + r.height / 2;
+        if (midY < vh * 0.2 || midY > vh * 0.8) continue;
+
+        el.style.setProperty("display", "none", "important");
+        el.setAttribute(HIDDEN, "1");
         return;
       }
-
-      // Right half, vertically centered — not the bottom FAB
-      if (r.left < window.innerWidth * 0.45) return;
-      if (r.bottom > window.innerHeight - 100) return;
-      if (r.top < 80) return;
-      const midY = r.top + r.height / 2;
-      if (midY < window.innerHeight * 0.2 || midY > window.innerHeight * 0.8) return;
-
-      // Compact square chip only
-      if (r.width < 24 || r.height < 24 || r.width > 56 || r.height > 56) return;
-      if (Math.abs(r.width - r.height) > 12) return;
-      if (!el.querySelector("svg")) return;
-
-      el.style.setProperty("display", "none", "important");
-      el.setAttribute(HIDDEN, "1");
     });
   }
 
   function hideResidualChrome() {
     document.querySelectorAll("h1, h2, span, div, button, a").forEach((el) => {
+      // textOf() serialises the whole subtree. The label is always a leaf, and
+      // the walk below still reaches its wrappers — so skip the interior nodes.
+      if (el.childElementCount > 0) return;
       const t = textOf(el);
       if (!/^(For you|Following)$/i.test(t)) return;
       if (inLeftRail(el)) return;

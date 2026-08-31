@@ -1,36 +1,15 @@
 /* Background service worker — keeps site defaults and removes legacy billing state. */
 
-const UNFEED_SITES = [
-  "blueskyEnabled",
-  "facebookEnabled",
-  "instagramEnabled",
-  "linkedinEnabled",
-  "pinterestEnabled",
-  "redditEnabled",
-  "substackEnabled",
-  "threadsEnabled",
-  "tiktokEnabled",
-  "xEnabled",
-  "youtubeEnabled",
-];
-
-const UNFEED_DEFAULT_ENABLED = [
-  "instagramEnabled",
-  "youtubeEnabled",
-  "xEnabled",
-];
+// Single source of truth for the site list and defaults. A classic MV3 service
+// worker (no "type": "module") supports importScripts, so this file and the
+// popup read the same config instead of keeping hand-synced copies.
+importScripts("shared/config.js");
 
 const LEGACY_BILLING_KEYS = [
   "proUnlocked",
   "licenseKey",
   "licenseValidatedAt",
 ];
-
-function unfeedDefaultState() {
-  return Object.fromEntries(
-    UNFEED_SITES.map((key) => [key, UNFEED_DEFAULT_ENABLED.includes(key)])
-  );
-}
 
 async function ensureDefaults() {
   const stored = await chrome.storage.sync.get(null);

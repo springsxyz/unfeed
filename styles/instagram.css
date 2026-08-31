@@ -43,9 +43,7 @@ html.unfeed-ig-on[data-unfeed-surface="reels"] #scrollview,
 html.unfeed-ig-on[data-unfeed-surface="home"] [style*="overflow: auto"],
 html.unfeed-ig-on[data-unfeed-surface="home"] [style*="overflow:auto"],
 html.unfeed-ig-on[data-unfeed-surface="home"] [style*="overflow-y: auto"],
-html.unfeed-ig-on[data-unfeed-surface="home"] [style*="overflow-y:auto"],
-html.unfeed-scroll-lock,
-html.unfeed-scroll-lock body {
+html.unfeed-ig-on[data-unfeed-surface="home"] [style*="overflow-y:auto"] {
   overflow: hidden !important;
   overscroll-behavior: none !important;
 }

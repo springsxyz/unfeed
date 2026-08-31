@@ -1,6 +1,4 @@
 (() => {
-  const LOCK = "unfeed-pin-scroll-lock";
-
   function getSurface(pathname) {
     if (pathname.startsWith("/pin/")) return "pin";
     if (pathname.startsWith("/search")) return "search";
@@ -17,19 +15,6 @@
     }
     if (/^\/[^/]+$/.test(pathname)) return "profile";
     return "other";
-  }
-
-  function shouldLock(state) {
-    return state.enabled && state.surface === "home";
-  }
-
-  function syncLock(state) {
-    document.documentElement.classList.toggle(LOCK, shouldLock(state));
-  }
-
-  function blockScroll(e) {
-    if (!document.documentElement.classList.contains(LOCK)) return;
-    e.preventDefault();
   }
 
   function feedHasPins() {
@@ -67,18 +52,12 @@
     home?.click();
   }
 
-  window.addEventListener("wheel", blockScroll, { passive: false });
-  window.addEventListener("touchmove", blockScroll, { passive: false });
-
   UnFeed.bindSite({
     storageKey: "pinterestEnabled",
     className: "unfeed-pin-on",
     getSurface,
-    onEnable(state) {
-      syncLock(state);
-    },
+    scrollLockSurfaces: ["home"],
     onDisable(state) {
-      syncLock(state);
       requestAnimationFrame(() => {
         window.dispatchEvent(new Event("resize"));
         window.dispatchEvent(new Event("scroll"));
@@ -87,6 +66,5 @@
         }
       });
     },
-    onMutation: syncLock,
   });
 })();

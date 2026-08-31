@@ -24,43 +24,9 @@ const list = document.getElementById("site-list");
 const enableAllBtn = document.getElementById("enable-all");
 const disableAllBtn = document.getElementById("disable-all");
 
-const URL_PATTERNS = {
-  youtubeEnabled: ["*://www.youtube.com/*", "*://youtube.com/*", "*://m.youtube.com/*"],
-  instagramEnabled: ["*://www.instagram.com/*", "*://instagram.com/*"],
-  facebookEnabled: [
-    "*://www.facebook.com/*",
-    "*://facebook.com/*",
-    "*://web.facebook.com/*",
-    "*://m.facebook.com/*",
-  ],
-  xEnabled: [
-    "*://www.x.com/*",
-    "*://x.com/*",
-    "*://twitter.com/*",
-    "*://www.twitter.com/*",
-  ],
-  redditEnabled: [
-    "*://www.reddit.com/*",
-    "*://reddit.com/*",
-    "*://old.reddit.com/*",
-    "*://sh.reddit.com/*",
-  ],
-  linkedinEnabled: ["*://www.linkedin.com/*", "*://linkedin.com/*"],
-  tiktokEnabled: ["*://www.tiktok.com/*", "*://tiktok.com/*"],
-  pinterestEnabled: [
-    "*://www.pinterest.com/*",
-    "*://pinterest.com/*",
-    "*://*.pinterest.com/*",
-  ],
-  substackEnabled: ["*://substack.com/*", "*://www.substack.com/*"],
-  threadsEnabled: [
-    "*://www.threads.net/*",
-    "*://threads.net/*",
-    "*://www.threads.com/*",
-    "*://threads.com/*",
-  ],
-  blueskyEnabled: ["*://bsky.app/*", "*://www.bsky.app/*"],
-};
+// Writing to chrome.storage.sync is all this popup has to do: every content
+// script listens on chrome.storage.onChanged, so open tabs update themselves —
+// and so do tabs on the user's other synced devices.
 
 function rowHtml(site, enabled) {
   const icon = SITE_ICONS[site.id] || "";
@@ -83,37 +49,12 @@ function rowHtml(site, enabled) {
   `;
 }
 
-async function broadcast(storageKey, enabled) {
-  const urls = URL_PATTERNS[storageKey];
-  if (!urls) return;
-
-  const tabs = await chrome.tabs.query({ url: urls });
-  for (const tab of tabs) {
-    if (tab.id == null) continue;
-    try {
-      await chrome.tabs.sendMessage(tab.id, {
-        type: "UNFEED_SETTINGS",
-        storageKey,
-        [storageKey]: enabled,
-        sites: { [storageKey]: enabled },
-      });
-    } catch {
-      // Content script may not be injected yet.
-    }
-  }
-}
-
-async function broadcastMany(state) {
-  await Promise.all(SITES.map((site) => broadcast(site.id, !!state[site.id])));
-}
-
 function wireToggles() {
   list.querySelectorAll(".toggle").forEach((toggle) => {
     toggle.addEventListener("change", async () => {
-      const key = toggle.dataset.storageKey;
-      const enabled = toggle.checked;
-      await chrome.storage.sync.set({ [key]: enabled });
-      await broadcast(key, enabled);
+      await chrome.storage.sync.set({
+        [toggle.dataset.storageKey]: toggle.checked,
+      });
     });
   });
 }
@@ -123,7 +64,6 @@ async function setAllSites(enabled) {
   await chrome.storage.sync.set(patch);
   list.innerHTML = SITES.map((site) => rowHtml(site, enabled)).join("");
   wireToggles();
-  await broadcastMany(patch);
 }
 
 enableAllBtn.addEventListener("click", () => setAllSites(true));

@@ -3,9 +3,7 @@
 html.unfeed-li-on[data-unfeed-surface="feed"],
 html.unfeed-li-on[data-unfeed-surface="feed"] body,
 html.unfeed-li-on[data-unfeed-surface="network"],
-html.unfeed-li-on[data-unfeed-surface="network"] body,
-html.unfeed-scroll-lock,
-html.unfeed-scroll-lock body {
+html.unfeed-li-on[data-unfeed-surface="network"] body {
   overflow: hidden !important;
   overscroll-behavior: none !important;
   height: 100% !important;

@@ -20,7 +20,7 @@
 
 - [ ] Run through `docs/QA.md` on the sites you advertise  
 - [ ] Confirm Bluesky or remove it from the store description if untested  
-- [ ] `manifest.json` version is `1.1.0` (or higher)
+- [ ] `manifest.json` version is `1.1.1` (or higher)
 - [ ] All eleven site toggles and bulk actions work without an account
 - [ ] Popup + privacy link look good  
 
@@ -32,7 +32,7 @@ From the `unfeed` folder, run:
 powershell -ExecutionPolicy Bypass -File .\scripts\pack-extension.ps1
 ```
 
-This creates `dist/unfeed-1.1.0.zip` with only extension files (no `docs/`, no `.git`, no `api/`).
+This creates `dist/unfeed-1.1.1.zip` with only extension files (no `docs/`, no `.git`).
 
 ## 3. Submit
 
@@ -41,7 +41,9 @@ This creates `dist/unfeed-1.1.0.zip` with only extension files (no `docs/`, no `
 3. Paste copy from `docs/STORE_LISTING.md`
 4. Upload screenshots
 5. Set privacy policy URL to your Pages privacy URL
-6. Justify host permissions: “Modify supported social sites to hide feeds only”
+6. Justify site access: “Modify supported social sites to hide feeds only”
+   (the extension declares no `host_permissions` — access comes from the
+   `content_scripts` match patterns, and the only API permission is `storage`)
 7. Submit for review
 
 ## 4. After approval
