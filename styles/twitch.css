@@ -26,6 +26,15 @@ html.unfeed-tw-on[data-unfeed-surface="browse"] main .tw-tower {
   display: none !important;
 }
 
+/* m.twitch.tv is a separate app: hashed class names, no structural
+   data-a-target hooks, and a bottom tab bar instead of the side nav. Its
+   shelves sit in one role="list" inside main, on home and browse alike.
+   Desktop has no such list, so this rule is a no-op there. */
+html.unfeed-tw-on[data-unfeed-surface="home"] main [role="list"],
+html.unfeed-tw-on[data-unfeed-surface="browse"] main [role="list"] {
+  display: none !important;
+}
+
 /* Stop the empty column from scroll-loading more cards */
 html.unfeed-tw-on[data-unfeed-surface="home"] main .root-scrollable,
 html.unfeed-tw-on[data-unfeed-surface="browse"] main .root-scrollable {

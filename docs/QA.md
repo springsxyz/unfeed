@@ -1,6 +1,6 @@
 # UnFeed — pre-publish QA
 
-Last updated: 2026-08-31 · Extension version target: **1.3.1**
+Last updated: 2026-08-31 · Extension version target: **1.3.2**
 
 ## How to smoke-test
 
@@ -25,7 +25,7 @@ Last updated: 2026-08-31 · Extension version target: **1.3.1**
 | TikTok | OK | For You blank; search/profiles/links keep |
 | Threads | OK | Feed posts hidden; composer/chrome kept |
 | Bluesky | OK | Feed removal verified on `bsky.app` |
-| Twitch | NEW | Front page carousel + shelves, browse grid. Selectors verified against live DOM; needs a logged-in pass |
+| Twitch | NEW | Desktop **and** `m.twitch.tv` — the mobile app is a separate DOM with no shared selectors. Both verified logged out; needs a logged-in pass on each |
 | Tumblr | NEW | Dashboard + Explore. Hashed classes, so posts match on `<article>`; needs a logged-in dashboard pass |
 
 ## Free access

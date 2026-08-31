@@ -100,8 +100,10 @@
             '[data-a-target="front-page-carousel"]',
             '[data-a-target="frontpage-headliner-layout"]',
             ".tw-tower",
+            // m.twitch.tv keeps every shelf in one role="list"; desktop has none.
+            'main [role="list"]',
           ]
-        : [".tw-tower"];
+        : [".tw-tower", 'main [role="list"]'];
 
     for (const sel of selectors) {
       document.querySelectorAll(sel).forEach(markHidden);
