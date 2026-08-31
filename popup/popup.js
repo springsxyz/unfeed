@@ -10,6 +10,8 @@ const SITE_LABELS = {
   substackEnabled: "Substack",
   threadsEnabled: "Threads",
   tiktokEnabled: "TikTok",
+  tumblrEnabled: "Tumblr",
+  twitchEnabled: "Twitch",
   xEnabled: "X",
   youtubeEnabled: "YouTube",
 };

@@ -1,0 +1,40 @@
+/* Tumblr — blank the dashboard and Explore timelines.
+   Keep blogs, inbox, messages, likes, following, search.
+
+   Tumblr ships hashed class names (.FtjPK .r0etU), so everything here is
+   matched semantically: posts are <article>, the timeline is a <ul> of <li>. */
+
+html.unfeed-tm-on[data-unfeed-surface="feed"],
+html.unfeed-tm-on[data-unfeed-surface="feed"] body,
+html.unfeed-tm-on[data-unfeed-surface="explore"],
+html.unfeed-tm-on[data-unfeed-surface="explore"] body {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  height: 100% !important;
+}
+
+html.unfeed-tm-on[data-unfeed-surface="feed"] main article,
+html.unfeed-tm-on[data-unfeed-surface="feed"] main li:has(article),
+html.unfeed-tm-on[data-unfeed-surface="explore"] main article,
+html.unfeed-tm-on[data-unfeed-surface="explore"] main li:has(article) {
+  display: none !important;
+}
+
+/* Explore lists a topic, then a row of post previews under it. Collapsing the
+   list too avoids leaving a tall empty gap per topic. The topic links stay —
+   a directory you choose from is not the thing UnFeed removes. */
+html.unfeed-tm-on[data-unfeed-surface="explore"] main ul[aria-label="Preview posts"],
+html.unfeed-tm-on[data-unfeed-surface="feed"] main ul[aria-label="Preview posts"] {
+  display: none !important;
+}
+
+/* The composer row sits above the dashboard timeline and is part of the hook */
+html.unfeed-tm-on[data-unfeed-surface="feed"] main [aria-label="Create post"] {
+  display: none !important;
+}
+
+/* Loading spinners under an emptied timeline */
+html.unfeed-tm-on[data-unfeed-surface="feed"] main [role="progressbar"],
+html.unfeed-tm-on[data-unfeed-surface="explore"] main [role="progressbar"] {
+  display: none !important;
+}

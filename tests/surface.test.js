@@ -59,6 +59,38 @@ test("tiktok: real feed routes are still detected", () => {
   assert.equal(getSurface("/search?q=x"), "search");
 });
 
+test("twitch: discovery is blocked, chosen surfaces are not", () => {
+  const { getSurface } = loadSite("twitch");
+  assert.equal(getSurface("/"), "home");
+  assert.equal(getSurface("/directory"), "browse");
+  assert.equal(getSurface("/directory/game/Chess"), "browse");
+  // Following is a list you built, like YouTube subscriptions — leave it.
+  assert.equal(getSurface("/directory/following"), "following");
+  assert.equal(getSurface("/directory/following/live"), "following");
+  assert.equal(getSurface("/shroud"), "channel");
+  assert.equal(getSurface("/videos/12345"), "video");
+  assert.equal(getSurface("/settings/profile"), "settings");
+  // Reserved words must not be mistaken for channel names.
+  assert.notEqual(getSurface("/settings"), "channel");
+  assert.notEqual(getSurface("/directory"), "channel");
+});
+
+test("tumblr: dashboard and explore are blocked, blogs and lists are not", () => {
+  const { getSurface } = loadSite("tumblr");
+  assert.equal(getSurface("/dashboard"), "feed");
+  assert.equal(getSurface("/"), "feed");
+  assert.equal(getSurface("/explore/trending"), "explore");
+  // Likes and Following are chosen, not recommended.
+  assert.equal(getSurface("/likes"), "library");
+  assert.equal(getSurface("/following"), "library");
+  assert.equal(getSurface("/inbox"), "messages");
+  assert.equal(getSurface("/staff"), "blog");
+  assert.equal(getSurface("/blog/staff"), "blog");
+  assert.equal(getSurface("/settings/account"), "settings");
+  assert.notEqual(getSurface("/dashboard"), "blog");
+  assert.notEqual(getSurface("/explore"), "blog");
+});
+
 test("every site locks scroll only on surfaces its getSurface can return", () => {
   const sites = fs
     .readdirSync(path.join(root, "content"))
@@ -71,7 +103,8 @@ test("every site locks scroll only on surfaces its getSurface can return", () =>
     const reachable = new Set(
       [
         "/", "/home", "/feed", "/explore", "/reels", "/foryou", "/following",
-        "/mynetwork", "/watch", "/for_you", "/notes", "/discover",
+        "/mynetwork", "/watch", "/for_you", "/notes", "/discover", "/directory",
+        "/dashboard",
       ].map((route) => getSurface(route))
     );
 

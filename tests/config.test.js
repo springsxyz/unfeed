@@ -20,7 +20,7 @@ test("every supported site is on out of the box", () => {
 test("every supported site is available in the free state", () => {
   const config = loadConfig();
   const state = config.unfeedDefaultState();
-  assert.equal(config.UNFEED_SITES.length, 11);
+  assert.equal(config.UNFEED_SITES.length, 13);
   for (const key of config.UNFEED_SITES) {
     assert.equal(typeof state[key], "boolean");
   }

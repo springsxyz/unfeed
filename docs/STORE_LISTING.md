@@ -38,7 +38,7 @@ You can still:
 • Post and engage on pages you intentionally opened
 
 SUPPORTED SITES
-YouTube, Instagram, Facebook, X, Reddit, LinkedIn, TikTok, Pinterest, Substack (substack.com), Threads, Bluesky
+YouTube, Instagram, Facebook, X, Reddit, LinkedIn, TikTok, Pinterest, Substack (substack.com), Threads, Bluesky, Twitch, Tumblr
 
 FREE
 • Every supported site is included
@@ -47,7 +47,7 @@ FREE
 PERMISSIONS
 UnFeed only asks for storage (to save your toggles) and access to the listed social sites so it can hide feeds there. Everything runs locally in your browser.
 
-UnFeed is not affiliated with YouTube, Meta, X, Reddit, LinkedIn, TikTok, Pinterest, Substack, or Bluesky.
+UnFeed is not affiliated with YouTube, Meta, X, Reddit, LinkedIn, TikTok, Pinterest, Substack, Bluesky, Twitch, or Tumblr.
 ```
 
 ## Category

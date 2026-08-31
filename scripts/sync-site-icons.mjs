@@ -35,6 +35,8 @@ const ICONS = [
   ["substackEnabled", "substack"],
   ["threadsEnabled", "threads"],
   ["tiktokEnabled", "tiktok"],
+  ["tumblrEnabled", "tumblr"],
+  ["twitchEnabled", "twitch"],
   ["xEnabled", "x"],
   ["youtubeEnabled", "youtube"],
 ];

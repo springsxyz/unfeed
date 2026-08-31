@@ -2,7 +2,7 @@
 
 Remove the feed. Keep the app.
 
-Chrome extension **v1.2.0** (Manifest V3).
+Chrome extension **v1.3.0** (Manifest V3).
 
 ## Install (developer)
 
@@ -26,7 +26,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\pack-extension.ps1
 
 ## Supported
 
-YouTube · Instagram · Facebook · X · Reddit · LinkedIn · TikTok · Pinterest · Substack · Threads · Bluesky
+YouTube · Instagram · Facebook · X · Reddit · LinkedIn · TikTok · Pinterest · Substack · Threads · Bluesky · Twitch · Tumblr
 
 ## Layout
 

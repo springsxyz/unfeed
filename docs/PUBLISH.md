@@ -20,8 +20,8 @@
 
 - [ ] Run through `docs/QA.md` on the sites you advertise  
 - [ ] Confirm Bluesky or remove it from the store description if untested  
-- [ ] `manifest.json` version is `1.2.0` (or higher)
-- [ ] All eleven site toggles and bulk actions work without an account
+- [ ] `manifest.json` version is `1.3.0` (or higher)
+- [ ] All thirteen site toggles and bulk actions work without an account
 - [ ] Popup + privacy link look good  
 
 ## 2. Build the store zip
@@ -32,7 +32,7 @@ From the `unfeed` folder, run:
 powershell -ExecutionPolicy Bypass -File .\scripts\pack-extension.ps1
 ```
 
-This creates `dist/unfeed-1.2.0.zip` with only extension files (no `docs/`, no `.git`).
+This creates `dist/unfeed-1.3.0.zip` with only extension files (no `docs/`, no `.git`).
 
 ## 3. Submit
 

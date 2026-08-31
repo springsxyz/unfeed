@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "UnFeed",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Remove the feed. Keep the app. Hide social feeds; keep search, messages, profiles, and links.",
   "permissions": ["storage"],
   "background": {
@@ -114,6 +114,25 @@
       "matches": ["*://bsky.app/*", "*://www.bsky.app/*"],
       "js": ["shared/config.js", "shared/site.js", "content/bluesky.js"],
       "css": ["styles/bluesky.css"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "*://www.twitch.tv/*",
+        "*://twitch.tv/*",
+        "*://m.twitch.tv/*"
+      ],
+      "js": ["shared/config.js", "shared/site.js", "content/twitch.js"],
+      "css": ["styles/twitch.css"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "*://www.tumblr.com/*",
+        "*://tumblr.com/*"
+      ],
+      "js": ["shared/config.js", "shared/site.js", "content/tumblr.js"],
+      "css": ["styles/tumblr.css"],
       "run_at": "document_start"
     }
   ]

@@ -13,6 +13,8 @@ const UNFEED_SITES = [
   "substackEnabled",
   "threadsEnabled",
   "tiktokEnabled",
+  "tumblrEnabled",
+  "twitchEnabled",
   "xEnabled",
   "youtubeEnabled",
 ];

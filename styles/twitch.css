@@ -1,0 +1,34 @@
+/* Twitch — blank the front-page carousel and the browse grid.
+   Keep the side nav (your follows), top nav, search, and channel pages.
+   Ad slots are deliberately untouched. */
+
+html.unfeed-tw-on[data-unfeed-surface="home"],
+html.unfeed-tw-on[data-unfeed-surface="home"] body,
+html.unfeed-tw-on[data-unfeed-surface="browse"],
+html.unfeed-tw-on[data-unfeed-surface="browse"] body {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}
+
+/* The whole front page is recommendations: an autoplaying featured carousel
+   plus shelves. One stable data-a-target covers both — Twitch's own class
+   names are hashed (.clBQcg) and cannot be relied on. */
+html.unfeed-tw-on[data-unfeed-surface="home"] [data-a-target="front-page-main-content"],
+html.unfeed-tw-on[data-unfeed-surface="home"] [data-a-target="front-page-carousel"],
+html.unfeed-tw-on[data-unfeed-surface="home"] [data-a-target="frontpage-headliner-layout"] {
+  display: none !important;
+}
+
+/* Card grids — shelves on the front page, categories and live channels on
+   browse — share the same tower container. */
+html.unfeed-tw-on[data-unfeed-surface="home"] main .tw-tower,
+html.unfeed-tw-on[data-unfeed-surface="browse"] main .tw-tower {
+  display: none !important;
+}
+
+/* Stop the empty column from scroll-loading more cards */
+html.unfeed-tw-on[data-unfeed-surface="home"] main .root-scrollable,
+html.unfeed-tw-on[data-unfeed-surface="browse"] main .root-scrollable {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}
