@@ -196,9 +196,24 @@ html.unfeed-fb-on[data-unfeed-surface="reels"] body {
     });
   }
 
+  /**
+   * Logged-out Facebook renders [role="main"] with nothing feed-like inside,
+   * which trips the "no role=feed, so hide the main column" fallback in
+   * hideMatches() and blanks the login page. Verified on www. and m. alike:
+   * main went 830px to 0 and the page was left with the word "Facebook".
+   */
+  function isAuthWall() {
+    return Boolean(
+      document.getElementById("login_form") ||
+        document.querySelector('input[name="pass"]') ||
+        document.querySelector('input[type="password"]')
+    );
+  }
+
   function apply(state) {
-    ensureInjectedCss(state.enabled);
-    if (!state.enabled) {
+    const off = !state.enabled || isAuthWall();
+    ensureInjectedCss(!off);
+    if (off) {
       restore();
       return;
     }

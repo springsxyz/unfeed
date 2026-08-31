@@ -1,6 +1,6 @@
 # UnFeed — pre-publish QA
 
-Last updated: 2026-08-31 · Extension version target: **1.3.2**
+Last updated: 2026-08-31 · Extension version target: **1.3.3**
 
 ## How to smoke-test
 
@@ -34,6 +34,26 @@ Last updated: 2026-08-31 · Extension version target: **1.3.2**
 - [ ] Upgrading from ≤1.1.1 keeps existing toggles — no site flips on by itself  
 - [ ] Any combination of all thirteen supported sites can be enabled
 - [ ] Enable all and Disable all update open tabs immediately
+
+## Alternate hosts
+
+The manifest matches more than the main desktop host for several sites. These
+are separate applications, not responsive variants — selectors do not carry
+over. Checked logged out:
+
+| Host | State |
+|---|---|
+| `m.twitch.tv` | Fixed in 1.3.2 — separate DOM, uses `main [role="list"]` |
+| `m.youtube.com` | Fixed in 1.3.3 — `ytm-*` elements, no `ytd-*` selectors exist |
+| `m.facebook.com` / `www.facebook.com` logged out | Fixed in 1.3.3 — was blanking the login page |
+| `www.instagram.com` logged out | Safe; no `main[role="main"]`, though scroll lock still applies |
+| `www.threads.com` logged out | Safe; no `main` element at all |
+| `old.reddit.com` | **Unchecked** — blocked in the test browser. One CSS rule (`#siteTable`) |
+| `sh.reddit.com` | **Unchecked** |
+| `web.facebook.com` | **Unchecked** |
+
+- [ ] Load `old.reddit.com` logged in and confirm the front page blanks
+- [ ] Confirm no site blanks its logged-out landing or login page
 
 ## Known limitations (OK for v1)
 

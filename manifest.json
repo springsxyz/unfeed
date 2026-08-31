@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "UnFeed",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "Remove the feed. Keep the app. Hide social feeds; keep search, messages, profiles, and links.",
   "permissions": ["storage"],
   "background": {

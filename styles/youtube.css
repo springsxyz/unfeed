@@ -99,3 +99,14 @@ html.unfeed-yt-on .ytp-pause-overlay,
 html.unfeed-yt-on .ytp-suggestion-set {
   display: none !important;
 }
+
+/* m.youtube.com is a separate application built from ytm-* elements. None of
+   the ytd-* selectors above exist there, so YouTube blocking was silently a
+   no-op on mobile. Unlike the desktop rules these use display:none rather
+   than the opacity trick — the mobile grid does not need to stay mounted. */
+html.unfeed-yt-on[data-unfeed-surface="home"] ytm-browse ytm-rich-grid-renderer,
+html.unfeed-yt-on[data-unfeed-surface="home"] ytm-browse ytm-rich-section-renderer,
+html.unfeed-yt-on[data-unfeed-surface="trending"] ytm-browse ytm-rich-grid-renderer,
+html.unfeed-yt-on[data-unfeed-surface="shorts-feed"] ytm-browse {
+  display: none !important;
+}
