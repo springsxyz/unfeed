@@ -29,6 +29,22 @@ html.unfeed-yt-on[data-unfeed-surface="trending"] ytd-browse ytd-feed-filter-chi
   overflow: hidden !important;
 }
 
+/* Ads stay visible on purpose. Hiding them would make this an ad blocker
+   rather than a feed blocker — a different Web Store category, and it would
+   put UnFeed in the way of YouTube's ad-block detection.
+
+   The home masthead slot is a direct child of ytd-browse, outside #primary,
+   so it survives the hide above. Once #primary leaves normal flow the slot
+   can lose its centering and hug the left edge; restating the centering
+   YouTube itself applies fixes that and is a no-op when layout is behaving.
+   The child combinator matters — there is a second #masthead-ad nested
+   inside #primary that should stay hidden with the feed. */
+html.unfeed-yt-on[data-unfeed-surface="home"] ytd-browse[page-subtype="home"] > #masthead-ad {
+  display: flex !important;
+  justify-content: center !important;
+  width: 100% !important;
+}
+
 /* Shorts shelves — fine to fully remove from layout */
 html.unfeed-yt-on ytd-rich-shelf-renderer[is-shorts],
 html.unfeed-yt-on ytd-reel-shelf-renderer,

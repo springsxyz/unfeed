@@ -1,6 +1,6 @@
 # UnFeed — pre-publish QA
 
-Last updated: 2026-08-31 · Extension version target: **1.3.0**
+Last updated: 2026-08-31 · Extension version target: **1.3.1**
 
 ## How to smoke-test
 
