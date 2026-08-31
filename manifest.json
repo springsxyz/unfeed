@@ -28,13 +28,13 @@
         "*://youtube.com/*",
         "*://m.youtube.com/*"
       ],
-      "js": ["shared/site.js", "content/youtube.js"],
+      "js": ["shared/config.js", "shared/site.js", "content/youtube.js"],
       "css": ["styles/youtube.css"],
       "run_at": "document_start"
     },
     {
       "matches": ["*://www.instagram.com/*", "*://instagram.com/*"],
-      "js": ["shared/site.js", "content/instagram.js"],
+      "js": ["shared/config.js", "shared/site.js", "content/instagram.js"],
       "css": ["styles/instagram.css"],
       "run_at": "document_start"
     },
@@ -45,7 +45,7 @@
         "*://web.facebook.com/*",
         "*://m.facebook.com/*"
       ],
-      "js": ["shared/site.js", "content/facebook.js"],
+      "js": ["shared/config.js", "shared/site.js", "content/facebook.js"],
       "css": ["styles/facebook.css"],
       "run_at": "document_start"
     },
@@ -56,7 +56,7 @@
         "*://twitter.com/*",
         "*://www.twitter.com/*"
       ],
-      "js": ["shared/site.js", "content/x.js"],
+      "js": ["shared/config.js", "shared/site.js", "content/x.js"],
       "css": ["styles/x.css"],
       "run_at": "document_start"
     },
@@ -67,19 +67,19 @@
         "*://old.reddit.com/*",
         "*://sh.reddit.com/*"
       ],
-      "js": ["shared/site.js", "content/reddit.js"],
+      "js": ["shared/config.js", "shared/site.js", "content/reddit.js"],
       "css": ["styles/reddit.css"],
       "run_at": "document_start"
     },
     {
       "matches": ["*://www.linkedin.com/*", "*://linkedin.com/*"],
-      "js": ["shared/site.js", "content/linkedin.js"],
+      "js": ["shared/config.js", "shared/site.js", "content/linkedin.js"],
       "css": ["styles/linkedin.css"],
       "run_at": "document_start"
     },
     {
       "matches": ["*://www.tiktok.com/*", "*://tiktok.com/*"],
-      "js": ["shared/site.js", "content/tiktok.js"],
+      "js": ["shared/config.js", "shared/site.js", "content/tiktok.js"],
       "css": ["styles/tiktok.css"],
       "run_at": "document_start"
     },
@@ -89,13 +89,13 @@
         "*://pinterest.com/*",
         "*://*.pinterest.com/*"
       ],
-      "js": ["shared/site.js", "content/pinterest.js"],
+      "js": ["shared/config.js", "shared/site.js", "content/pinterest.js"],
       "css": ["styles/pinterest.css"],
       "run_at": "document_start"
     },
     {
       "matches": ["*://substack.com/*", "*://www.substack.com/*"],
-      "js": ["shared/site.js", "content/substack.js"],
+      "js": ["shared/config.js", "shared/site.js", "content/substack.js"],
       "css": ["styles/substack.css"],
       "run_at": "document_start"
     },
@@ -106,13 +106,13 @@
         "*://www.threads.com/*",
         "*://threads.com/*"
       ],
-      "js": ["shared/site.js", "content/threads.js"],
+      "js": ["shared/config.js", "shared/site.js", "content/threads.js"],
       "css": ["styles/threads.css"],
       "run_at": "document_start"
     },
     {
       "matches": ["*://bsky.app/*", "*://www.bsky.app/*"],
-      "js": ["shared/site.js", "content/bluesky.js"],
+      "js": ["shared/config.js", "shared/site.js", "content/bluesky.js"],
       "css": ["styles/bluesky.css"],
       "run_at": "document_start"
     }

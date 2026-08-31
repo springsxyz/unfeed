@@ -16,7 +16,9 @@ test("every manifest asset exists", () => {
 test("content scripts run early and share the site bootstrap", () => {
   for (const script of manifest.content_scripts) {
     assert.equal(script.run_at, "document_start");
-    assert.equal(script.js[0], "shared/site.js");
+    // config before site: the bootstrap reads UNFEED_DEFAULT_ENABLED so an
+    // unseeded key falls back to the shipped default instead of to off.
+    assert.deepEqual(script.js.slice(0, 2), ["shared/config.js", "shared/site.js"]);
   }
 });
 

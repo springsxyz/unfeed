@@ -173,8 +173,17 @@ window.UnFeed.bindSite = function bindSite({
     onRouteMaybeChanged();
   });
 
+  // An unset key means "the service worker has not seeded storage yet", not
+  // "the user turned this off" — seeding is async, and a tab can load first.
+  // Falling back to off here would silently contradict the popup, which reads
+  // the same key through unfeedDefaultState(). Keep the two agreeing.
+  const shippedDefault =
+    typeof UNFEED_DEFAULT_ENABLED !== "undefined" &&
+    UNFEED_DEFAULT_ENABLED.includes(storageKey);
+
   chrome.storage.sync.get([storageKey], (data) => {
-    setEnabled(data[storageKey] === true);
+    const stored = data[storageKey];
+    setEnabled(stored === undefined ? shippedDefault : stored === true);
   });
 
   chrome.storage.onChanged.addListener((changes, area) => {

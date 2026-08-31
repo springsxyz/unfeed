@@ -47,7 +47,32 @@ foreach ($icon in @("icon16.png", "icon48.png", "icon128.png")) {
   Copy-Item -LiteralPath (Join-Path $root "icons/$icon") -Destination (Join-Path $stageIcons $icon) -Force
 }
 
-Compress-Archive -Path (Join-Path $stage "*") -DestinationPath $zipPath -Force
+# Not Compress-Archive: on Windows PowerShell 5.1 it writes entry names with
+# backslash separators, which the ZIP spec (APPNOTE 4.4.17.1) forbids. Strict
+# extractors flatten those into literal "content\x.js" filenames, and the store
+# can reject the package. CreateFromDirectory writes forward slashes.
+# CreateFromDirectory has the same bug on .NET Framework (which is what
+# Windows PowerShell 5.1 runs on), so name every entry explicitly.
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+$zip = [System.IO.Compression.ZipFile]::Open($zipPath, "Create")
+try {
+  foreach ($file in Get-ChildItem -Path $stage -Recurse -File) {
+    $entry = $file.FullName.Substring($stage.Length + 1).Replace("\", "/")
+    [void][System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile(
+      $zip, $file.FullName, $entry, [System.IO.Compression.CompressionLevel]::Optimal
+    )
+  }
+} finally {
+  $zip.Dispose()
+}
+
+$check = [System.IO.Compression.ZipFile]::OpenRead($zipPath)
+$backslashed = @($check.Entries | Where-Object { $_.FullName -like '*\*' }).Count
+$check.Dispose()
+if ($backslashed -gt 0) {
+  throw "$backslashed zip entries use backslash separators"
+}
+
 Remove-Item $stage -Recurse -Force
 
 Write-Output "Created $zipPath"
