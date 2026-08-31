@@ -2,7 +2,7 @@
 
 Remove the feed. Keep the app.
 
-Chrome extension **v1.1.1** (Manifest V3).
+Chrome extension **v1.2.0** (Manifest V3).
 
 ## Install (developer)
 

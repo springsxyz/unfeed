@@ -60,8 +60,9 @@ test("first install seeds exactly the shared defaults", async () => {
   const expected = { ...context.unfeedDefaultState() };
   assert.deepEqual(sync, expected);
   assert.deepEqual(
-    Object.keys(expected).filter((key) => expected[key]).sort(),
-    ["instagramEnabled", "xEnabled", "youtubeEnabled"]
+    Object.keys(expected).filter((key) => !expected[key]),
+    [],
+    "a fresh install should hide every feed"
   );
 });
 
@@ -72,8 +73,11 @@ test("existing choices survive a re-run, and legacy billing keys are dropped", a
   });
   await listeners.onInstalled[0]();
 
+  // Widening the defaults must not reach back into settled installs: YouTube
+  // stays off because the user turned it off, while Reddit — never set — picks
+  // up the new on-by-default.
   assert.equal(sync.youtubeEnabled, false, "must not overwrite a user's choice");
-  assert.equal(sync.redditEnabled, false, "unset sites still get their default");
+  assert.equal(sync.redditEnabled, true, "unset sites still get their default");
   // ensureDefaults runs on load and again per event, so dedupe before comparing.
   assert.deepEqual(
     [...new Set(removed)],

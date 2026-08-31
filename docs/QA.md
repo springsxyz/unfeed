@@ -1,6 +1,6 @@
 # UnFeed — pre-publish QA
 
-Last updated: 2026-08-31 · Extension version target: **1.1.1**
+Last updated: 2026-08-31 · Extension version target: **1.2.0**
 
 ## How to smoke-test
 
@@ -28,7 +28,8 @@ Last updated: 2026-08-31 · Extension version target: **1.1.1**
 
 ## Free access
 
-- [ ] Default: Instagram, YouTube, X ON  
+- [ ] Default on a fresh profile: all eleven sites ON  
+- [ ] Upgrading from ≤1.1.1 keeps existing toggles — no site flips on by itself  
 - [ ] Any combination of all eleven supported sites can be enabled
 - [ ] Enable all and Disable all update open tabs immediately
 

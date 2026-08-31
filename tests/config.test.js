@@ -10,11 +10,11 @@ function loadConfig() {
   return context.globalThis;
 }
 
-test("default state starts with Instagram, X, and YouTube enabled", () => {
+test("every supported site is on out of the box", () => {
   const config = loadConfig();
   const state = config.unfeedDefaultState();
-  const enabled = config.UNFEED_SITES.filter((key) => state[key]);
-  assert.deepEqual(Array.from(enabled), ["instagramEnabled", "xEnabled", "youtubeEnabled"]);
+  const off = config.UNFEED_SITES.filter((key) => !state[key]);
+  assert.deepEqual(Array.from(off), [], "a fresh install should hide every feed");
 });
 
 test("every supported site is available in the free state", () => {
