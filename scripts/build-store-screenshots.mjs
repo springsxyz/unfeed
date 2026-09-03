@@ -138,6 +138,7 @@ async function buildControl() {
       { input: popupFit, left: 464, top: 128 },
       { input: icon, left: 1184, top: 20 },
     ])
+    .flatten({ background: "#f4f2ec" })
     .png()
     .toFile(path.join(outputDir, "01-control.png"));
 }
@@ -198,6 +199,7 @@ async function buildSiteShots() {
         { input: screenshot, left: 66, top: 232, blend: "over" },
         { input: icon, left: 1160, top: 48, blend: "over" },
       ])
+      .flatten({ background: "#f4f2ec" })
       .png()
       .toFile(path.join(outputDir, shot.filename));
   }
