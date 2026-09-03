@@ -87,7 +87,9 @@ async function fitPopup(sourcePath, width, height) {
   const fitted = await sharp(cleaned)
     .resize(width, height, {
       fit: "contain",
-      background: { r: 255, g: 255, b: 255, alpha: 1 },
+      // Must match the popup's own background or the contain-fit letterboxing
+      // shows as white bands down each side of the panel.
+      background: { r: 244, g: 242, b: 236, alpha: 1 },
       position: "top",
     })
     .png()
@@ -119,7 +121,7 @@ async function buildControl() {
       <text x="640" y="78" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#595959">Remove the feed. Keep the app.</text>
 
       <text x="640" y="117" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#0a0a0a">ALL SITES INCLUDED</text>
-      <rect x="464" y="128" width="352" height="660" rx="16" fill="#ffffff" stroke="#0a0a0a" stroke-width="2" filter="url(#shadow)"/>
+      <rect x="464" y="128" width="352" height="660" rx="16" fill="#f4f2ec" stroke="#0a0a0a" stroke-width="2" filter="url(#shadow)"/>
     </svg>
   `);
 
