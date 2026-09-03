@@ -16,6 +16,11 @@ UnFeed
 ## Summary (132 chars max)
 Remove social media feeds. Keep search, messages, profiles, and links. Use the app — not the infinite scroll.
 
+> Do not list the supported sites by brand name here. A comma-separated run of
+> network names was rejected on 2026-09-03 as Keyword Spam ("excessive and / or
+> irrelevant keywords in the item's description"). Keep it as prose and let the
+> popup carry the actual list.
+
 ## Description
 
 ```
@@ -38,7 +43,7 @@ You can still:
 • Post and engage on pages you intentionally opened
 
 SUPPORTED SITES
-YouTube, Instagram, Facebook, X, Reddit, LinkedIn, TikTok, Pinterest, Substack (substack.com), Threads, Bluesky, Twitch, Tumblr
+UnFeed works on thirteen networks, covering the major video, photo, discussion, and microblogging platforms. Open the popup after installing to see the full list and switch each one on or off independently.
 
 FREE
 • Every supported site is included
@@ -47,7 +52,7 @@ FREE
 PERMISSIONS
 UnFeed only asks for storage (to save your toggles) and access to the listed social sites so it can hide feeds there. Everything runs locally in your browser.
 
-UnFeed is not affiliated with YouTube, Meta, X, Reddit, LinkedIn, TikTok, Pinterest, Substack, Bluesky, Twitch, or Tumblr.
+UnFeed is an independent project. It is not affiliated with, endorsed by, or sponsored by any of the networks it supports.
 ```
 
 ## Category
