@@ -1,0 +1,18 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # No install: the suite only uses node:test and node:assert, and the
+      # sole dependency (sharp) is needed for icon tooling, not for tests.
+      - run: node --test tests/*.test.js
